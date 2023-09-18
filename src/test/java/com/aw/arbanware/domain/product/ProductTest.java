@@ -30,7 +30,6 @@ class ProductTest {
         em.persist(product);
 
         final ProductImage productImage = new ProductImage();
-        productImage.setProduct(product);
         productImage.setStoredPath("setStoredPath");
         productImage.setStoredFileName("setStoredFileName");
         productImage.setOriginalFileName("setOriginalFileName");

@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Getter @Setter
+@IdClass(ProductImageKey.class)
 public class ProductImage implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -15,6 +16,7 @@ public class ProductImage implements Serializable {
     private Product product;
 
     @Id @GeneratedValue
+    @Column(name = "SEQUENCE")
     private int sequence;
 
     private String storedPath;
