@@ -16,27 +16,27 @@ public class Category extends BaseEntity implements Serializable {
     @Column(name = "CATEGORY_ID")
     private Long id;
 
-    private String categoryName;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
     private Category parent;
 
-//    @OneToMany(mappedBy = "parent", orphanRemoval = true)
-//    private List<Category> childs = new ArrayList<>();
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Category> childs = new ArrayList<>();
 
     public Category() {
     }
 
-    public Category(final String categoryName) {
-        this.categoryName = categoryName;
+    public Category(final String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", categoryName='" + categoryName + '\'' +
+                ", name='" + name + '\'' +
                 ", parent=" + parent +
                 "} " + super.toString();
     }

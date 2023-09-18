@@ -4,7 +4,6 @@ import com.aw.arbanware.domain.common.BaseEntity;
 import com.aw.arbanware.domain.authorization.Authorization;
 import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,6 +26,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     private Set<Authorization> authorization = new HashSet<>();
+
 
     public void setId(final Long id) {
         this.id = id;
