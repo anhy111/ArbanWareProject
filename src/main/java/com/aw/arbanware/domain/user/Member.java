@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@DiscriminatorValue("MEMBER")
+@PrimaryKeyJoinColumn(name = "MEMBER_ID")
 public class Member extends User {
+
     private String name;
     @Embedded
     private Address address;
