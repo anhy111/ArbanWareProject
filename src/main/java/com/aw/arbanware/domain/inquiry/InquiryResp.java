@@ -6,15 +6,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class InquiryResp {
+public class InquiryResp implements Serializable {
 
-    @Id @GeneratedValue
-    @Column(name = "INQUIRY_ID")
-    private Long id; //문의번호
+    @Id // @GeneratedValue
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "INQUIRY_ID")
+    private Inquiry inquiry; //문의번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ADMIN_ID")

@@ -29,6 +29,7 @@ public class Inquiry {
     @Enumerated(EnumType.STRING)
     private DeleteYn deleteYn; //삭제여부
 
-
+    @OneToOne(mappedBy = "inquiry")
+    private InquiryResp inquiryResp;
 
 }
