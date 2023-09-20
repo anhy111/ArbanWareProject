@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "USERS")
+
 @Getter
 public class User extends BaseEntity {
     @Id @GeneratedValue
