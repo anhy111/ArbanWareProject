@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.order;
 
-import com.aw.arbanware.domain.common.BaseTimeEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.delivery.Delivery;
 import com.aw.arbanware.domain.user.Member;

@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.inquiry;
 
 import com.aw.arbanware.domain.common.DeleteYn;
+import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.user.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class Inquiry {
+public class Inquiry extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "INQUIRY_ID")

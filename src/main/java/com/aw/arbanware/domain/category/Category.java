@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.category;
 
-import com.aw.arbanware.domain.common.BaseEntity;
+import com.aw.arbanware.domain.common.DeleteYn;
+import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,16 +15,19 @@ import java.util.List;
 public class Category extends BaseEntity implements Serializable {
     @Id @GeneratedValue
     @Column(name = "CATEGORY_ID")
-    private Long id;
-
-    private String name;
+    private Long id;    // 카테고리 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
-    private Category parent;
+    private Category parent;    // 상위카테고리
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Category> childs = new ArrayList<>();
+
+    private String name;    // 카테고리명
+
+    @Enumerated(EnumType.STRING)
+    private DeleteYn deleteYn; //삭제여부
 
     public Category() {
     }
@@ -36,8 +40,9 @@ public class Category extends BaseEntity implements Serializable {
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", parent=" + parent +
+                ", name='" + name + '\'' +
+                ", deleteYn=" + deleteYn +
                 "} " + super.toString();
     }
 }

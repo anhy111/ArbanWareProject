@@ -13,12 +13,12 @@ public class Cart {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_INFO_ID")
-    private ProductInfo productInfo;
+    private ProductInfo productInfo;    // 상품 정보번호
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private Member member;      // 회원번호
 
-    private int quantity;
+    private int quantity;       // 수량
 }

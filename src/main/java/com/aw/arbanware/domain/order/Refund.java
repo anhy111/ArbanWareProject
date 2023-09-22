@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.order;
 
+import com.aw.arbanware.domain.payment.BankType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,13 +20,20 @@ public class Refund {
     @JoinColumn(name = "ORDER_ID")
     private Order order; //주문번호
 
-    private String method; //환불수단
-    private String status; //상태
+
+    @Enumerated(EnumType.STRING)
+    private RefundMethod method; //환불수단
+
+    @Enumerated(EnumType.STRING)
+    private RefundStatus status; //상태
+
     private int amount; //금액
     private String reason; //사유
     private String depositor; //예금주
     private String accountNumber; //계좌번호
-    private String bank; //은행
+
+    @Enumerated(EnumType.STRING)
+    private BankType bank; //은행
 
 
 }

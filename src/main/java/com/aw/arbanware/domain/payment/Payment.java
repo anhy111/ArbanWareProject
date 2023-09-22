@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.payment;
 
-import com.aw.arbanware.domain.common.BaseTimeEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.order.Order;
 import lombok.Getter;
 import lombok.Setter;

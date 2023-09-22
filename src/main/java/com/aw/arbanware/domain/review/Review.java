@@ -1,8 +1,7 @@
 package com.aw.arbanware.domain.review;
 
-import com.aw.arbanware.domain.common.BaseTimeEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
-import com.aw.arbanware.domain.product.Product;
 import com.aw.arbanware.domain.product.ProductInfo;
 import com.aw.arbanware.domain.user.Member;
 import lombok.Getter;

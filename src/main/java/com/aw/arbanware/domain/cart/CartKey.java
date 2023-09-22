@@ -11,8 +11,8 @@ import java.util.Objects;
 @Getter @Setter
 public class CartKey implements Serializable {
 
-    private ProductInfo productInfo;
-    private Member member;
+    private ProductInfo productInfo;    // 상품 정보번호
+    private Member member;  // 회원번호
 
     @Override
     public boolean equals(final Object o) {
