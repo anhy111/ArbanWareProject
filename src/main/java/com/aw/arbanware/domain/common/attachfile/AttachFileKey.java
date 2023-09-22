@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.common;
+package com.aw.arbanware.domain.common.attachfile;
 
 import lombok.Getter;
 import lombok.Setter;

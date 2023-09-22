@@ -12,14 +12,14 @@ import java.util.Objects;
 public class Delivery {
     @Id @GeneratedValue
     @Column(name = "DELIVERY_ID")
-    private Long id;
+    private Long id;    // 배송지번호
 
-    private String recipient;
+    private String recipient;   // 받는사람
 
     @Embedded
-    private Address address;
-    private String phoneNumber;
-    private String requirements;
+    private Address address;    //주소
+    private String phoneNumber;     // 핸드폰
+    private String requirements;    // 요청사항
 
     public Delivery() {
     }

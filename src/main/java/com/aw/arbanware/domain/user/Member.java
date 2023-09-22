@@ -15,17 +15,19 @@ import java.time.LocalDateTime;
 @PrimaryKeyJoinColumn(name = "MEMBER_ID")
 public class Member extends User {
 
-    private String name;
-    @Embedded
-    private Address address;
-    private String telephonedms;
-    private String phoneNumber;
-    private String email;
-    private String birth;
-    private int mileage;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DELIVERY_ID")
-    private Delivery delivery;
+    private Delivery delivery;  //배송지
+
+    @Embedded
+    private Address address;    // 주소
+
+    private String name;    // 성명
+    private String telephonedms;// 유선전화
+    private String phoneNumber; //핸드폰
+    private String email;   //이메일
+    private String birth;   //생년월일
+    private int mileage;    //마일리지
 
     @Override
     public String toString() {

@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.notice;
 
-import com.aw.arbanware.domain.common.BaseEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.user.Admin;
 import lombok.Getter;

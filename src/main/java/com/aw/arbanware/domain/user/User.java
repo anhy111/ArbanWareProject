@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.user;
 
-import com.aw.arbanware.domain.common.BaseEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.authorization.Authorization;
 import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;

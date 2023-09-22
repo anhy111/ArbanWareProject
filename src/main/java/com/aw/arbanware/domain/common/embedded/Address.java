@@ -8,9 +8,9 @@ import java.util.Objects;
 @Embeddable
 @Getter
 public class Address {
-    private String city;
-    private String street;
-    private String zipcode;
+    private String city;    // 도시
+    private String street;  // 도로명
+    private String zipcode; // 우편번호
 
     public Address() {
     }

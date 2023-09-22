@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.coupon;
 
-import com.aw.arbanware.domain.common.BaseEntity;
+import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;
 import lombok.Setter;

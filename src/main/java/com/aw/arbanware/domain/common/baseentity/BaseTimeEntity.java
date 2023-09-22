@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.common;
+package com.aw.arbanware.domain.common.baseentity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime registrationTime;
+    private LocalDateTime registrationTime;     //등록시간
 
     @LastModifiedDate
-    private LocalDateTime modificationTime;
+    private LocalDateTime modificationTime;     // 수정시간
 
     @Override
     public String toString() {

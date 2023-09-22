@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter @Setter
@@ -29,4 +30,16 @@ public class InquiryResp implements Serializable {
     @Enumerated(EnumType.STRING)
     private DeleteYn deleteYn; //삭제여부
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final InquiryResp that = (InquiryResp) o;
+        return Objects.equals(inquiry, that.inquiry);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inquiry);
+    }
 }

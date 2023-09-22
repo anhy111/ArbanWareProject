@@ -15,11 +15,11 @@ public class InterestProduct {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
-    private Product product;
+    private Product product;    //상품번호
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    private Member member;      // 회원번호
 
 }

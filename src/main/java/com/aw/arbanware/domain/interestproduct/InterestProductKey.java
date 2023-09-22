@@ -11,8 +11,8 @@ import java.util.Objects;
 @Getter @Setter
 public class InterestProductKey implements Serializable {
 
-    private Product product;
-    private Member member;
+    private Product product;    //상품번호
+    private Member member;      //회원번호
 
     @Override
     public boolean equals(final Object o) {
