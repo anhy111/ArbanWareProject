@@ -2,5 +2,5 @@ package com.aw.arbanware.domain;
 
 public class test {
 
-    String test1; //승연
+    String test1; //승연22
 }
