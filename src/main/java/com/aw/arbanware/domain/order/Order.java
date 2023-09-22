@@ -23,8 +23,8 @@ public class Order extends BaseTimeEntity {
     private Member member;  // 회원번호
 
     private LocalDateTime orderDate;    // 주문일
-    @Enumerated(EnumType.STRING)
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;  // 주문상태
     private int shippingAmount; // 배송비
     private int totalPrice;     // 총 주문 금액
