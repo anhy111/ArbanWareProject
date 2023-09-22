@@ -1,13 +1,15 @@
 package com.aw.arbanware.domain.cart;
 
-import com.aw.arbanware.domain.product.ProductImageKey;
 import com.aw.arbanware.domain.product.ProductInfo;
 import com.aw.arbanware.domain.user.Member;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @IdClass(CartKey.class)
+@Getter @Setter
 public class Cart {
 
     @Id
