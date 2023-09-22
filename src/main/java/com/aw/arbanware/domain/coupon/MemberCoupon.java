@@ -3,12 +3,15 @@ package com.aw.arbanware.domain.coupon;
 import com.aw.arbanware.domain.user.Member;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class MemberCoupon {
     
     @Id @GeneratedValue
@@ -22,9 +25,14 @@ public class MemberCoupon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COUPON_ID")
     private Coupon coupon; // 쿠폰 번호
-    
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime issueDate; //발급일
+
     private LocalDateTime expirationDate; //만료일
-    private String usageStatus; //사용여부
+
+    @Enumerated(EnumType.STRING)
+    private CouponUsageYn usageStatus; //사용여부
     
 }

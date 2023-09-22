@@ -3,13 +3,17 @@ package com.aw.arbanware.domain.common.attachfile;
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @IdClass(AttachFileKey.class)
 @Getter @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class AttachFile extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "ATTACH_FILE_ID")
@@ -23,6 +27,10 @@ public class AttachFile extends BaseTimeEntity {
     private String storedPath;  //저장경로
     private String extensionName;   // 확장자명
     private int fileSize;   // 파일크기
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdTime;
 
     @Override
     public boolean equals(final Object o) {

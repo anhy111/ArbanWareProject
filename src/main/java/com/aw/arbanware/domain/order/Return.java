@@ -4,6 +4,7 @@ import com.aw.arbanware.domain.orderproduct.OrderProduct;
 import com.aw.arbanware.domain.user.Admin;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,8 +31,13 @@ public class Return {
     @JoinColumn(name = "REFUND_ID")
     private Refund refund; //환불 번호
 
-    private String status; //상태
+    @Enumerated(EnumType.STRING)
+    private ReturnStatus status; //상태
+
     private String reason; //반품사유
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime applyDate; //신청일
     private LocalDateTime RegistrationDate; //접수일
     private Long attachFileId; //첨부파일번호

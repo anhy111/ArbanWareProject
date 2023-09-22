@@ -3,6 +3,7 @@ package com.aw.arbanware.domain.order;
 import com.aw.arbanware.domain.orderproduct.OrderProduct;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,9 +25,16 @@ public class OrderCancel {
     @JoinColumn(name = "ORDER_PRODUCT_ID")
     private OrderProduct orderProduct; //주문 상품 번호
 
-    private String status; //입금 상태
-    private String progress; //진행 상태
+    @Enumerated(EnumType.STRING)
+    private OrderCancelStatus status; //입금 상태
+
+    @Enumerated(EnumType.STRING)
+    private OrderCancelProgress progress; //진행 상태
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime applyDate; //신청일
+
     private int amount; //취소금액
 
 }
