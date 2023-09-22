@@ -9,16 +9,18 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@IdClass(RecommendationKey.class)
-public class Recommendation extends BaseTimeEntity {
+public class Comment extends BaseTimeEntity {
+    @Id @GeneratedValue
+    @Column(name = "COMMENT_ID")
+    private Long id;    //댓글번호
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REVIEW_ID")
-    private Review review;  //후기번호
+    private Review review;  // 후기번호
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;  //회원번호
+    private Member member;  // 회원번호
+
+    private String content; //내용
 }

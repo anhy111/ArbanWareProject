@@ -14,7 +14,6 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="UTYPE")
 @Table(name = "USERS")
-
 @Getter
 public class User extends BaseEntity {
     @Id @GeneratedValue
