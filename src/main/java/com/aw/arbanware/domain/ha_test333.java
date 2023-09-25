@@ -5,6 +5,4 @@ public class ha_test333 {
     String seungTest;
     String Test;
 
-    String haTest;
-
 }
