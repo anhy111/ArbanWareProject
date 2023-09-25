@@ -18,3 +18,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+#  file:
+#    name: hibernateDDL.txt
+#  pattern:
+#    file: "%m;"
