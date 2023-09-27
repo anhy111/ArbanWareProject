@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @IdClass(RecommendationKey.class)
-public class Recommendation extends BaseTimeEntity {
+public class Recommendation {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)

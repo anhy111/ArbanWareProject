@@ -3,12 +3,15 @@ package com.aw.arbanware.domain.notification;
 import com.aw.arbanware.domain.user.Member;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
 
     @Id
@@ -22,6 +25,11 @@ public class Notification {
     
     private String title; //제목
     private String content; //내용
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime notificationTime; //알림시간
-    private String checkYN; //확인 여부
+
+    @Enumerated(EnumType.STRING)
+    private NotificationCheckYn checkYn; //확인 여부
 }

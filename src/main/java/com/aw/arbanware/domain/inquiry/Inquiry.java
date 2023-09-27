@@ -24,8 +24,9 @@ public class Inquiry extends BaseTimeEntity {
     private String title; //제목
     private String content; //내용
     private Long attachFileId; //첨부파일 번호
-    private String type; //분류
-    private LocalDateTime inquiryTime; //문의 시간
+
+    @Enumerated(EnumType.STRING)
+    private InquiryType type; //분류
 
     @Enumerated(EnumType.STRING)
     private DeleteYn deleteYn; //삭제여부

@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product;
 
+import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Getter @Setter
-public class ProductInfo {
+public class ProductInfo extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "PRODUCT_INFO_ID")
     private Long id;

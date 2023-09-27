@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @IdClass(ProductImageKey.class)
 @EntityListeners(AuditingEntityListener.class)
-public class ProductImage extends BaseTimeEntity implements Serializable {
+public class ProductImage implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
@@ -28,6 +28,8 @@ public class ProductImage extends BaseTimeEntity implements Serializable {
     private String storedFileName;
     private String originalFileName;
     private Long fileSize;
+
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdTime;
 }
