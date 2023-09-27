@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.inquiry;
 
 import com.aw.arbanware.domain.common.DeleteYn;
+import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.user.Admin;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Getter @Setter
-public class InquiryResp implements Serializable {
+public class InquiryResp extends BaseEntity implements Serializable {
 
     @Id // @GeneratedValue
     @OneToOne(fetch = FetchType.LAZY)

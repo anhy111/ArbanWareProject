@@ -6,6 +6,7 @@ import com.aw.arbanware.domain.delivery.Delivery;
 import com.aw.arbanware.domain.user.Member;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +23,8 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;  // 회원번호
 
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime orderDate;    // 주문일
 
     @Enumerated(EnumType.STRING)

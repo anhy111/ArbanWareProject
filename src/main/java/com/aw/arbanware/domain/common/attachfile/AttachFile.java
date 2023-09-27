@@ -14,7 +14,7 @@ import java.util.Objects;
 @IdClass(AttachFileKey.class)
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class AttachFile extends BaseTimeEntity {
+public class AttachFile {
     @Id @GeneratedValue
     @Column(name = "ATTACH_FILE_ID")
     private Long id;    // 첨부파일번호

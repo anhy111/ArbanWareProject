@@ -1,566 +1,626 @@
+ drop table if exists admin CASCADE ;
+    
+    drop table if exists attach_file CASCADE ;
+    
+    drop table if exists authorizations CASCADE ;
+    
+    drop table if exists cart CASCADE ;
+    
+    drop table if exists category CASCADE ;
+    
+    drop table if exists comment CASCADE ;
+    
+    drop table if exists coupon CASCADE ;
+    
+    drop table if exists delivery CASCADE ;
+    
+    drop table if exists exchange CASCADE ;
+    
+    drop table if exists inquiry CASCADE ;
+    
+    drop table if exists inquiry_resp CASCADE ;
+    
+    drop table if exists interest_product CASCADE ;
+    
+    drop table if exists login_log CASCADE ;
+    
+    drop table if exists member CASCADE ;
+    
+    drop table if exists member_coupon CASCADE ;
+    
+    drop table if exists mileage_history CASCADE ;
+    
+    drop table if exists notice CASCADE ;
+    
+    drop table if exists notification CASCADE ;
+    
+    drop table if exists order_cancel CASCADE ;
+    
+    drop table if exists order_product CASCADE ;
+    
+    drop table if exists orders CASCADE ;
+    
+    drop table if exists payment CASCADE ;
+    
+    drop table if exists product CASCADE ;
+    
+    drop table if exists product_image CASCADE ;
+    
+    drop table if exists product_info CASCADE ;
+    
+    drop table if exists recommendation CASCADE ;
+    
+    drop table if exists refund CASCADE ;
+    
+    drop table if exists return CASCADE ;
+    
+    drop table if exists review CASCADE ;
+    
+    drop table if exists users CASCADE ;
+    
+    drop sequence if exists hibernate_sequence;
 
-create table admin (
-    admin_id bigint not null,
-    name varchar(255),
-    primary key (admin_id)
+create sequence hibernate_sequence start with 1 increment by 1;
+CREATE TABLE ADMIN (
+    ADMIN_ID BIGINT NOT NULL,
+    NAME VARCHAR(255),
+    PRIMARY KEY (ADMIN_ID)
 );
 
-create table attach_file (
-   attach_file_id bigint not null,
-    sequence integer not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    created_time timestamp,
-    extension_name varchar(255),
-    file_size integer not null,
-    original_name varchar(255),
-    stored_name varchar(255),
-    stored_path varchar(255),
-    primary key (attach_file_id, sequence)
+CREATE TABLE ATTACH_FILE (
+   ATTACH_FILE_ID BIGINT NOT NULL,
+    SEQUENCE INTEGER NOT NULL,
+    STORED_NAME VARCHAR(255),
+    ORIGINAL_NAME VARCHAR(255),
+    STORED_PATH VARCHAR(255),
+    EXTENSION_NAME VARCHAR(255),
+    FILE_SIZE INTEGER NOT NULL,
+    CREATED_TIME TIMESTAMP,
+    PRIMARY KEY (ATTACH_FILE_ID, SEQUENCE)
 );
 
-create table authorizations (
-   auth varchar(255) not null,
-    registration_time timestamp,
-    user_id bigint not null,
-    primary key (user_id, auth)
+CREATE TABLE AUTHORIZATIONS (
+    USER_ID BIGINT NOT NULL,
+   AUTH VARCHAR(255) NOT NULL,
+    REGISTRATION_TIME TIMESTAMP,
+    PRIMARY KEY (USER_ID, AUTH)
 );
 
-create table cart (
-   quantity integer not null,
-    product_info_id bigint not null,
-    member_id bigint not null,
-    primary key (member_id, product_info_id)
+CREATE TABLE CART (
+    MEMBER_ID BIGINT NOT NULL,
+    PRODUCT_INFO_ID BIGINT NOT NULL,
+   QUANTITY INTEGER NOT NULL,
+    PRIMARY KEY (MEMBER_ID, PRODUCT_INFO_ID)
 );
 
-create table category (
-   category_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    modifier varchar(255),
-    registrant varchar(255),
-    delete_yn varchar(255),
-    name varchar(255),
-    parent_id bigint,
-    primary key (category_id)
+CREATE TABLE CATEGORY (
+   CATEGORY_ID BIGINT NOT NULL,
+    NAME VARCHAR(255),
+    PARENT_ID BIGINT,
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (CATEGORY_ID)
 );
 
-create table comment (
-   comment_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    content varchar(255),
-    member_id bigint,
-    review_id bigint,
-    primary key (comment_id)
+CREATE TABLE COMMENT (
+   COMMENT_ID BIGINT NOT NULL,
+    REVIEW_ID BIGINT,
+    MEMBER_ID BIGINT,
+    CONTENT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    PRIMARY KEY (COMMENT_ID)
 );
 
-create table coupon (
-   ctype varchar(31) not null,
-    coupon_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    modifier varchar(255),
-    registrant varchar(255),
-    delete_yn varchar(255),
-    name varchar(255),
-    period integer not null,
-    discount_amount integer,
-    discount_rate integer,
-    primary key (coupon_id)
+CREATE TABLE COUPON (
+    COUPON_ID BIGINT NOT NULL,
+    NAME VARCHAR(255),
+   CTYPE VARCHAR(31) NOT NULL,
+    PERIOD INTEGER NOT NULL,
+    DISCOUNT_RATE INTEGER,
+    DISCOUNT_AMOUNT INTEGER,
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (COUPON_ID)
 );
 
-create table delivery (
-   delivery_id bigint not null,
-    city varchar(255),
-    street varchar(255),
-    zipcode varchar(255),
-    phone_number varchar(255),
-    recipient varchar(255),
-    requirements varchar(255),
-    primary key (delivery_id)
+CREATE TABLE DELIVERY (
+   DELIVERY_ID BIGINT NOT NULL,
+    RECIPIENT VARCHAR(255),
+    CITY VARCHAR(255),
+    STREET VARCHAR(255),
+    ZIPCODE VARCHAR(255),
+    PHONE_NUMBER VARCHAR(255),
+    REQUIREMENTS VARCHAR(255),
+    PRIMARY KEY (DELIVERY_ID)
 );
 
-create table exchange (
-   exchange_id bigint not null,
-    acceptance_date timestamp,
-    application_date timestamp,
-    status varchar(255),
-    admin_id bigint,
-    order_product_id bigint,
-    product_info_id bigint,
-    primary key (exchange_id)
+CREATE TABLE EXCHANGE (
+   EXCHANGE_ID BIGINT NOT NULL,
+    ORDER_PRODUCT_ID BIGINT,
+    PRODUCT_INFO_ID BIGINT,
+    ADMIN_ID BIGINT,
+    STATUS VARCHAR(255),
+    APPLICATION_DATE TIMESTAMP,
+    ACCEPTANCE_DATE TIMESTAMP,
+    PRIMARY KEY (EXCHANGE_ID)
 );
 
-create table inquiry (
-   inquiry_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    attach_file_id bigint,
-    content varchar(255),
-    delete_yn varchar(255),
-    inquiry_time timestamp,
-    title varchar(255),
-    type varchar(255),
-    member_id bigint,
-    primary key (inquiry_id)
+CREATE TABLE INQUIRY (
+   INQUIRY_ID BIGINT NOT NULL,
+    MEMBER_ID BIGINT,
+    TYPE VARCHAR(255),
+    TITLE VARCHAR(255),
+    CONTENT VARCHAR(255),
+    ATTACH_FILE_ID BIGINT,
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (INQUIRY_ID)
 );
 
-create table inquiry_resp (
-   attach_file_id bigint,
-    content varchar(255),
-    delete_yn varchar(255),
-    resp_time timestamp,
-    inquiry_id bigint not null,
-    admin_id bigint,
-    primary key (inquiry_id)
+CREATE TABLE INQUIRY_RESP (
+    INQUIRY_ID BIGINT NOT NULL,
+    ADMIN_ID BIGINT,
+    CONTENT VARCHAR(255),
+    ATTACH_FILE_ID BIGINT,
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (INQUIRY_ID)
 );
 
-create table interest_product (
-   member_id bigint not null,
-    product_id bigint not null,
-    primary key (member_id, product_id)
+CREATE TABLE INTEREST_PRODUCT (
+   MEMBER_ID BIGINT NOT NULL,
+    PRODUCT_ID BIGINT NOT NULL,
+    PRIMARY KEY (MEMBER_ID, PRODUCT_ID)
 );
 
-create table login_log (
-   login_log_id bigint not null,
-    ip varchar(255),
-    login_fail_reason varchar(255),
-    login_id varchar(255),
-    login_password varchar(255),
-    login_success varchar(255),
-    login_time timestamp,
-    user_id bigint,
-    primary key (login_log_id)
+CREATE TABLE LOGIN_LOG (
+   LOGIN_LOG_ID BIGINT NOT NULL,
+    LOGIN_SUCCESS VARCHAR(255),
+    USER_ID BIGINT,
+    LOGIN_ID VARCHAR(255),
+    LOGIN_PASSWORD VARCHAR(255),
+    LOGIN_FAIL_REASON VARCHAR(255),
+    IP VARCHAR(255),
+    LOGIN_TIME TIMESTAMP,
+    PRIMARY KEY (LOGIN_LOG_ID)
 );
 
-create table member (
-   city varchar(255),
-    street varchar(255),
-    zipcode varchar(255),
-    birth varchar(255),
-    email varchar(255),
-    mileage integer not null,
-    name varchar(255),
-    phone_number varchar(255),
-    telephonedms varchar(255),
-    member_id bigint not null,
-    delivery_id bigint,
-    primary key (member_id)
+CREATE TABLE MEMBER (
+    MEMBER_ID BIGINT NOT NULL,
+    NAME VARCHAR(255),
+   CITY VARCHAR(255),
+    STREET VARCHAR(255),
+    ZIPCODE VARCHAR(255),
+    TELEPHONEDMS VARCHAR(255),
+    PHONE_NUMBER VARCHAR(255),
+    EMAIL VARCHAR(255),
+    BIRTH VARCHAR(255),
+    MILEAGE INTEGER NOT NULL,
+    DELIVERY_ID BIGINT,
+    PRIMARY KEY (MEMBER_ID)
 );
 
-create table member_coupon (
-   member_coupon_id bigint not null,
-    expiration_date timestamp,
-    issue_date timestamp,
-    usage_status varchar(255),
-    coupon_id bigint,
-    member_id bigint,
-    primary key (member_coupon_id)
+CREATE TABLE MEMBER_COUPON (
+   MEMBER_COUPON_ID BIGINT NOT NULL,
+    COUPON_ID BIGINT,
+    MEMBER_ID BIGINT,
+    ISSUE_DATE TIMESTAMP,
+    EXPIRATION_DATE TIMESTAMP,
+    USAGE_STATUS VARCHAR(255),
+    PRIMARY KEY (MEMBER_COUPON_ID)
 );
 
-create table mileage_history (
-   mileage_history_id bigint not null,
-    accumulation_mileage integer not null,
-    status varchar(255),
-    usage_time timestamp,
-    member_id bigint,
-    order_id bigint,
-    primary key (mileage_history_id)
+CREATE TABLE MILEAGE_HISTORY (
+   MILEAGE_HISTORY_ID BIGINT NOT NULL,
+    MEMBER_ID BIGINT,
+    ORDER_ID BIGINT,
+    STATUS VARCHAR(255),
+    USAGE_TIME TIMESTAMP,
+    ACCUMULATION_MILEAGE INTEGER NOT NULL,
+    PRIMARY KEY (MILEAGE_HISTORY_ID)
 );
 
-create table notice (
-   notice_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    modifier varchar(255),
-    registrant varchar(255),
-    attach_file_id bigint,
-    content varchar(255),
-    delete_yn varchar(255),
-    title varchar(255),
-    admin_id bigint,
-    primary key (notice_id)
+CREATE TABLE NOTICE (
+   NOTICE_ID BIGINT NOT NULL,
+    ADMIN_ID BIGINT,
+    TITLE VARCHAR(255),
+    CONTENT VARCHAR(255),
+    ATTACH_FILE_ID BIGINT,
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (NOTICE_ID)
 );
 
-create table notification (
-   notification_id bigint not null,
-    checkyn varchar(255),
-    content varchar(255),
-    notification_time timestamp,
-    title varchar(255),
-    member_id bigint,
-    primary key (notification_id)
+CREATE TABLE NOTIFICATION (
+   NOTIFICATION_ID BIGINT NOT NULL,
+    MEMBER_ID BIGINT,
+    TITLE VARCHAR(255),
+    CONTENT VARCHAR(255),
+    NOTIFICATION_TIME TIMESTAMP,
+    CHECK_YN VARCHAR(255),
+    PRIMARY KEY (NOTIFICATION_ID)
 );
 
-create table order_cancel (
-   order_cancel_id bigint not null,
-    amount integer not null,
-    apply_date timestamp,
-    progress varchar(255),
-    status varchar(255),
-    order_product_id bigint,
-    refund_id bigint,
-    primary key (order_cancel_id)
+CREATE TABLE ORDER_CANCEL (
+   ORDER_CANCEL_ID BIGINT NOT NULL,
+    REFUND_ID BIGINT,
+    ORDER_PRODUCT_ID BIGINT,
+    STATUS VARCHAR(255),
+    PROGRESS VARCHAR(255),
+    APPLY_DATE TIMESTAMP,
+    AMOUNT INTEGER NOT NULL,
+    PRIMARY KEY (ORDER_CANCEL_ID)
 );
 
-create table order_product (
-   order_product_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    amount integer not null,
-    discount_price integer not null,
-    price integer not null,
-    status varchar(255),
-    order_id bigint,
-    product_info_id bigint,
-    primary key (order_product_id)
+CREATE TABLE ORDER_PRODUCT (
+   ORDER_PRODUCT_ID BIGINT NOT NULL,
+    ORDER_ID BIGINT,
+    PRODUCT_INFO_ID BIGINT,
+    STATUS VARCHAR(255),
+    PRICE INTEGER NOT NULL,
+    DISCOUNT_PRICE INTEGER NOT NULL,
+    AMOUNT INTEGER NOT NULL,
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    PRIMARY KEY (ORDER_PRODUCT_ID)
 );
 
-create table orders (
-   order_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    email varchar(255),
-    order_date timestamp,
-    orderer varchar(255),
-    phone_number varchar(255),
-    shipping_amount integer not null,
-    status varchar(255),
-    total_payment_price integer not null,
-    total_price integer not null,
-    usage_mileage integer not null,
-    delivery_id bigint,
-    member_id bigint,
-    member_coupon_id bigint,
-    primary key (order_id)
+CREATE TABLE ORDERS (
+   ORDER_ID BIGINT NOT NULL,
+    MEMBER_ID BIGINT,
+    ORDER_DATE TIMESTAMP,
+    STATUS VARCHAR(255),
+    TOTAL_PRICE INTEGER NOT NULL,
+    SHIPPING_AMOUNT INTEGER NOT NULL,
+    MEMBER_COUPON_ID BIGINT,
+    USAGE_MILEAGE INTEGER NOT NULL,
+    TOTAL_PAYMENT_PRICE INTEGER NOT NULL,
+    DELIVERY_ID BIGINT,
+    ORDERER VARCHAR(255),
+    PHONE_NUMBER VARCHAR(255),
+    EMAIL VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    PRIMARY KEY (ORDER_ID)
 );
 
-create table payment (
-   payment_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    additional_amount integer not null,
-    bank varchar(255),
-    deposit_amount integer not null,
-    depositor varchar(255),
-    method varchar(255),
-    payment_date timestamp,
-    status varchar(255),
-    total_amount integer not null,
-    order_id bigint,
-    primary key (payment_id)
+CREATE TABLE PAYMENT (
+   PAYMENT_ID BIGINT NOT NULL,
+    ORDER_ID BIGINT,
+    METHOD VARCHAR(255),
+    STATUS VARCHAR(255),
+    PAYMENT_DATE TIMESTAMP,
+    TOTAL_AMOUNT INTEGER NOT NULL,
+    ADDITIONAL_AMOUNT INTEGER NOT NULL,
+    DEPOSIT_AMOUNT INTEGER NOT NULL,
+    DEPOSITOR VARCHAR(255),
+    BANK VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    PRIMARY KEY (PAYMENT_ID)
 );
 
-create table product (
-   product_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    modifier varchar(255),
-    registrant varchar(255),
-    content varchar(255),
-    cost integer not null,
-    delete_yn varchar(255),
-    name varchar(255),
-    price integer not null,
-    thumbnail varchar(255),
-    category_id bigint,
-    primary key (product_id)
+CREATE TABLE PRODUCT (
+   PRODUCT_ID BIGINT NOT NULL,
+    CATEGORY_ID BIGINT,
+    NAME VARCHAR(255),
+    CONTENT VARCHAR(255),
+    COST INTEGER NOT NULL,
+    PRICE INTEGER NOT NULL,
+    THUMBNAIL VARCHAR(255),
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (PRODUCT_ID)
 );
 
-create table product_image (
-   sequence integer not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    created_time timestamp,
-    file_size bigint,
-    original_file_name varchar(255),
-    stored_file_name varchar(255),
-    stored_path varchar(255),
-    product_id bigint not null,
-    primary key (product_id, sequence)
+CREATE TABLE PRODUCT_IMAGE (
+    PRODUCT_ID BIGINT NOT NULL,
+   SEQUENCE INTEGER NOT NULL,
+    STORED_FILE_NAME VARCHAR(255),
+    ORIGINAL_FILE_NAME VARCHAR(255),
+    STORED_PATH VARCHAR(255),
+    FILE_SIZE BIGINT,
+    CREATED_TIME TIMESTAMP,
+    PRIMARY KEY (PRODUCT_ID, SEQUENCE)
 );
 
-create table product_info (
-   product_info_id bigint not null,
-    color varchar(255),
-    quantity integer not null,
-    size varchar(255),
-    product_id bigint,
-    primary key (product_info_id)
+CREATE TABLE PRODUCT_INFO (
+   PRODUCT_INFO_ID BIGINT NOT NULL,
+    PRODUCT_ID BIGINT,
+    COLOR VARCHAR(255),
+    SIZE VARCHAR(255),
+    QUANTITY INTEGER NOT NULL,
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    PRIMARY KEY (PRODUCT_INFO_ID)
 );
 
-create table recommendation (
-   modification_time timestamp,
-    registration_time timestamp,
-    member_id bigint not null,
-    review_id bigint not null,
-    primary key (member_id, review_id)
+CREATE TABLE RECOMMENDATION (
+    MEMBER_ID BIGINT NOT NULL,
+    REVIEW_ID BIGINT NOT NULL,
+    PRIMARY KEY (MEMBER_ID, REVIEW_ID)
 );
 
-create table refund (
-   refund_id bigint not null,
-    account_number varchar(255),
-    amount integer not null,
-    bank varchar(255),
-    depositor varchar(255),
-    method varchar(255),
-    reason varchar(255),
-    status varchar(255),
-    order_id bigint,
-    primary key (refund_id)
+CREATE TABLE REFUND (
+   REFUND_ID BIGINT NOT NULL,
+    ORDER_ID BIGINT,
+    METHOD VARCHAR(255),
+    STATUS VARCHAR(255),
+    AMOUNT INTEGER NOT NULL,
+    REASON VARCHAR(255),
+    DEPOSITOR VARCHAR(255),
+    ACCOUNT_NUMBER VARCHAR(255),
+    BANK VARCHAR(255),
+    PRIMARY KEY (REFUND_ID)
 );
 
-create table return (
-   return_id bigint not null,
-    registration_date timestamp,
-    apply_date timestamp,
-    attach_file_id bigint,
-    reason varchar(255),
-    status varchar(255),
-    admin_id bigint,
-    order_product_id bigint,
-    refund_id bigint,
-    primary key (return_id)
+CREATE TABLE RETURN (
+   RETURN_ID BIGINT NOT NULL,
+    ORDER_PRODUCT_ID BIGINT,
+    ADMIN_ID BIGINT,
+    REFUND_ID BIGINT,
+    STATUS VARCHAR(255),
+    REASON VARCHAR(255),
+    APPLY_DATE TIMESTAMP,
+    ATTACH_FILE_ID BIGINT,
+    REGISTRATION_DATE TIMESTAMP,
+    PRIMARY KEY (RETURN_ID)
 );
 
-create table review (
-   review_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    attach_file_id bigint,
-    content varchar(255),
-    delete_yn varchar(255),
-    rating integer not null,
-    member_id bigint,
-    product_info_id bigint,
-    primary key (review_id)
+CREATE TABLE REVIEW (
+   REVIEW_ID BIGINT NOT NULL,
+    PRODUCT_INFO_ID BIGINT,
+    MEMBER_ID BIGINT,
+    RATING INTEGER NOT NULL,
+    CONTENT VARCHAR(255),
+    ATTACH_FILE_ID BIGINT,
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (REVIEW_ID)
 );
 
-create table users (
-   utype varchar(31) not null,
-    user_id bigint not null,
-    modification_time timestamp,
-    registration_time timestamp,
-    modifier varchar(255),
-    registrant varchar(255),
-    delete_yn varchar(255),
-    login_id varchar(255),
-    login_password varchar(255),
-    primary key (user_id)
+CREATE TABLE USERS (
+    USER_ID BIGINT NOT NULL,
+   UTYPE VARCHAR(31) NOT NULL,
+    LOGIN_ID VARCHAR(255),
+    LOGIN_PASSWORD VARCHAR(255),
+    REGISTRANT VARCHAR(255),
+    REGISTRATION_TIME TIMESTAMP,
+    MODIFIER VARCHAR(255),
+    MODIFICATION_TIME TIMESTAMP,
+    DELETE_YN VARCHAR(255),
+    PRIMARY KEY (USER_ID)
 );
 
-alter table admin
-   add constraint FK5wu7m4u6dii7801jnfs4xqvfu
-   foreign key (admin_id)
-   references users;
+ALTER TABLE ADMIN
+   ADD CONSTRAINT FK_ADMIN_USERS
+   FOREIGN KEY (ADMIN_ID)
+   REFERENCES USERS;
 
-alter table authorizations
-   add constraint FKmikhd5jkryqpsjnxb9eo6m3cx
-   foreign key (user_id)
-   references users;
+ALTER TABLE AUTHORIZATIONS
+   ADD CONSTRAINT FK_AUTHORIZATIONS_USERS
+   FOREIGN KEY (USER_ID)
+   REFERENCES USERS;
 
-alter table cart
-   add constraint FKj8n3578db9m9r1h90v7biwx5f
-   foreign key (product_info_id)
-   references product_info;
+ALTER TABLE CART
+   ADD CONSTRAINT FK_CART_PRODUCTINFO
+   FOREIGN KEY (PRODUCT_INFO_ID)
+   REFERENCES PRODUCT_INFO;
 
-alter table cart
-   add constraint FKix170nytunweovf2v9137mx2o
-   foreign key (member_id)
-   references member;
+ALTER TABLE CART
+   ADD CONSTRAINT FK_CART_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table category
-   add constraint FK2y94svpmqttx80mshyny85wqr
-   foreign key (parent_id)
-   references category;
+ALTER TABLE CATEGORY
+   ADD CONSTRAINT FK_CATEGORY_CATEGORY
+   FOREIGN KEY (PARENT_ID)
+   REFERENCES CATEGORY;
 
-alter table comment
-   add constraint FKmrrrpi513ssu63i2783jyiv9m
-   foreign key (member_id)
-   references member;
+ALTER TABLE COMMENT
+   ADD CONSTRAINT FK_COMMENT_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table comment
-   add constraint FKnf4ni761w29tmtgdxymmgvg8r
-   foreign key (review_id)
-   references review;
+ALTER TABLE COMMENT
+   ADD CONSTRAINT FK_COMMENT_REVIEW
+   FOREIGN KEY (REVIEW_ID)
+   REFERENCES REVIEW;
 
-alter table exchange
-   add constraint FK2g0c1cbffadn1f9aw60bwkax9
-   foreign key (admin_id)
-   references admin;
+ALTER TABLE EXCHANGE
+   ADD CONSTRAINT FK_EXCHANGE_ADMIN
+   FOREIGN KEY (ADMIN_ID)
+   REFERENCES ADMIN;
 
-alter table exchange
-   add constraint FKgt9v5fbnah22miru3cxlx4lhd
-   foreign key (order_product_id)
-   references order_product;
+ALTER TABLE EXCHANGE
+   ADD CONSTRAINT FK_EXCHANGE_ORDERPRODUCT
+   FOREIGN KEY (ORDER_PRODUCT_ID)
+   REFERENCES ORDER_PRODUCT;
 
-alter table exchange
-   add constraint FKey3fksqw78y72do7gwa2rtt26
-   foreign key (product_info_id)
-   references product_info;
+ALTER TABLE EXCHANGE
+   ADD CONSTRAINT FK_EXCHANGE_PRODUCTINFO
+   FOREIGN KEY (PRODUCT_INFO_ID)
+   REFERENCES PRODUCT_INFO;
 
-alter table inquiry
-   add constraint FKf47xlnlpohnc6gd4k511g0wra
-   foreign key (member_id)
-   references member;
+ALTER TABLE INQUIRY
+   ADD CONSTRAINT FK_INQUIRY_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table inquiry_resp
-   add constraint FKnnmdk87rv3mo416hweyga6hx0
-   foreign key (inquiry_id)
-   references inquiry;
+ALTER TABLE INQUIRY_RESP
+   ADD CONSTRAINT FK_INQUIRYRESP_INQUIRY
+   FOREIGN KEY (INQUIRY_ID)
+   REFERENCES INQUIRY;
 
-alter table inquiry_resp
-   add constraint FKs25g3v5qko102ojhjnwxd378s
-   foreign key (admin_id)
-   references admin;
+ALTER TABLE INQUIRY_RESP
+   ADD CONSTRAINT FK_INQUIRYRESP_ADMIN
+   FOREIGN KEY (ADMIN_ID)
+   REFERENCES ADMIN;
 
-alter table interest_product
-   add constraint FK1n2e1x1vcdjdy1qbs3we41atm
-   foreign key (member_id)
-   references member;
+ALTER TABLE INTEREST_PRODUCT
+   ADD CONSTRAINT FK_INTERESTPRODUCT_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table interest_product
-   add constraint FKamib887793rlv141g9dpt8ibg
-   foreign key (product_id)
-   references product;
+ALTER TABLE INTEREST_PRODUCT
+   ADD CONSTRAINT FK_INTERESTPRODUCT_PRODUCT
+   FOREIGN KEY (PRODUCT_ID)
+   REFERENCES PRODUCT;
 
-alter table login_log
-   add constraint FKq8smpj42ldwgtjru0fm0q3en8
-   foreign key (user_id)
-   references users;
+ALTER TABLE LOGIN_LOG
+   ADD CONSTRAINT FK_LOGINLOG_USERS
+   FOREIGN KEY (USER_ID)
+   REFERENCES USERS;
 
-alter table member
-   add constraint FKqw9jiftlming0ty98i4eci8rl
-   foreign key (delivery_id)
-   references delivery;
+ALTER TABLE MEMBER
+   ADD CONSTRAINT FK_MEMBER_DELIVERY
+   FOREIGN KEY (DELIVERY_ID)
+   REFERENCES DELIVERY;
 
-alter table member
-   add constraint FKc0mfa3rcppgsf609g4h83klbm
-   foreign key (member_id)
-   references users;
+ALTER TABLE MEMBER
+   ADD CONSTRAINT FK_MEMBER_USERS
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES USERS;
 
-alter table member_coupon
-   add constraint FKkxw7ja7v55gk4a368w3gs6s0j
-   foreign key (coupon_id)
-   references coupon;
+ALTER TABLE MEMBER_COUPON
+   ADD CONSTRAINT FK_MEMBERCOUPON_COUPON
+   FOREIGN KEY (COUPON_ID)
+   REFERENCES COUPON;
 
-alter table member_coupon
-   add constraint FKf8n3lu0dfwmhvcikamg220lgg
-   foreign key (member_id)
-   references member;
+ALTER TABLE MEMBER_COUPON
+   ADD CONSTRAINT FK_MEMBERCOUPON_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table mileage_history
-   add constraint FK3b07itxi0asp6r5jt5kw971dj
-   foreign key (member_id)
-   references member;
+ALTER TABLE MILEAGE_HISTORY
+   ADD CONSTRAINT FK_MILEAGEHISTORY_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table mileage_history
-   add constraint FKg8xhs480wog85uvoiyvb3jc0h
-   foreign key (order_id)
-   references orders;
+ALTER TABLE MILEAGE_HISTORY
+   ADD CONSTRAINT FK_MILEAGEHISTORY_ORDERS
+   FOREIGN KEY (ORDER_ID)
+   REFERENCES ORDERS;
 
-alter table notice
-   add constraint FKd816ad20ht41wty5l6f85w8mb
-   foreign key (admin_id)
-   references admin;
+ALTER TABLE NOTICE
+   ADD CONSTRAINT FK_NOTICE_ADMIN
+   FOREIGN KEY (ADMIN_ID)
+   REFERENCES ADMIN;
 
-alter table notification
-   add constraint FK1xep8o2ge7if6diclyyx53v4q
-   foreign key (member_id)
-   references member;
+ALTER TABLE NOTIFICATION
+   ADD CONSTRAINT FK_NOTIFICATION_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table order_cancel
-   add constraint FKbsvgx3bnlpld0ibpx3w2ph8gy
-   foreign key (order_product_id)
-   references order_product;
+ALTER TABLE ORDER_CANCEL
+   ADD CONSTRAINT FK_ORDERCANCEL_ORDERPRODUCT
+   FOREIGN KEY (ORDER_PRODUCT_ID)
+   REFERENCES ORDER_PRODUCT;
 
-alter table order_cancel
-   add constraint FK69ypgyspv0qia5r12iynkhgmg
-   foreign key (refund_id)
-   references refund;
+ALTER TABLE ORDER_CANCEL
+   ADD CONSTRAINT FK_ORDERCANCEL_REFUND
+   FOREIGN KEY (REFUND_ID)
+   REFERENCES REFUND;
 
-alter table order_product
-   add constraint FKl5mnj9n0di7k1v90yxnthkc73
-   foreign key (order_id)
-   references orders;
+ALTER TABLE ORDER_PRODUCT
+   ADD CONSTRAINT FK_ORDERPRODUCT_ORDERS
+   FOREIGN KEY (ORDER_ID)
+   REFERENCES ORDERS;
 
-alter table order_product
-   add constraint FKp1og08hq3dymqjb4rf163l8ib
-   foreign key (product_info_id)
-   references product_info;
+ALTER TABLE ORDER_PRODUCT
+   ADD CONSTRAINT FK_ORDERPRODUCT_PRODUCTINFO
+   FOREIGN KEY (PRODUCT_INFO_ID)
+   REFERENCES PRODUCT_INFO;
 
-alter table orders
-   add constraint FKtkrur7wg4d8ax0pwgo0vmy20c
-   foreign key (delivery_id)
-   references delivery;
+ALTER TABLE ORDERS
+   ADD CONSTRAINT FK_ORDERS_DELIVERY
+   FOREIGN KEY (DELIVERY_ID)
+   REFERENCES DELIVERY;
 
-alter table orders
-   add constraint FKpktxwhj3x9m4gth5ff6bkqgeb
-   foreign key (member_id)
-   references member;
+ALTER TABLE ORDERS
+   ADD CONSTRAINT FK_ORDERS_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table orders
-   add constraint FKadhrwt6oyo2mch5cd4ho0tdok
-   foreign key (member_coupon_id)
-   references member_coupon;
+ALTER TABLE ORDERS
+   ADD CONSTRAINT FK_ORDERS_MEMBERCOUPON
+   FOREIGN KEY (MEMBER_COUPON_ID)
+   REFERENCES MEMBER_COUPON;
 
-alter table payment
-   add constraint FKlouu98csyullos9k25tbpk4va
-   foreign key (order_id)
-   references orders;
+ALTER TABLE PAYMENT
+   ADD CONSTRAINT FK_PAYMENT_ORDERS
+   FOREIGN KEY (ORDER_ID)
+   REFERENCES ORDERS;
 
-alter table product
-   add constraint FK1mtsbur82frn64de7balymq9s
-   foreign key (category_id)
-   references category;
+ALTER TABLE PRODUCT
+   ADD CONSTRAINT FK_PRODUCT_CATEGORY
+   FOREIGN KEY (CATEGORY_ID)
+   REFERENCES CATEGORY;
 
-alter table product_image
-   add constraint FK6oo0cvcdtb6qmwsga468uuukk
-   foreign key (product_id)
-   references product;
+ALTER TABLE PRODUCT_IMAGE
+   ADD CONSTRAINT FK_PRODUCTIMAGE_PRODUCT
+   FOREIGN KEY (PRODUCT_ID)
+   REFERENCES PRODUCT;
 
-alter table product_info
-   add constraint FK51m6a4nrmlfdj3o2o69r6wn1q
-   foreign key (product_id)
-   references product;
+ALTER TABLE PRODUCT_INFO
+   ADD CONSTRAINT FK_PRODUCTINFO_PRODUCT
+   FOREIGN KEY (PRODUCT_ID)
+   REFERENCES PRODUCT;
 
-alter table recommendation
-   add constraint FKk1qbgdq26hj2d7d81fhc9n5k9
-   foreign key (member_id)
-   references member;
+ALTER TABLE RECOMMENDATION
+   ADD CONSTRAINT FK_RECOMMENDATION_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table recommendation
-   add constraint FKh43spw3hvdjh28pu9kqys2fff
-   foreign key (review_id)
-   references review;
+ALTER TABLE RECOMMENDATION
+   ADD CONSTRAINT FK_RECOMMENDATION_REVIEW
+   FOREIGN KEY (REVIEW_ID)
+   REFERENCES REVIEW;
 
-alter table refund
-   add constraint FK80vls36avhp4yl7h8apkqm0ek
-   foreign key (order_id)
-   references orders;
+ALTER TABLE REFUND
+   ADD CONSTRAINT FK_REFUND_ORDERS
+   FOREIGN KEY (ORDER_ID)
+   REFERENCES ORDERS;
 
-alter table return
-   add constraint FKdjw7i9se15li5dqhxobu7ng3q
-   foreign key (admin_id)
-   references admin;
+ALTER TABLE RETURN
+   ADD CONSTRAINT FK_RETURN_ADMIN
+   FOREIGN KEY (ADMIN_ID)
+   REFERENCES ADMIN;
 
-alter table return
-   add constraint FKth4qao8mq4fie9jw2l2sxgo87
-   foreign key (order_product_id)
-   references order_product;
+ALTER TABLE RETURN
+   ADD CONSTRAINT FK_RETURN_ORDERPRODUCT
+   FOREIGN KEY (ORDER_PRODUCT_ID)
+   REFERENCES ORDER_PRODUCT;
 
-alter table return
-   add constraint FKt117f2sp50k6nkx536vyjb97m
-   foreign key (refund_id)
-   references refund;
+ALTER TABLE RETURN
+   ADD CONSTRAINT FK_RETURN_REFUND
+   FOREIGN KEY (REFUND_ID)
+   REFERENCES REFUND;
 
-alter table review
-   add constraint FKk0ccx5i4ci2wd70vegug074w1
-   foreign key (member_id)
-   references member;
+ALTER TABLE REVIEW
+   ADD CONSTRAINT FK_REVIEW_MEMBER
+   FOREIGN KEY (MEMBER_ID)
+   REFERENCES MEMBER;
 
-alter table review
-   add constraint FKsweonbym7i5kda2sct3as1y8q
-   foreign key (product_info_id)
-   references product_info;Initializing Spring DispatcherServlet 'dispatcherServlet';Initializing Servlet 'dispatcherServlet';Completed initialization in 42 ms;
+ALTER TABLE REVIEW
+   ADD CONSTRAINT FK_REVIEW_PRODUCTINFO
+   FOREIGN KEY (PRODUCT_INFO_ID)
+   REFERENCES PRODUCT_INFO;
