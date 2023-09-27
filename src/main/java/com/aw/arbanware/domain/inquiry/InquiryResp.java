@@ -26,7 +26,6 @@ public class InquiryResp extends BaseEntity implements Serializable {
 
     private String content; //내용
     private Long attachFileId; //첨부파일번호
-    private LocalDateTime respTime; //답변시간
 
     @Enumerated(EnumType.STRING)
     private DeleteYn deleteYn; //삭제여부
