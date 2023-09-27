@@ -1,6 +1,5 @@
 package com.aw.arbanware.domain.common.attachfile;
 
-import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
