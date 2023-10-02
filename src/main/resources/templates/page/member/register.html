@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<body>
+<div layout:fragment="content">
+    <!--  컨텐츠 영역 -->
+    <form action="/member" method="post" th:object="${member}">
+        너의이름: <input type="text" th:field="${member.name}"/>
+        <input type="submit">
+    </form>
+
+    <table class="table">
+        <tr>
+            <th>하하</th>
+            <td>sfdfsdf</td>
+            <td>dfgfdg</td>
+            <td>dfgfdg</td>
+            <td>jlhjkgh</td>
+        </tr>
+        <tr>
+            <th>하하</th>
+            <td>sfdfsdf</td>
+            <td>dfgfdg</td>
+            <td>dfgfdg</td>
+            <td>jlhjkgh</td>
+        </tr>
+        <tr>
+            <th>하하</th>
+            <td>sfdfsdf</td>
+            <td>dfgfdg</td>
+            <td>dfgfdg</td>
+            <td>jlhjkgh</td>
+        </tr>
+        <tr>
+            <th>하하</th>
+            <td>sfdfsdf</td>
+            <td>dfgfdg</td>
+            <td>dfgfdg</td>
+            <td>jlhjkgh</td>
+        </tr>
+
+    </table>
+</div>
+</body>
+</html>
