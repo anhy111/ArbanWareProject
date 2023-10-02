@@ -2,7 +2,7 @@ package com.aw.arbanware.domain.authorization;
 
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.common.embedded.Address;
-import com.aw.arbanware.domain.user.Member;
+import com.aw.arbanware.domain.user.entity.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

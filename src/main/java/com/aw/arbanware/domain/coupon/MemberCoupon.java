@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.coupon;
 
-import com.aw.arbanware.domain.user.Member;
+import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

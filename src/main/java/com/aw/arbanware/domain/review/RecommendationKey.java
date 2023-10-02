@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.review;
 
-import com.aw.arbanware.domain.user.Member;
+import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 

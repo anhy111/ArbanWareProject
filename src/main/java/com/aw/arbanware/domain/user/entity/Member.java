@@ -1,13 +1,11 @@
-package com.aw.arbanware.domain.user;
+package com.aw.arbanware.domain.user.entity;
 
 import com.aw.arbanware.domain.common.embedded.Address;
 import com.aw.arbanware.domain.delivery.Delivery;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter

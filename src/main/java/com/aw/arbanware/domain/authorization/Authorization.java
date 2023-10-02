@@ -1,7 +1,6 @@
 package com.aw.arbanware.domain.authorization;
 
-import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
-import com.aw.arbanware.domain.user.User;
+import com.aw.arbanware.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
