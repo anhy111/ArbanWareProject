@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.user;
+package com.aw.arbanware.domain.user.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.authorization.Authorization;

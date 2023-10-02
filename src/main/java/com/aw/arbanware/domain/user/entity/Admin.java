@@ -1,10 +1,9 @@
-package com.aw.arbanware.domain.user;
+package com.aw.arbanware.domain.user.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter

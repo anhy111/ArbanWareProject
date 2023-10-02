@@ -3,7 +3,7 @@ package com.aw.arbanware.domain.order;
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.delivery.Delivery;
-import com.aw.arbanware.domain.user.Member;
+import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;

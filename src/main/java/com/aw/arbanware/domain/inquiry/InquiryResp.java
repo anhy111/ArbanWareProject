@@ -2,13 +2,12 @@ package com.aw.arbanware.domain.inquiry;
 
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
-import com.aw.arbanware.domain.user.Admin;
+import com.aw.arbanware.domain.user.entity.Admin;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity

@@ -1,7 +1,7 @@
 package com.aw.arbanware.domain.order;
 
 import com.aw.arbanware.domain.orderproduct.OrderProduct;
-import com.aw.arbanware.domain.user.Admin;
+import com.aw.arbanware.domain.user.entity.Admin;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
