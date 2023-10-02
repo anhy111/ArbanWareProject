@@ -18,12 +18,12 @@ public class MemberController {
     @GetMapping("/member")
     public String register(Model model) {
         model.addAttribute("member", new Member());
-        return "member/register";
+        return "page/member/register";
     }
 
     @PostMapping("/member")
-    public String registerPost(@ModelAttribute("member") Member member) {
+    public String  registerPost(@ModelAttribute("member") Member member) {
         memberService.save(member);
-        return "index";
+        return "redirect:/";
     }
 }
