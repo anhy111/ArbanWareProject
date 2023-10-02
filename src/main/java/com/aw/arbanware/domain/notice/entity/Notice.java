@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.notice;
+package com.aw.arbanware.domain.notice.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
