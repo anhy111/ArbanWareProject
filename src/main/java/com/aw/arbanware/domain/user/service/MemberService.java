@@ -1,5 +1,6 @@
-package com.aw.arbanware.domain.user.controller;
+package com.aw.arbanware.domain.user.service;
 
+import com.aw.arbanware.domain.user.repository.MemberRepository;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
