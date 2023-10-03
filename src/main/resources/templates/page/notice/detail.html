@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<th:block layout:fragment="script">
+        <script th:src="@{/js/notice/detail.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 th:text="${noticeDetail.getTitle()}" class="font-weight-semi-bold text-uppercase mb-3"></h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Shop</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-7">
+                <div>
+                    <p th:text="${noticeDetail.getContent()}"></p>
+                </div>
+                <div>
+                    <button class="btn btn-primary py-3 px-5" id="listBtn">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
