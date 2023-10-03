@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.notice;
 
+import com.aw.arbanware.domain.notice.entity.Notice;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
