@@ -6,9 +6,7 @@ import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -26,7 +24,7 @@ public class User extends BaseEntity {
     private DeleteYn deleteYn;
 
     @OneToMany(mappedBy = "user")
-    private Set<Authorization> authorization = new HashSet<>();
+    private List<Authorization> authorization = new ArrayList<>();
 
 
     public void setId(final Long id) {
