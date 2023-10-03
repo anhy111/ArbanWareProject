@@ -19,10 +19,14 @@ public class NoticeService {
 
     public List<Notice> noticeList(){
         return noticeRepository.findAll();
-    }
+    } //공지사항 목록 조회
 
     public Optional<Notice> noticeDetail(Long id) {
         return noticeRepository.findById(id);
+    } //공지사항 상세 조회
+
+    public Notice noticeRegister(Notice notice){
+        return noticeRepository.save(notice);
     }
 
 }
