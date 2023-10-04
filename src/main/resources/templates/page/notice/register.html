@@ -5,13 +5,13 @@
       layout:decorate="~{layouts/default_layout}">
 
 <th:block layout:fragment="script">
-        <script th:src="@{/js/notice/list.js}"></script>
+        <script th:src="@{/js/notice/register.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">공지사항</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">공지사항 등록</h1>
             <div class="d-inline-flex">
                 <p class="m-0"><a href="">Home</a></p>
                 <p class="m-0 px-2">-</p>
@@ -19,28 +19,38 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="col-1">번호</th>
-                        <th class="col-7">제목</th>
-                        <th class="col-2">작성자</th>
-                        <th class="col">작성일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="list, i : ${noticeList}">
-                        <td th:text="${i.index}"></td>
-                        <td><a th:text="${list.getTitle()}" th:href="@{/notice/detail/{id} (id=${list.getId()})}"></a></p></td>
-                        <td th:text="${list.getRegistrant()}"></td>
-                        <td th:text="${list.getRegistrationTime()}"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div>
-                <button class="btn btn-primary py-3 px-5" id="registrationBtn">등록</button>
+    <div class="container pt-5">
+        <div class="row justify-content-center">
+            <div class="col-7 mb-5">
+                <div class="contact-form">
+                    <form name="newNoti" id="newNoti" method="post" action="/notice/new" novalidate="novalidate">
+<!--                        <div class="form-group d-flex">-->
+<!--                            <h5 class="font-weight-bold text-dark mr-2 mt-2">제목</h5>-->
+                            <div class="control-group">
+                                <input type="text" class="form-control" name="title" id="title" placeholder="제목" required="required" data-validation-required-message="제목을 작성하세요" aria-invalid="false">
+                                <p class="help-block text-danger"></p>
+                            </div>
+<!--                        </div>-->
+                        <div class="control-group">
+                            <input type="email" class="form-control" id="email" placeholder="작성자" required="required" data-validation-required-message="작성자를 입력하세요">
+                            <p class="help-block text-danger"></p>
+                        </div>
+<!--                        <div class="control-group">-->
+<!--                            <input type="text" class="form-control" id="subject" placeholder="작성일" required="required" data-validation-required-message="작성일을 입력하세요">-->
+<!--                            <p class="help-block text-danger"></p>-->
+<!--                        </div>-->
+                        <div class="control-group">
+                            <textarea class="form-control" rows="6" id="message" placeholder="내용" required="required" data-validation-required-message="내용을 작성하세요"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <div class="form-group d-flex justify-content-center">
+                                <button class="btn btn-primary py-2 px-4 mr-2" type="submit" id="register">등록</button>
+                                <button class="btn btn-primary py-2 px-4" type="button" id="cancel">취소</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
