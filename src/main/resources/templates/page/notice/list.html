@@ -19,8 +19,8 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
+    <div class="container">
+        <div class="row justify-content-center">
             <table class="table">
                 <thead>
                     <tr>
@@ -33,7 +33,7 @@
                 <tbody>
                     <tr th:each="list, i : ${noticeList}">
                         <td th:text="${i.index}"></td>
-                        <td><a th:text="${list.getTitle()}" th:href="@{/notice/detail/{id} (id=${list.getId()})}"></a></p></td>
+                        <td><a th:text="${list.getTitle()}" th:href="@{/notice/{id} (id=${list.getId()})}"></a></p></td>
                         <td th:text="${list.getRegistrant()}"></td>
                         <td th:text="${list.getRegistrationTime()}"></td>
                     </tr>

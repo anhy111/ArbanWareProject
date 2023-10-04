@@ -1,7 +1,7 @@
 $(function(){
     // alert("하이");
 
-    $('#listBtn').click(function (){
+    $('#cancel').click(function (){
         $(location).attr('href', '/notice')
     });
 })
