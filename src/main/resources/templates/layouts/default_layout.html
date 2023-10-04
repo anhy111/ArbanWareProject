@@ -2,8 +2,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" >
-
-<th:block th:replace="fragments/config :: configFragment"></th:block>
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="title">
+        <title>Arban Ware</title>
+    </th:block>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
 <body>
     <th:block th:replace="fragments/header :: headerFragment"></th:block>
     <div class="px-5">
