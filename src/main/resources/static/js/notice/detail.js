@@ -4,4 +4,8 @@ $(function(){
     $('#listBtn').click(function (){
         $(location).attr('href', '/notice')
     });
+
+    $('#delete').click(function (){
+        // $(location).attr('href', '/notice')
+    });
 })
