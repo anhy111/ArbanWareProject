@@ -1,9 +1,11 @@
-package com.aw.arbanware.global.config;
+package com.aw.arbanware.global.config.security;
 
-import com.aw.arbanware.domain.authorization.Authorization;
 import com.aw.arbanware.domain.user.entity.User;
 import com.aw.arbanware.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MyUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
@@ -25,17 +27,17 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String loginId) throws UsernameNotFoundException {
         final Optional<User> findUser = userService.findUserByLoginId(loginId);
-        final User user = findUser.orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다."));
+        User user = findUser.orElseThrow(() -> new UsernameNotFoundException("없는 회원입니다."));
+
+        if (user instanceof HibernateProxy) {
+            user = (User)Hibernate.unproxy(user);
+        }
 
         final List<GrantedAuthority> authorities = user.getAuthorization()
                 .stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.getAuth()))
                 .collect(Collectors.toList());
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getLoginId())
-                .password(user.getLoginPassword())
-                .authorities(authorities)
-                .build();
+        return new SecurityUser(user, authorities);
     }
 }
