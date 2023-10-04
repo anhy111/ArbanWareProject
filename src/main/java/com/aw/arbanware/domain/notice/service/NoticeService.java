@@ -27,6 +27,10 @@ public class NoticeService {
 
     public Notice noticeRegister(Notice notice){
         return noticeRepository.save(notice);
+    } //공지사항 등록
+
+    public void noticeDelete(Long id){
+        noticeRepository.deleteById(id);
     }
 
 }
