@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <div th:fragment="headerFragment">
     <!-- Topbar Start -->
@@ -121,7 +122,8 @@
                                 <a href="/notice" class="nav-item nav-link">공지사항</a>
                             </div>
                             <div class="navbar-nav ml-auto py-0">
-                                <a href="/login" class="nav-item nav-link">Login</a>
+                                <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>
+                                <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">Logout</a>
                                 <a href="/member" class="nav-item nav-link">Register</a>
                             </div>
                         </div>
