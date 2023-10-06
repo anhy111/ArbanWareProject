@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserRepository<User> userRepository;
 
     public Optional<User> findUserByLoginId(String loginId) {
         return userRepository.findUserByLoginId(loginId);
