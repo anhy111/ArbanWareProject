@@ -48,6 +48,6 @@ public class NoticeController {
     @PostMapping("/{id}/delete")
     public String noticeDelete(@PathVariable("id")Long id, Model model){
         noticeService.noticeDelete(id);
-        return "redirect:/";
+        return "redirect:/notice";
     }
 }
