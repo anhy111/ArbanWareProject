@@ -31,6 +31,6 @@ public class NoticeService {
 
     public void noticeDelete(Long id){
         noticeRepository.deleteById(id);
-    }
+    } //공지사항 삭제
 
 }
