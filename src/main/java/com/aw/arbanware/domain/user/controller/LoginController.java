@@ -4,6 +4,7 @@ import com.aw.arbanware.domain.user.service.UserService;
 import com.aw.arbanware.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class LoginController {
     }
 
     @GetMapping("/info")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     public String info(@AuthenticationPrincipal SecurityUser securityUser) {
         log.info("user.name = {}", securityUser.getName());
         log.info("user.id = {}", securityUser.getId());
