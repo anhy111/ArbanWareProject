@@ -24,29 +24,31 @@ public class SpringSecurityConfig {
         http.cors().disable();
         http.csrf().disable();
         http.authorizeHttpRequests(request ->
-                request.antMatchers("/error/**").permitAll()
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .anyRequest().authenticated()
+                request.anyRequest().permitAll()
         ).formLogin(login ->
                 login.loginPage("/login")
                         .usernameParameter("loginId")
                         .passwordParameter("loginPassword")
                         .successHandler(successHandler())
                         .permitAll()
-        ).logout(Customizer.withDefaults()
-        ).exceptionHandling()
+        ).logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+        );
+
+        http.exceptionHandling()
                 .accessDeniedPage("/accessDenied");
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // 시큐리티 제외시킬 페이지의 url. 문자열로 계속 추가하면댐
-        // /** -> /하위 모든 url을 제외시킴.
-        // /* -> 해당 디렉토리의 파일들(위와다름, 위는 하위 디렉토리의 파일들 포함)
-        return (web) -> web.ignoring().antMatchers("/", "/css/**", "/img/**", "/js/**", "/lib/**",
-                "/mail/**","/scss/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        // 시큐리티 제외시킬 페이지의 url. 문자열로 계속 추가하면댐
+//        // /** -> /하위 모든 url을 제외시킴.
+//        // /* -> 해당 디렉토리의 파일들(위와다름, 위는 하위 디렉토리의 파일들 포함)
+//        return (web) -> web.ignoring().antMatchers("/", "/css/**", "/img/**", "/js/**", "/lib/**",
+//                "/mail/**","/scss/**");
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {

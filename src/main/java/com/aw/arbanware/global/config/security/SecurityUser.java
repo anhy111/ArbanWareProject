@@ -6,12 +6,14 @@ import com.aw.arbanware.domain.user.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 @Getter
 public class SecurityUser extends org.springframework.security.core.userdetails.User {
     private final Long id;
     private final String name; // name은 이름, username은 loginId
+
 
     public SecurityUser(User user, List<GrantedAuthority> authorities) {
         super(user.getLoginId(), user.getLoginPassword(), authorities);
