@@ -1,4 +1,4 @@
-package com.aw.arbanware.global.config;
+package com.aw.arbanware.global.config.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

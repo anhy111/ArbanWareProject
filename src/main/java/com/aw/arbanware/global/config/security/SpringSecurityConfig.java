@@ -1,4 +1,4 @@
-package com.aw.arbanware.global.config;
+package com.aw.arbanware.global.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,16 +7,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.DispatcherType;
-import java.util.Arrays;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+
         http.cors().disable();
         http.csrf().disable();
         http.authorizeHttpRequests(request ->
@@ -27,8 +31,11 @@ public class SpringSecurityConfig {
                 login.loginPage("/login")
                         .usernameParameter("loginId")
                         .passwordParameter("loginPassword")
-                        .defaultSuccessUrl("/", true).permitAll()
-        ).logout(Customizer.withDefaults());
+                        .successHandler(successHandler())
+                        .permitAll()
+        ).logout(Customizer.withDefaults()
+        ).exceptionHandling()
+                .accessDeniedPage("/accessDenied");
         return http.build();
     }
 
@@ -46,5 +53,9 @@ public class SpringSecurityConfig {
         return new MyPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new LoginSuccessHandler("/");
+    }
 
 }
