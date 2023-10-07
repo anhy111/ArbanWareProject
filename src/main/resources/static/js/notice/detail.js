@@ -5,6 +5,10 @@ $(function(){
         $(location).attr('href', '/notice')
     });
 
+    $('#update').click(function (){
+        $(location).attr('href', '/notice/'+ id + "/edit");
+    });
+
     $('#delete').click(function (){
         Swal.fire({
             title: '정말로 삭제 하시겠습니까?',
