@@ -22,8 +22,7 @@ public class MemberController {
     }
 
     @PostMapping("/members/new")
-    public String  registerPost(@ModelAttribute("member") Member member) {
-        memberService.save(member);
+    public String  registerPost(@ModelAttribute("member") RegisterMemberForm member) {
         return "redirect:/";
     }
 }
