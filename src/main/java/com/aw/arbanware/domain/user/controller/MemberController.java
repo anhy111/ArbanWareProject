@@ -15,13 +15,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member")
+    @GetMapping("/members/new")
     public String register(Model model) {
-        model.addAttribute("member", new Member());
+        model.addAttribute("member", new RegisterMemberForm());
         return "page/member/register";
     }
 
-    @PostMapping("/member")
+    @PostMapping("/members/new")
     public String  registerPost(@ModelAttribute("member") Member member) {
         memberService.save(member);
         return "redirect:/";
