@@ -1,6 +1,12 @@
 $(function(){
     // alert("하이");
 
+    let title = $('#title').val();
+    let content = $('#content').val();
+
+    let today = new Date();
+
+    $('#today').text(today.toLocaleDateString());
 
 
     $('#cancel').click(function (){
@@ -8,6 +14,12 @@ $(function(){
     });
 
     $('#register').click(function (){
+
+        let title = $('#title').val();
+        let content = $('#content').val();
+
+        let data = {'title':title, 'content':content}
+
         Swal.fire({
             title: '등록 하시겠습니까?',
             // text: "한번 등록한 내용은 되돌릴 수 없습니다.",
@@ -24,9 +36,10 @@ $(function(){
                     type: 'post',
                     url: '/notice/new',
                     contentType:"application/json;charset=utf-8",
-                    beforeSend:function(xhr){
-                        xhr.setRequestHeader(header, token);
-                    },
+                    data:JSON.stringify(data),
+                    // beforeSend:function(xhr){
+                    //     xhr.setRequestHeader(header, token);
+                    // },
                     success :function(data){
                         console.log("delete성공이라해주라 ", data);
 
@@ -35,7 +48,7 @@ $(function(){
                             '정상적으로 등록 되었습니다.',
                             'success'
                         ).then(function(){
-                            window.location.reload(true);
+                            location.replace("/notice");
                         });
 
                     },
