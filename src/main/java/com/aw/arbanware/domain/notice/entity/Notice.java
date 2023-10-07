@@ -23,7 +23,7 @@ public class Notice extends BaseEntity {
     private Long attachFileId; // 첨부파일 번호
 
     @Enumerated(EnumType.STRING)
-    private DeleteYn deleteYn; //삭제여부
+    private DeleteYn deleteYn = DeleteYn.N; //삭제여부
 
 
 }

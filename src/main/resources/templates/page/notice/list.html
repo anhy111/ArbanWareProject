@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
 <th:block layout:fragment="script">
@@ -39,8 +40,9 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <button class="btn btn-primary py-3 px-5" id="registrationBtn">등록</button>
+<!--            <p sec:authorize="hasRole('ADMIN')">왜 안떠 짱나게</p>-->
+            <div sec:authorize="hasRole('ADMIN')">
+                <button  class="btn btn-primary py-3 px-5" id="registrationBtn">등록</button>
             </div>
         </div>
     </div>
