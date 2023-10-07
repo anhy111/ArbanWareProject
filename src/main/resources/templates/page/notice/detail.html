@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
 <body>
@@ -24,7 +25,8 @@
                     <p th:text="${noticeDetail.getContent()}"></p>
                 </div>
                 <div>
-                    <button class="btn btn-primary py-2 px-4 mr-2" type="button" id="delete">삭제</button>
+                    <button sec:authorize="hasRole('ADMIN')" class="btn btn-primary py-2 px-4 mr-2" type="button" id="update">수정</button>
+                    <button sec:authorize="hasRole('ADMIN')" class="btn btn-primary py-2 px-4 mr-2" type="button" id="delete">삭제</button>
                     <button class="btn btn-primary py-2 px-4" type="button" id="listBtn">목록</button>
                 </div>
             </div>
