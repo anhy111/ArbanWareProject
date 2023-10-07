@@ -4,9 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
 
-<th:block layout:fragment="script">
-        <script th:src="@{/js/notice/detail.js}"></script>
-</th:block>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid bg-secondary mb-5">
@@ -27,15 +24,22 @@
                     <p th:text="${noticeDetail.getContent()}"></p>
                 </div>
                 <div>
-                    <form method="post" th:action="@{/notice/{id}/delete (id=${noticeDetail.getId()})}">
-                        <button class="btn btn-primary py-2 px-4 mr-2" type="submit" id="delete">삭제</button>
-                        <button class="btn btn-primary py-2 px-4" type="button" id="listBtn">목록</button>
-                    </form>
-
+                    <button class="btn btn-primary py-2 px-4 mr-2" type="button" id="delete">삭제</button>
+                    <button class="btn btn-primary py-2 px-4" type="button" id="listBtn">목록</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<th:block layout:fragment="script">
+    <script type="text/javascript" th:inline="javascript">
+
+        // let header = "${_csrf.headerName}";
+        // let token = "${_csrf.token}";
+
+        let id = [[${noticeDetail.id}]];
+    </script>
+    <script th:src="@{/js/notice/detail.js}"></script>
+</th:block>
 </body>
 </html>
