@@ -42,7 +42,7 @@ public class NoticeController {
     @PostMapping("/new")
     public String noticeRegisterPost(@ModelAttribute("notice") Notice notice){
         noticeService.noticeRegister(notice);
-        return "page/notice/list";
+        return "redirect:/notice";
     }
 
     @PostMapping("/{id}/delete")
