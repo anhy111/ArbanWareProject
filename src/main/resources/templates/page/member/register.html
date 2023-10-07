@@ -3,45 +3,268 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>Register</title>
+    <style>
+        table {
+            font-size: 14px;
+        }
+
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        table th{
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+            width: 20%;
+        }
+
+        .table td {
+            width: 80%;
+            padding-left: 1.25rem;
+        }
+
+        .inputGroup{
+            width: 40%;
+        }
+
+        input:enabled {
+            cursor: text;
+        }
+
+        input:hover:enabled {
+            border: 1px #1C1C1C solid;
+        }
+
+        input:focus {
+            border: 1px solid #1C1C1C !important;
+        }
+
+        input::placeholder {
+            font-size: 14px;
+        }
+
+        .form-control:disabled {
+            background: #F9F9F9;
+        }
+
+        .btnCustom {
+            font-size: 12px;
+            border: #BCBCBC solid 1px;
+            height: 40px;
+            width: 90px;
+            color: #1C1C1C;
+            background-color: white;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
-    <!--  컨텐츠 영역 -->
-    <form action="/member" method="post" th:object="${member}">
-        너의이름: <input type="text" th:field="${member.name}"/>
-        <input type="submit">
-    </form>
-
-    <table class="table">
-        <tr>
-            <th>하하</th>
-            <td>sfdfsdf</td>
-            <td>dfgfdg</td>
-            <td>dfgfdg</td>
-            <td>jlhjkgh</td>
-        </tr>
-        <tr>
-            <th>하하</th>
-            <td>sfdfsdf</td>
-            <td>dfgfdg</td>
-            <td>dfgfdg</td>
-            <td>jlhjkgh</td>
-        </tr>
-        <tr>
-            <th>하하</th>
-            <td>sfdfsdf</td>
-            <td>dfgfdg</td>
-            <td>dfgfdg</td>
-            <td>jlhjkgh</td>
-        </tr>
-        <tr>
-            <th>하하</th>
-            <td>sfdfsdf</td>
-            <td>dfgfdg</td>
-            <td>dfgfdg</td>
-            <td>jlhjkgh</td>
-        </tr>
-
-    </table>
+    <div class="container offset-3 col-6">
+        <div class="row justify-content-center pb-5">
+            <h2>회원가입</h2>
+        </div>
+        <div class="row">
+            <div class=" d-flex justify-content-between" style="width: 100%">
+                <h5 class="font-weight-semi-bold d-inline-block">기본정보</h5>
+                <div class="d-inline-block font-weight-semi-bold" style="color: #1C1C1C;font-size: 14px">
+                    <div class="d-inline-block" style="color: red">＊</div
+                    >필수입력사항
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form action="/members/new" th:action="@{/members/new}" th:object="${member}" style="width: 100%">
+                <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">아이디</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginId}" />
+                            </div>
+                            <div class="d-inline-block align-middle">
+                                <span class="d-inline-block" style="font-size: 12px">(영문소문자/숫자, 4~16자)</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">비밀번호</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginPassword}" />
+                            </div>
+                            <div class="d-inline-block align-middle">
+                                <span class="d-inline-block" style="font-size: 12px">(영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자)</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">비밀번호 확인</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="loginPasswordCheck" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">이름</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.name}" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">주소</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div class="d-inline-block" style="padding-bottom: 0.75em; width: 30%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${member.address.zipcode}" placeholder="우편번호" disabled/>
+                            </div>
+                            <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
+                                <button type="button" id="searchAddress"
+                                        class="btnCustom py-6 font-weight-semi-bold">주소검색</button>
+                            </div>
+                            <div style="padding-bottom: 0.75em; width: 65%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${member.address.city}" placeholder="기본주소" disabled/>
+                            </div>
+                            <div style="width: 65%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${member.address.street}" placeholder="나머지 주소" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">일반전화</span
+                            >
+                        </th>
+                        <td>
+                            <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.telephonedms}" />
+                            <div class="d-inline-block" style="width: 15%">
+                                <select class="custom-select d-inline-block" name="telephonedms1">
+                                    <option value="02">02</option>
+                                </select>
+                            </div> -
+                            <div class="d-inline-block" style="width: 15%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="telephonedms2">
+                            </div> -
+                            <div class="d-inline-block" style="width: 15%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="telephonedms3">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">휴대전화</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.phoneNumber}" />
+                            <div>
+                                <div class="d-inline-block" style="width: 15%">
+                                    <select class="custom-select d-inline-block" name="phoneNumber1">
+                                        <option value="010" >010</option>
+                                    </select>
+                                </div> -
+                                <div class="d-inline-block" style="width: 15%">
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
+                                </div> -
+                                <div class="d-inline-block" style="width: 15%">
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber3">
+                                </div>
+                                <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
+                                    <button type="button" id="sendSMS" style="width: 120px"
+                                            class="btnCustom py-6 font-weight-semi-bold">인증번호 받기</button>
+                                </div>
+                            </div>
+                            <div id="phone_disp">
+                                <div class="d-inline-block" style="width: 40%">
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                           name="phoneAuthInput" placeholder="인증번호를 입력해주세요">
+                                </div>
+                                <div class="d-inline-block ml-2">
+                                    <button type="button" id="phoneCheck"
+                                            class="btnCustom py-6 font-weight-semi-bold">인증 확인</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">이메일</span
+                            ><div class="d-inline-block" style="color: red">＊</div>
+                        </th>
+                        <td>
+                            <div>
+                                <div class="d-inline-block inputGroup">
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.email}" />
+                                </div>
+                                <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
+                                    <button type="button" id="sendEmail" style="width: 120px"
+                                            class="btnCustom py-6 font-weight-semi-bold">인증번호 받기</button>
+                                </div>
+                            </div>
+                            <div id="email_disp">
+                                <div class="d-inline-block" style="width: 40%">
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                           name="emailAuthInput" placeholder="인증번호를 입력해주세요">
+                                </div>
+                                <div class="d-inline-block ml-2">
+                                    <button type="button" id="emailCheck"
+                                            class="btnCustom py-6 font-weight-semi-bold">인증 확인</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">생년월일</span>
+                        </th>
+                        <td>
+                            <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.phoneNumber}" />
+                            <div class="d-inline-block" style="width: 15%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
+                            </div> 년
+                            <div class="d-inline-block" style="width: 15%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
+                            </div> 월
+                            <div class="d-inline-block" style="width: 15%">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber3">
+                            </div> 일
+                        </td>
+                    </tr>
+                </table>
+                <div style="width: 100%" class="text-center">
+                    <button style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="submit">회원가입</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
+    <script th:src="@{/js/member/register.js}" ></script>
+</th:block>
 </body>
 </html>
