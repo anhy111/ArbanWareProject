@@ -57,7 +57,7 @@ public class NoticeController {
 
     @PostMapping("/{id}/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    public String noticeDelete(@PathVariable("id")Long id, Model model){
+    public String noticeDelete(@PathVariable("id")Long id){
         noticeService.noticeDelete(id);
         return "redirect:/notice";
     }
@@ -70,5 +70,12 @@ public class NoticeController {
         model.addAttribute("noticeDetail", noticeDetail);
         model.addAttribute("name", name);
         return "page/notice/update";
+    }
+
+    @PostMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String noticeUpdate(@PathVariable("id")Long id, @RequestBody Notice notice){
+        noticeService.noticeDelete(id);
+        return "redirect:/notice/{id}/edit";
     }
 }
