@@ -33,4 +33,10 @@ public class NoticeService {
         noticeRepository.deleteById(id);
     } //공지사항 삭제
 
+    public void noticeUpdate(Long id){
+        Optional<Notice> notice = noticeRepository.findById(id);
+        Notice noticeDetail = notice.get();
+
+    }//공지사항 수정
+
 }
