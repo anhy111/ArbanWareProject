@@ -59,6 +59,10 @@
             cursor: pointer;
         }
 
+        .error {
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -224,15 +228,22 @@
                                             class="btnCustom py-6 font-weight-semi-bold">인증번호 받기</button>
                                 </div>
                             </div>
-                            <div id="email_disp">
+                            <div id="emailErrorDisp" style="padding-bottom: 0.75em;">
+                                <span id="emailErrorMsg" class="ml-2 font-weight-semi-bold error">올바른 이메일 형식이 아닙니다.</span>
+                            </div>
+                            <div id="email_disp" style="padding-bottom: 0.75em;">
                                 <div class="d-inline-block" style="width: 40%">
                                     <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                           name="emailAuthInput" placeholder="인증번호를 입력해주세요">
+                                           id="emailAuthInput" placeholder="인증번호를 입력해주세요">
                                 </div>
                                 <div class="d-inline-block ml-2">
                                     <button type="button" id="emailCheck"
                                             class="btnCustom py-6 font-weight-semi-bold">인증 확인</button>
+                                    <span id="emailAuthSuccess" class="font-weight-semi-bold" style="color: #288CFF">인증되었습니다.</span>
                                 </div>
+                            </div>
+                            <div id="emailAuthErrorDisp" >
+                                <span id="emailAuthErrorMsg" class="ml-2 font-weight-semi-bold error"></span>
                             </div>
                         </td>
                     </tr>
