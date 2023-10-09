@@ -13,24 +13,24 @@ import com.nbp.ncp.nes.model.EmailSendRequest;
 import com.nbp.ncp.nes.model.EmailSendRequestRecipients;
 import com.nbp.ncp.nes.model.EmailSendResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
 @Slf4j
 public class EmailService {
 
-    public static String sendMail(final Email email) {
-        email.getParameters().put("authNum", createRandomNum());
-        get(email);
-        return null;
+    public static EmailStatus sendMail(final Email email, String randomNum) {
+        email.getParameters().put("authNum", randomNum);
+        if (!get(email)) {
+            return EmailStatus.FAIL;
+        }
+        return EmailStatus.SUCCESS;
     }
 
-    private static void get(final Email email) {
+    private static boolean get(final Email email) {
         ApiClient apiClient = new ApiClient.ApiClientBuilder()
                 .addMarshaller(JsonMarshaller.getInstance())
                 .addMarshaller(XmlMarshaller.getInstance())
@@ -62,6 +62,9 @@ public class EmailService {
         try {
             // Handler Successful response
             ApiResponse<EmailSendResponse> result = apiInstance.mailsPost(requestBody, X_NCP_LANG);
+            if (result.getHttpStatusCode() == 201) {
+                return true;
+            }
         } catch (ApiException e) {
             // Handler Failed response
             int statusCode = e.getHttpStatusCode();
@@ -72,12 +75,9 @@ public class EmailService {
             // Handle exceptions that occurred before communication with the server
             e.printStackTrace();
         }
+        return false;
     }
 
-    private static String createRandomNum() {
-        java.util.Random generator = new java.util.Random();
-        generator.setSeed(System.currentTimeMillis());
-        return String.valueOf(generator.nextInt(1000000) % 1000000);
-    }
+
 
 }
