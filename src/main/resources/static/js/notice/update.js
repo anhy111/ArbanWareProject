@@ -1,9 +1,6 @@
 $(function(){
     // alert("하이");
 
-    let titleUpdate = $('#title').val();
-    let contentUpdate = $('#content').val();
-
     let today = new Date();
 
     $('#title').val(title);
@@ -16,6 +13,10 @@ $(function(){
     });
 
     $('#update').click(function (){
+
+        let titleUpdate = $('#title').val();
+        let contentUpdate = $('#content').val();
+
         let data = {'title':titleUpdate, 'content':contentUpdate}
 
         Swal.fire({
@@ -39,8 +40,6 @@ $(function(){
                     //     xhr.setRequestHeader(header, token);
                     // },
                     success :function(data){
-                        console.log("delete성공이라해주라 ", data);
-
                         Swal.fire(
                             '수정 완료',
                             '정상적으로 등록 되었습니다.',
