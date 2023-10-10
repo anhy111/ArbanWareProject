@@ -6,19 +6,44 @@ window.onload = function (){
     const $emailErrorDisp = $("#emailErrorDisp").css('display', 'none');
     const $emailAuthErrorDisp = $("#emailAuthErrorDisp").css('display', 'none');
     const $loginIdErrorDisp = $("#loginIdErrorDisp").css('display', 'none');
+    const $loginIdSuccessDisp = $("#loginIdSuccessDisp").css('display', 'none');
     const $email = $("#email");
     let regEmail = false;
 
     $("#loginId").on('change', function () {
         let val = $(this).val();
-        let regExp = /^(?=.*[0-9]+)[a-zA-Z][a-zA-Z0-9]$/g;
-        if (val.length <= 4 && 16 <= val.length) {
+        let regExp1 = /^[a-zA-Z0-9]*$/g;
+        let regExp2 = /^[0-9]*$/g;
+        let regExp3 = /^[0-9]$/;
+
+        $loginIdSuccessDisp.css('display', 'none');
+        if (val.length < 4 || 16 < val.length) {
             $loginIdErrorDisp.css('display', 'block');
             $("#loginIdErrorMsg").text('아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.');
-        } else if (!regExp.test(val)) {
+            return;
+        } else if (!regExp1.test(val) || regExp2.test(val) || regExp3.test(val)) {
             $loginIdErrorDisp.css('display', 'block');
             $("#loginIdErrorMsg").text('공백/특수문자가 포함되었거나, 숫자로 시작 또는 숫자로만 이루어진 아이디는 사용할 수 없습니다.');
+            return;
         }
+        $loginIdErrorDisp.css('display', 'none');
+        $loginIdSuccessDisp.css('display', 'block');
+
+        $.ajax({
+            type : 'post',
+            url : '/members/duplicateIdCheck',
+            data : {
+                loginId : $(this).val()
+            },
+            success : function(result) { // 결과 성공 콜백함수
+                if (result.statusCode() != 200) {
+                    $loginIdErrorDisp.css('display', 'block');
+                    $("#loginIdErrorMsg").text('이미 사용중인 아이디입니다.');
+                    return;
+                }
+            },
+        })
+
     });
 
     $("#searchAddress").on('click',function () {
