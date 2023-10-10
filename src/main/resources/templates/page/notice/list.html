@@ -35,8 +35,10 @@
                     <tr th:each="list, i : ${noticeList}">
                         <td th:text="${i.index}"></td>
                         <td><a th:text="${list.getTitle()}" th:href="@{/notice/{id} (id=${list.getId()})}"></a></p></td>
-                        <td th:text="${list.getRegistrant()}"></td>
-                        <td th:text="${list.getRegistrationTime()}"></td>
+                        <td th:if="${list.getModifier() != null}" th:text="${list.getModifier()}"></td>
+                        <td th:unless="${list.getModifier() != null}" th:text="${list.getRegistrant()}"></td>
+                        <td th:if="${list.getModificationTime() != null}" th:text="${list.getModificationTime()}"></td>
+                        <td th:unless="${list.getModificationTime() != null}" th:text="${list.getRegistrationTime()}"></td>
                     </tr>
                 </tbody>
             </table>
