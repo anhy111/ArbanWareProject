@@ -4,9 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
 
-<th:block layout:fragment="script">
-        <script th:src="@{/js/notice/register.js}"></script>
-</th:block>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid bg-secondary mb-5">
@@ -55,5 +52,8 @@
         </div>
     </div>
 </div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/notice/register.js}"></script>
+</th:block>
 </body>
 </html>
