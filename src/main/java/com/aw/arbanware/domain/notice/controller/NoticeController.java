@@ -75,7 +75,7 @@ public class NoticeController {
     @PostMapping("/{id}/edit")
     @PreAuthorize("hasRole('ADMIN')")
     public String noticeUpdate(@PathVariable("id")Long id, @RequestBody Notice notice){
-        noticeService.noticeDelete(id);
+        noticeService.noticeUpdate(id, notice);
         return "redirect:/notice/{id}/edit";
     }
 }
