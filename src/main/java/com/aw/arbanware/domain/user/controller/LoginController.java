@@ -29,8 +29,19 @@ public class LoginController {
     }
 
     @GetMapping("/info")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
     public String info(@AuthenticationPrincipal SecurityUser securityUser) {
+        log.info("user.name = {}", securityUser.getName());
+        log.info("user.id = {}", securityUser.getId());
+        log.info("user.loginId = {}", securityUser.getUsername());
+        log.info("user.loginPassword = {}", securityUser.getPassword());
+        log.info("user.authorities = {}", securityUser.getAuthorities());
+        return "redirect:/";
+    }
+
+    @GetMapping("/ww")
+    @PreAuthorize("hasAnyRole('admin')")
+    public String ww(@AuthenticationPrincipal SecurityUser securityUser) {
         log.info("user.name = {}", securityUser.getName());
         log.info("user.id = {}", securityUser.getId());
         log.info("user.loginId = {}", securityUser.getUsername());
