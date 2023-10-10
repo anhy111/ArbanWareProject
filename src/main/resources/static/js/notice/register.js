@@ -1,9 +1,6 @@
 $(function(){
     // alert("하이");
 
-    let title = $('#title').val();
-    let content = $('#content').val();
-
     let today = new Date();
 
     $('#today').text(today.toLocaleDateString());
@@ -15,7 +12,11 @@ $(function(){
 
     $('#register').click(function (){
 
+        let title = $('#title').val();
+        let content = $('#content').val();
+
         let data = {'title':title, 'content':content}
+        console.log(">>>>>>>제목", title, " >>>>>내용", content);
 
         Swal.fire({
             title: '등록 하시겠습니까?',

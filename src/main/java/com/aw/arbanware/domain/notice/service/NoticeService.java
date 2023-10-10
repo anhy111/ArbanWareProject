@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +34,12 @@ public class NoticeService {
         noticeRepository.deleteById(id);
     } //공지사항 삭제
 
-    public void noticeUpdate(Long id){
-        Optional<Notice> notice = noticeRepository.findById(id);
-        Notice noticeDetail = notice.get();
-
+    @Transactional
+    public Notice noticeUpdate(Long id, Notice notice){
+        Notice noticeNew = noticeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 공지사항이 없습니다."));
+        noticeNew.setTitle(notice.getTitle());
+        noticeNew.setContent(notice.getContent());
+        return noticeNew;
     }//공지사항 수정
 
 }
