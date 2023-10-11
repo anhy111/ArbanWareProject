@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/default_layout}">
+
+<th:block layout:fragment="script">
+        <script th:src="@{/js/notice/list.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">장바구니</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-1">번호</th>
+                        <th class="col-7">상품정보</th>
+                        <th class="col-2">수량</th>
+                        <th class="col">합계</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="list, i : ${cartList}">
+                        <td th:text="${i.index}"></td>
+                        <td><a th:text="${list.getProductInfo().getProduct().getName()}"></a></p></td>
+                        <td th:text="${list.getQuantity()}"></td>
+                        <td th:text="${list.getProductInfo().getProduct().getPrice()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div sec:authorize="hasRole('ADMIN')">
+                <button  class="btn btn-primary py-3 px-5" id="registrationBtn">등록</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
