@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+  <title>Register Complete</title>
+  <style>
+    .table-sm {
+      font-size: 12px;
+      color: #1C1C1C;
+    }
+
+    table th {
+      width: 17%;
+      text-align: left;
+      padding-left: 1em !important;
+      padding-top: 0.5em !important;
+    }
+
+    table td {
+      width: 83%;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <div class="container offset-3 col-6">
+    <div class="row justify-content-center pb-5">
+      <h4>회원 가입 완료</h4>
+    </div>
+    <div style="border: 1px solid #e6e6e6;" class="container text-center">
+      <div class="row mt-5 pt-4">
+        <span class="font-weight-semi-bold col-4 offset-4" style="font-size: 17px; color: #1C1C1C">회원가입이 완료 되었습니다.</span>
+        <span class="col-6 offset-3 mt-3" style="font-size: 13px; color: #1C1C1C" ><b>[[${member.name}]]</b> 님은 <b>[일반회원]</b> 이십니다.</span>
+      </div>
+      <div class="container mb-5 pb-3">
+        <div class="row" >
+          <table class="table-sm offset-3 col-6 mt-3" style="border-bottom: 1px solid #e6e6e6; border-top: 1px solid #e6e6e6;">
+            <tr><th> </th><td> </td></tr>
+            <tr><th> </th><td> </td></tr>
+            <tr>
+              <th>아이디</th>
+              <td th:text="${member.loginId}"></td>
+            </tr>
+            <tr>
+              <th>이름</th>
+              <td th:text="${member.name}">
+              </td>
+            </tr>
+            <tr>
+              <th>이메일</th>
+              <td th:text="${member.email}"></td>
+            </tr>
+            <tr><th> </th><td> </td></tr>
+            <tr><th> </th><td> </td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <a href="/" type="button" class="btn btn-primary btn-sm font-weight-semi-bold px-3" style="font-size: 13px">메인으로 이동</a>
+    </div>
+
+  </div>
+</div>
+<th:block layout:fragment="script">
+  <!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
+</body>
+</html>
