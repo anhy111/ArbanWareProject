@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,34 +21,17 @@ import java.io.PrintWriter;
 public class LoginController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String longinPage(HttpServletRequest request) {
+        log.info("encodePassword = {}", passwordEncoder.encode("1234"));
         final String referer = request.getHeader("Referer");
-        request.getSession().setAttribute("Referer", referer);
+        log.info("referer = {}", referer);
+        if (!referer.contains("members/new")) {
+            request.getSession().setAttribute("Referer", referer);
+        }
         return "page/login/login";
-    }
-
-    @GetMapping("/info")
-    @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
-    public String info(@AuthenticationPrincipal SecurityUser securityUser) {
-        log.info("user.name = {}", securityUser.getName());
-        log.info("user.id = {}", securityUser.getId());
-        log.info("user.loginId = {}", securityUser.getUsername());
-        log.info("user.loginPassword = {}", securityUser.getPassword());
-        log.info("user.authorities = {}", securityUser.getAuthorities());
-        return "redirect:/";
-    }
-
-    @GetMapping("/ww")
-    @PreAuthorize("hasAnyRole('admin')")
-    public String ww(@AuthenticationPrincipal SecurityUser securityUser) {
-        log.info("user.name = {}", securityUser.getName());
-        log.info("user.id = {}", securityUser.getId());
-        log.info("user.loginId = {}", securityUser.getUsername());
-        log.info("user.loginPassword = {}", securityUser.getPassword());
-        log.info("user.authorities = {}", securityUser.getAuthorities());
-        return "redirect:/";
     }
 
     @GetMapping("/accessDenied")

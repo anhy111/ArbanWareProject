@@ -70,11 +70,11 @@
 <div layout:fragment="content">
     <div class="container offset-3 col-6">
         <div class="row justify-content-center pb-5">
-            <h2>회원가입</h2>
+            <h4>회원가입</h4>
         </div>
         <div class="row">
-            <div class=" d-flex justify-content-between" style="width: 100%">
-                <h5 class="font-weight-semi-bold d-inline-block">기본정보</h5>
+            <div class=" d-flex justify-content-between pb-3" style="width: 100%">
+                <span class="font-weight-bold d-inline-block" style="font-size: 16px;color: #1C1C1C">기본정보</span>
                 <div class="d-inline-block font-weight-semi-bold" style="color: #1C1C1C;font-size: 14px">
                     <div class="d-inline-block" style="color: red">＊</div
                     >필수입력사항
@@ -154,9 +154,11 @@
                             ><div class="d-inline-block" style="color: red">＊</div>
                         </th>
                         <td>
+                            <input type="hidden" th:field="${member.zipcode}">
+                            <input type="hidden" th:field="${member.city}">
                             <div class="d-inline-block" style="padding-bottom: 0.75em; width: 30%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       th:field="${member.zipcode}" placeholder="우편번호" disabled required />
+                                       id="zipcodeView" placeholder="우편번호" disabled required />
                             </div>
                             <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
                                 <button type="button" id="searchAddress"
@@ -164,7 +166,7 @@
                             </div>
                             <div style="padding-bottom: 0.75em; width: 65%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       th:field="${member.city}" placeholder="기본주소" disabled required />
+                                       id="cityView" placeholder="기본주소" disabled required />
                             </div>
                             <div style="width: 65%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"

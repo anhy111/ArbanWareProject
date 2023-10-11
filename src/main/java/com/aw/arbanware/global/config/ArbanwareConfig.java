@@ -23,7 +23,7 @@ public class ArbanwareConfig {
             public Optional<String> getCurrentAuditor() {
                 final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if (authentication instanceof AnonymousAuthenticationToken) {
-                    return Optional.empty();
+                    return Optional.of("SYSTEM");
                 }
                 SecurityUser user = (SecurityUser)authentication.getPrincipal();
                 return Optional.of(user.getId().toString());
