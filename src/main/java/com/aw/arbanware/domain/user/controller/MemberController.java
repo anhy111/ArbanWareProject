@@ -23,7 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -49,11 +52,21 @@ public class MemberController {
     }
 
     @PostMapping("/members/new")
-    public String  registerPost(@ModelAttribute("member") RegisterMemberForm form) {
+    public String  registerPost(@ModelAttribute("member") RegisterMemberForm form, HttpSession session) {
         log.info("form = {}", form);
         final Member member = RegisterMemberForm.createMember(form);
         memberService.save(member);
-        return "redirect:/login";
+        return "redirect:/members/new/result/"+ member.getId();
+    }
+
+    @GetMapping("/members/new/result/{id}")
+    public String registerResult(@PathVariable("id") Long id, Model model, HttpServletResponse response) throws IOException {
+        final Optional<Member> findMember = memberService.findById(id);
+        if (!findMember.isPresent()) {
+            return "page/member/register_result_fail";
+        }
+        model.addAttribute("member", findMember.get());
+        return "page/member/register_result";
     }
 
 

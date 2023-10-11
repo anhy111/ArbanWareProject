@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     private String loginPassword;
 
     @Enumerated(EnumType.STRING)
-    private DeleteYn deleteYn;
+    private DeleteYn deleteYn = DeleteYn.N;
 
     @OneToMany(mappedBy = "user")
     private List<Authorization> authorization = new ArrayList<>();
