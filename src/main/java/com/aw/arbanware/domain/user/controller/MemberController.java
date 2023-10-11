@@ -11,6 +11,8 @@ import com.aw.arbanware.infra.email.Email;
 import com.aw.arbanware.infra.email.EmailService;
 import com.aw.arbanware.infra.email.EmailStatus;
 import com.aw.arbanware.infra.email.Recipient;
+import com.aw.arbanware.infra.sms.SmsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -30,18 +32,13 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class MemberController {
 
     private final MemberService memberService;
     private final UserService userService;
-    private final DefaultMessageService messageService;
 
-    public MemberController(final MemberService memberService, final UserService userService) {
-        this.memberService = memberService;
-        this.userService = userService;
-        messageService = NurigoApp.INSTANCE.initialize("NCSZB6C5M2PZ5XTN", "ZNBCI4SKYJGKCQ5MIHZTW1I98WTYDRQY", "https://api.coolsms.co.kr");
-    }
 
     @GetMapping("/members/new")
     public String register(Model model, HttpSession session) {
@@ -86,19 +83,10 @@ public class MemberController {
     @PostMapping("/members/sendSms")
     @ResponseBody
     public ResponseEntity sendSms(@RequestParam("phoneNumber") String phoneNumber, HttpSession session) {
-        log.info("phoneNumber = {}", phoneNumber);
         final String randomNum = createRandomNum();
-        log.info("randomNum = {}", randomNum);
-
-        Message message = new Message();
-        message.setFrom("01094366849");
-        message.setTo(phoneNumber);
-        final String formatStr = String.format("Arban Ware 인증번호 [%s]를 \n입력해주세요.", randomNum);
-        message.setText(formatStr);
-
-        SingleMessageSentResponse response = this.messageService.sendOne(
-                new SingleMessageSendingRequest(message));
+        SingleMessageSentResponse response = SmsService.sendSms(phoneNumber, randomNum);
         log.info("response={}",response);
+
         if (!response.getStatusCode().equals("2000") && !response.getStatusCode().equals("4000")) {
             return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.REQ_SMS_FAIL)
                     , HttpStatus.OK);
