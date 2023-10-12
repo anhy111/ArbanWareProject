@@ -5,9 +5,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
-<th:block layout:fragment="script">
-        <script th:src="@{/js/notice/list.js}"></script>
-</th:block>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid">
@@ -19,19 +16,43 @@
         <div class="row justify-content-center">
             <table class="table">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th class="col-1">번호</th>
-                        <th class="col-7">상품정보</th>
+                        <th class="col-5">상품정보</th>
                         <th class="col-2">수량</th>
-                        <th class="col">합계</th>
+                        <th class="col-2">합계</th>
+                        <th class="col-2">선택</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="list, i : ${cartList}">
-                        <td th:text="${i.index}"></td>
-                        <td><a th:text="${list.getProductInfo().getProduct().getName()}"></a></p></td>
-                        <td th:text="${list.getQuantity()}"></td>
-                        <td th:text="${list.getProductInfo().getProduct().getPrice()}"></td>
+                        <td class="align-middle text-center" th:text="${i.index+1}"></td>
+<!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
+                        <td class="align-middle">
+                            <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
+                            <a class="text-dark mb-2">옵션변경</a>
+                        </td>
+                        <td class="align-middle text-center">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], 'minus')">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], 'plus')">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle text-center" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity()}"></td>
+                        <td class="align-middle text-center">
+                            <button type="button" class="btn btn-primary">주문하기</button>
+                            <button type="button" class="btn btn-primary">삭제</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -41,5 +62,8 @@
         </div>
     </div>
 </div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/cart/list.js}"></script>
+</th:block>
 </body>
 </html>
