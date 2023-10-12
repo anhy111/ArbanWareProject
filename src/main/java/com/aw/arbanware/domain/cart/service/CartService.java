@@ -6,6 +6,7 @@ import com.aw.arbanware.domain.cart.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,13 @@ public class CartService {
 
     public List<Cart> cartList(Long memberId) {
         return cartRepository.findByMemberId(memberId);
+    }
+
+    @Transactional
+    public Cart cartQuantityUpdate(Long memberId, Long productInfoId, Cart cart){
+        Cart quantityUp = cartRepository.findByMemberIdAndProductInfoId(memberId, productInfoId);
+        quantityUp.setQuantity(cart.getQuantity());
+        return quantityUp;
     }
 
 }
