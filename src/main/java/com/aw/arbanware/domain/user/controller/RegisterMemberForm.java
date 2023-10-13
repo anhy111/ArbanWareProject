@@ -1,11 +1,9 @@
 package com.aw.arbanware.domain.user.controller;
 
 import com.aw.arbanware.domain.common.embedded.Address;
-import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Email;
@@ -14,7 +12,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter @Setter
 @NoArgsConstructor
-@ToString
 public class RegisterMemberForm {
 
     @NotBlank @NotNull
@@ -41,20 +38,5 @@ public class RegisterMemberForm {
     private String birth;   //생년월일
 
     @NotBlank @NotNull
-    private String zipcode;
-    private String city;
-    private String street;
-
-    public static Member createMember(RegisterMemberForm form) {
-        final Member member = new Member();
-        member.setName(form.getName());
-        member.setAddress(new Address(form.getCity(), form.getStreet(), form.getZipcode()));
-        member.setBirth(form.getBirth());
-        member.setEmail(form.getEmail());
-        member.setTelephonedms(form.getTelephonedms());
-        member.setPhoneNumber(form.getPhoneNumber());
-        member.setLoginId(form.getLoginId());
-        member.setLoginPassword(form.getLoginPassword());
-        return member;
-    }
+    private Address address;    // 주소
 }
