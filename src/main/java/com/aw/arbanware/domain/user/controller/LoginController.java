@@ -34,12 +34,6 @@ public class LoginController {
         return "page/login/login";
     }
 
-    @GetMapping("/searchPassword")
-    public String searchPasswordPage() {
-
-        return "page/login/search_password";
-    }
-
     @GetMapping("/accessDenied")
     public void accessDenied(HttpServletResponse response) {
         try {
