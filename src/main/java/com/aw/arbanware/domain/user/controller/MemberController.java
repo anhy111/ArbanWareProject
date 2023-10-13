@@ -3,6 +3,7 @@ package com.aw.arbanware.domain.user.controller;
 import com.aw.arbanware.domain.common.apiobj.DefaultResponse;
 import com.aw.arbanware.domain.common.apiobj.ResponseMessage;
 import com.aw.arbanware.domain.common.apiobj.StatusCode;
+import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.infra.email.Email;
 import com.aw.arbanware.infra.email.EmailService;
