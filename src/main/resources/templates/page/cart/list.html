@@ -36,22 +36,22 @@
                         <td class="align-middle text-center">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], 'minus')">
+                                    <button class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'minus')">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center">
+                                <input type="text" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], 'plus')">
+                                    <button class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'plus')">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle text-center" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity()}"></td>
+                        <td class="align-middle text-center" th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></td>
                         <td class="align-middle text-center">
                             <button type="button" class="btn btn-primary">주문하기</button>
-                            <button type="button" class="btn btn-primary">삭제</button>
+                            <button type="button" class="btn btn-primary" th:onclick="cartOneDelete([[${list.getProductInfo().getId()}]])">삭제</button>
                         </td>
                     </tr>
                 </tbody>

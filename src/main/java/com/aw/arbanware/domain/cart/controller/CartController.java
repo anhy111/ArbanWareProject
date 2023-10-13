@@ -26,7 +26,7 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("")
-    public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser){
+    public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
         List<Cart> carts = cartService.cartList(id);
         model.addAttribute("cartList", carts);
@@ -34,9 +34,17 @@ public class CartController {
     }
 
     @PostMapping("/{id}/edit/quantity")
-    public ResponseEntity cartQuantityUpdate(@PathVariable("id")Long productInfoId, @AuthenticationPrincipal SecurityUser securityUser, @RequestBody Cart cart) {
+    public ResponseEntity cartQuantityUpdate(@PathVariable("id") Long productInfoId, @AuthenticationPrincipal SecurityUser securityUser, @RequestBody Cart cart) {
         Long memberId = securityUser.getId();
         Cart cartUpdate = cartService.cartQuantityUpdate(memberId, productInfoId, cart);
+        return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATE_LOGIN_ID)
+                , HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/delete")
+    public ResponseEntity cartOneDelete(@PathVariable("id") Long productInfoId, @AuthenticationPrincipal SecurityUser securityUser) {
+        Long memberId = securityUser.getId();
+        cartService.cartOneDelete(memberId, productInfoId);
         return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATE_LOGIN_ID)
                 , HttpStatus.OK);
     }

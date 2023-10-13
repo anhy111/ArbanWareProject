@@ -13,13 +13,17 @@ import javax.persistence.*;
 public class Cart {
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_INFO_ID")
-    private ProductInfo productInfo;    // 상품 정보번호
+    private Long productInfoId;
 
     @Id
+    private Long memberId;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "productInfoId", updatable = false, insertable = false)
+    private ProductInfo productInfo;    // 상품 정보번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId", updatable = false, insertable = false)
     private Member member;      // 회원번호
 
     private int quantity;       // 수량
