@@ -28,4 +28,13 @@ public class CartService {
         return quantityUp;
     }
 
+    public void cartOneDelete(Long memberId, Long productInfoId) {
+        CartKey cartKey = new CartKey();
+
+        cartKey.setMemberId(memberId);
+        cartKey.setProductInfoId(productInfoId);
+
+        cartRepository.deleteById(cartKey);
+    }
+
 }
