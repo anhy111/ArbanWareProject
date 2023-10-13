@@ -70,11 +70,11 @@
 <div layout:fragment="content">
     <div class="container offset-3 col-6">
         <div class="row justify-content-center pb-5">
-            <h4>회원가입</h4>
+            <h2>회원가입</h2>
         </div>
         <div class="row">
-            <div class=" d-flex justify-content-between pb-3" style="width: 100%">
-                <span class="font-weight-bold d-inline-block" style="font-size: 16px;color: #1C1C1C">기본정보</span>
+            <div class=" d-flex justify-content-between" style="width: 100%">
+                <h5 class="font-weight-semi-bold d-inline-block">기본정보</h5>
                 <div class="d-inline-block font-weight-semi-bold" style="color: #1C1C1C;font-size: 14px">
                     <div class="d-inline-block" style="color: red">＊</div
                     >필수입력사항
@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="row">
-            <form id="newForm" action="/members/new" method="post" th:object="${member}" style="width: 100%">
+            <form action="/members/new" th:action="@{/members/new}" th:object="${member}" style="width: 100%">
                 <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
                     <tr>
                         <th class="align-middle">
@@ -91,16 +91,13 @@
                         </th>
                         <td>
                             <div class="d-inline-block inputGroup" style="padding-bottom: 0.75em;">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginId}" required />
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginId}" />
                             </div>
                             <div class="d-inline-block align-middle">
                                 <span class="d-inline-block" style="font-size: 12px">(영문소문자/숫자, 4~16자)</span>
                             </div>
-                            <div id="loginIdErrorDisp" style="display: none;">
-                                <span id="loginIdErrorMsg" class="error">아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.</span>
-                            </div>
-                            <div id="loginIdSuccessDisp" style="display: none;">
-                                <span id="loginIdSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 아이디입니다.</span>
+                            <div id="loginIdErrorDisp" >
+                                <span id="loginIdErrorMsg" class="ml-1 error">아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.</span>
                             </div>
                         </td>
                     </tr>
@@ -110,15 +107,11 @@
                             ><div class="d-inline-block" style="color: red">＊</div>
                         </th>
                         <td>
-                            <div class="d-inline-block inputGroup" style="padding-bottom: 0.75em;">
-                                <input type="password" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginPassword}"
-                                       required autocomplete="off" />
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.loginPassword}" />
                             </div>
                             <div class="d-inline-block align-middle">
-                                <span class="d-inline-block" style="font-size: 12px">(영문 대소문자/숫자 조합, 8자~16자)</span>
-                            </div>
-                            <div id="loginPwErrorDisp" style="display: none;">
-                                <span id="loginPwErrorMsg" class="error">비밀번호는 영문과 숫자를 조합하고 8자~16자 사이로 입력해주세요.</span>
+                                <span class="d-inline-block" style="font-size: 12px">(영문 대소문자/숫자/특수문자 중 3가지 이상 조합, 8자~16자)</span>
                             </div>
                         </td>
                     </tr>
@@ -128,12 +121,8 @@
                             ><div class="d-inline-block" style="color: red">＊</div>
                         </th>
                         <td>
-                            <div class="d-inline-block inputGroup"  style="padding-bottom: 0.75em;">
-                                <input type="password" style="height: 40px" class="form-control d-inline-block" id="loginPasswordCheck"
-                                       required autocomplete="off"/>
-                            </div>
-                            <div id="loginPwCheckErrorDisp" style="display: none;">
-                                <span id="loginPwCheckErrorMsg" class="error">비밀번호가 일치하지 않습니다.</span>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="loginPasswordCheck" />
                             </div>
                         </td>
                     </tr>
@@ -154,11 +143,9 @@
                             ><div class="d-inline-block" style="color: red">＊</div>
                         </th>
                         <td>
-                            <input type="hidden" th:field="${member.zipcode}">
-                            <input type="hidden" th:field="${member.city}">
                             <div class="d-inline-block" style="padding-bottom: 0.75em; width: 30%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       id="zipcodeView" placeholder="우편번호" disabled required />
+                                       th:field="${member.address.zipcode}" placeholder="우편번호" disabled/>
                             </div>
                             <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
                                 <button type="button" id="searchAddress"
@@ -166,11 +153,11 @@
                             </div>
                             <div style="padding-bottom: 0.75em; width: 65%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       id="cityView" placeholder="기본주소" disabled required />
+                                       th:field="${member.address.city}" placeholder="기본주소" disabled/>
                             </div>
                             <div style="width: 65%">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       th:field="${member.street}" placeholder="나머지 주소" required />
+                                       th:field="${member.address.street}" placeholder="나머지 주소" />
                             </div>
                         </td>
                     </tr>
@@ -182,15 +169,15 @@
                         <td>
                             <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.telephonedms}" />
                             <div class="d-inline-block" style="width: 15%">
-                                <select class="custom-select d-inline-block" id="telephonedms1">
+                                <select class="custom-select d-inline-block" name="telephonedms1">
                                     <option value="02">02</option>
                                 </select>
                             </div> -
                             <div class="d-inline-block" style="width: 15%">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="telephonedms2" maxlength="3">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="telephonedms2">
                             </div> -
                             <div class="d-inline-block" style="width: 15%">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="telephonedms3" maxlength="4">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="telephonedms3">
                             </div>
                         </td>
                     </tr>
@@ -203,37 +190,30 @@
                             <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.phoneNumber}" />
                             <div>
                                 <div class="d-inline-block" style="width: 15%">
-                                    <select class="custom-select d-inline-block" id="phoneNumber1">
-                                        <option value="010" selected>010</option>
+                                    <select class="custom-select d-inline-block" name="phoneNumber1">
+                                        <option value="010" >010</option>
                                     </select>
                                 </div> -
                                 <div class="d-inline-block" style="width: 15%">
-                                    <input type="text" style="height: 40px" class="form-control d-inline-block" id="phoneNumber2" required maxlength="4" >
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
                                 </div> -
                                 <div class="d-inline-block" style="width: 15%">
-                                    <input type="text" style="height: 40px" class="form-control d-inline-block" id="phoneNumber3" required maxlength="4" >
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber3">
                                 </div>
                                 <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
                                     <button type="button" id="sendSMS" style="width: 120px"
                                             class="btnCustom py-6 font-weight-semi-bold">인증번호 받기</button>
                                 </div>
                             </div>
-                            <div id="phoneNumberErrorDisp" style="padding-bottom: 0.75em; display: none;">
-                                <span id="phoneNumberErrorMsg" class="error">올바른 핸드폰 번호를 입력해주세요.</span>
-                            </div>
-                            <div id="phone_disp" style="display: none;padding-bottom: 0.75em;">
+                            <div id="phone_disp">
                                 <div class="d-inline-block" style="width: 40%">
                                     <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                           id="smsAuthInput" placeholder="인증번호를 입력해주세요">
+                                           name="phoneAuthInput" placeholder="인증번호를 입력해주세요">
                                 </div>
                                 <div class="d-inline-block ml-2">
                                     <button type="button" id="phoneCheck"
                                             class="btnCustom py-6 font-weight-semi-bold">인증 확인</button>
-                                    <span id="smsAuthSuccess" style="color: #288CFF; font-size: 12px; display: none">인증되었습니다.</span>
                                 </div>
-                            </div>
-                            <div id="smsAuthErrorDisp" style="display: none;">
-                                <span id="smsAuthErrorMsg" class="error"></span>
                             </div>
                         </td>
                     </tr>
@@ -245,29 +225,29 @@
                         <td>
                             <div>
                                 <div class="d-inline-block inputGroup">
-                                    <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.email}" required />
+                                    <input type="text" style="height: 40px" class="form-control d-inline-block" th:field="${member.email}" />
                                 </div>
                                 <div class="d-inline-block ml-2" style="padding-bottom: 0.75em">
                                     <button type="button" id="sendEmail" style="width: 120px"
                                             class="btnCustom py-6 font-weight-semi-bold">인증번호 받기</button>
                                 </div>
                             </div>
-                            <div id="emailErrorDisp" style="padding-bottom: 0.75em; display: none;">
-                                <span id="emailErrorMsg" class="error">올바른 이메일 형식이 아닙니다.</span>
+                            <div id="emailErrorDisp" style="padding-bottom: 0.75em;">
+                                <span id="emailErrorMsg" class="ml-1 error">올바른 이메일 형식이 아닙니다.</span>
                             </div>
-                            <div id="email_disp" style="padding-bottom: 0.75em; display: none;">
+                            <div id="email_disp" style="padding-bottom: 0.75em;">
                                 <div class="d-inline-block" style="width: 40%">
                                     <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                           id="emailAuthInput" placeholder="인증번호를 입력해주세요" required >
+                                           id="emailAuthInput" placeholder="인증번호를 입력해주세요">
                                 </div>
                                 <div class="d-inline-block ml-2">
                                     <button type="button" id="emailCheck"
                                             class="btnCustom py-6 font-weight-semi-bold">인증 확인</button>
-                                    <span id="emailAuthSuccess" style="color: #288CFF; font-size: 12px; display: none">인증되었습니다.</span>
+                                    <span id="emailAuthSuccess" class="font-weight-semi-bold" style="color: #288CFF">인증되었습니다.</span>
                                 </div>
                             </div>
-                            <div id="emailAuthErrorDisp" style="display: none;">
-                                <span id="emailAuthErrorMsg" class="error"></span>
+                            <div id="emailAuthErrorDisp" >
+                                <span id="emailAuthErrorMsg" class="ml-1 error"></span>
                             </div>
                         </td>
                     </tr>
@@ -276,15 +256,15 @@
                             <span class="ml-2 font-weight-semi-bold">생년월일</span>
                         </th>
                         <td>
-                            <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.birth}" />
+                            <input type="hidden" style="height: 40px" class="form-control d-inline-block" th:field="${member.phoneNumber}" />
                             <div class="d-inline-block" style="width: 15%">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="birth1" maxlength="4">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
                             </div> 년
                             <div class="d-inline-block" style="width: 15%">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="birth2" maxlength="2">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber2">
                             </div> 월
                             <div class="d-inline-block" style="width: 15%">
-                                <input type="text" style="height: 40px" class="form-control d-inline-block" id="birth3" maxlength="2">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block" name="phoneNumber3">
                             </div> 일
                         </td>
                     </tr>
