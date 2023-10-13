@@ -11,19 +11,19 @@ import java.util.Objects;
 @Getter @Setter
 public class CartKey implements Serializable {
 
-    private ProductInfo productInfo;    // 상품 정보번호
-    private Member member;  // 회원번호
+    private Long productInfoId;    // 상품 정보번호
+    private Long memberId;  // 회원번호
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final CartKey cartKey = (CartKey) o;
-        return Objects.equals(productInfo, cartKey.productInfo) && Objects.equals(member, cartKey.member);
+        return Objects.equals(productInfoId, cartKey.productInfoId) && Objects.equals(memberId, cartKey.memberId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productInfo, member);
+        return Objects.hash(productInfoId, memberId);
     }
 }

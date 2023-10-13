@@ -24,7 +24,7 @@ public class ProductInfo extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Size size;
 
-    private int quantity;
+    private int inventory;
 
     @Override
     public boolean equals(final Object o) {
@@ -45,7 +45,7 @@ public class ProductInfo extends BaseTimeEntity {
                 "id=" + id +
                 ", color=" + color +
                 ", size=" + size +
-                ", quantity=" + quantity +
+                ", inventory=" + inventory +
                 '}';
     }
 }
