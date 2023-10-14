@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.product;
+package com.aw.arbanware.domain.product.entity;
 
 import com.aw.arbanware.domain.category.Category;
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
