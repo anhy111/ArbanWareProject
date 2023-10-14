@@ -1,6 +1,18 @@
 $(function(){
     // alert("하이");
 
+    let price;
+    let priceAll = 0;
+
+    $(".price").text(function(index, element ) {
+
+        price = Number(element);
+        priceAll += price;
+
+        $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
+    });
+
+
 })
 function quantityUpdate(id, quantity, inventory, plusMinus){
 
@@ -12,7 +24,7 @@ function quantityUpdate(id, quantity, inventory, plusMinus){
         let quan = quantity-1;
         if(quan <= 0){
             Swal.fire({
-                title:'1개 이상 선택해주세요',         // Alert 제목
+                title:'상품을 1개 이상 선택해주세요',         // Alert 제목
                 icon:'warning',                         // Alert 타입
             });
             return
@@ -76,9 +88,37 @@ function cartOneDelete(id) {
                         "error"
                     )
                 }
-
             });
         }
+    });
+}
+
+function optionUpdate(productId) { //보류
+
+    console.log("productId : ", productId);
+
+    $.ajax({
+        type: 'GET',
+        url: '/cart/'+productId+'/edit/option',
+        contentType:"application/json;charset=utf-8",
+        // beforeSend:function(xhr){
+        //     xhr.setRequestHeader(header, token);
+        // },
+        success :function(data){
+            console.log("delete성공이라해주라 ", data);
+
+            // window.location.reload(true);
+
+        },
+        error:function(request, status, error){
+            console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+            Swal.fire(
+                "삭제 실패",
+                "에러 났어요!", // had a missing comma
+                "error"
+            )
+        }
+
     });
 
 }

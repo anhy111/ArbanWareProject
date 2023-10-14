@@ -22,7 +22,7 @@ public class CartService {
     }
 
     @Transactional
-    public Cart cartQuantityUpdate(Long memberId, Long productInfoId, Cart cart){
+    public Cart cartQuantityUpdate(Long memberId, Long productInfoId, Cart cart) {
         Cart quantityUp = cartRepository.findByMemberIdAndProductInfoId(memberId, productInfoId);
         quantityUp.setQuantity(cart.getQuantity());
         return quantityUp;
