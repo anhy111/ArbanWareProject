@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -34,6 +35,7 @@ public class SpringSecurityConfig {
                 login.loginPage("/login")
                         .usernameParameter("loginId")
                         .passwordParameter("loginPassword")
+                        .failureHandler(failureHandler())
                         .successHandler(successHandler())
                         .permitAll()
         ).logout(logout -> logout
@@ -63,6 +65,11 @@ public class SpringSecurityConfig {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new LoginSuccessHandler("/");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler failureHandler() {
+        return new LoginFailureHandler("/login");
     }
 
 }

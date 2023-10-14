@@ -53,6 +53,13 @@
     <script th:src="@{/js/login/popper.js}"></script>
     <script th:src="@{/js/login/bootstrap.min.js}"></script>
     <script th:src="@{/js/login/main.js}"></script>
+
+    <script th:if="${error}" th:inline="javascript" >
+        Swal.fire({
+            html: '<b>' + [[${errorMessage}]] + '</b>',
+            icon: 'error'
+        });
+    </script>
 </th:block>
 
 </body>
