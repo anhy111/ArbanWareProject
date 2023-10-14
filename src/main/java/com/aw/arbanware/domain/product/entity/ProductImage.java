@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.product;
+package com.aw.arbanware.domain.product.entity;
 
 import lombok.Getter;
 import lombok.Setter;
