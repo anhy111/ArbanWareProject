@@ -4,6 +4,7 @@ import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.authorization.Authorization;
 import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="UTYPE")
 @Table(name = "USERS")
-@Getter
+@Getter @Setter
 public class User extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "USER_ID")
