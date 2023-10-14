@@ -1,7 +1,5 @@
 package com.aw.arbanware.domain.cart.entity;
 
-import com.aw.arbanware.domain.product.ProductInfo;
-import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 

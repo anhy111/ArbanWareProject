@@ -1,6 +1,8 @@
-package com.aw.arbanware.domain.product;
+package com.aw.arbanware.domain.product.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
+import com.aw.arbanware.domain.product.Color;
+import com.aw.arbanware.domain.product.Size;
 import lombok.Getter;
 import lombok.Setter;
 
