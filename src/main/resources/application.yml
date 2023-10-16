@@ -17,6 +17,8 @@ spring:
     open-in-view: false
   messages:
     basename: message,errors
+  thymeleaf:
+    c
 
 
 logging:
