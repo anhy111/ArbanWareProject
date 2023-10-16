@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +32,15 @@ public class CartController {
     private final ProductInfoService productInfoService;
 
     @GetMapping("")
-    @PreAuthorize("isAuthenticated()")
     public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
-        List<Cart> carts = cartService.cartList(id);
-        model.addAttribute("cartList", carts);
+        log.info("id={}" + id);
+        if (id != null){
+            List<Cart> carts = cartService.cartList(id);
+            model.addAttribute("cartList", carts);
+        }else {
+
+        }
         return "page/cart/list";
     }
 
@@ -60,4 +66,15 @@ public class CartController {
 //        List<ProductInfo> productInfos = productInfoService.cartOptionUpdate(productId);
 //        return productInfos;
 //    }
+
+    @GetMapping("/orderWrite")
+    public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
+        Long id = securityUser.getId();
+        log.info("id={}" + id);
+        if (id != null){
+            List<Cart> carts = cartService.cartList(id);
+            model.addAttribute("cartList", carts);
+        }
+        return "page/cart/orderWrite";
+    }
 }
