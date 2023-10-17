@@ -12,7 +12,8 @@ import java.util.Objects;
 @Entity
 @Getter @Setter
 public class ProductInfo extends BaseTimeEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "PRODUCT_INFO_SEQUENCE")
     @Column(name = "PRODUCT_INFO_ID")
     private Long id;
 

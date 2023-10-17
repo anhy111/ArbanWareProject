@@ -1,22 +1,12 @@
 $(document).ready(function (){
     ClassicEditor
-        .create( document.querySelector( '.editor' ), {
-            // Editor configuration.
-        } )
+        .create( document.querySelector( '#editor' ) )
         .then( editor => {
-            window.editor = editor;
-        } )
-        .catch( handleSampleError );
+            window.editor = editor
+        } );
 
-    function handleSampleError( error ) {
-        const issueUrl = 'https://github.com/ckeditor/ckeditor5/issues';
-
-        const message = [
-            'Oops, something went wrong!',
-            `Please, report the following error on ${ issueUrl } with the build id "pl7dgf100hue-ww6gt4b4sc9c" and the error stack trace:`
-        ].join( '\n' );
-
-        console.error( message );
-        console.error( error );
-    }
+    $("#price").on('click', function () {
+        const editorData = editor.getData();
+        console.log(editorData);
+    });
 })

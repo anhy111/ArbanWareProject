@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class Return {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "RETURN_SEQUENCE")
     @Column(name = "RETURN_ID")
     private Long id; //반품 번호
 

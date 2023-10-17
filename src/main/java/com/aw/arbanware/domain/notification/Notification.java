@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class Notification {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "NOTIFICATION_SEQUENCE")
     @Column(name = "NOTIFICATION_ID")
     private Long id; //알림 번호
 
