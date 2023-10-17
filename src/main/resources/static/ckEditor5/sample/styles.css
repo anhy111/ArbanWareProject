@@ -27,7 +27,7 @@ main .ck-editor[role='application'] .ck.ck-content,
 	width: 100%;
 	background: #fff;
 	font-size: 1em;
-	line-height: 1.6em;
+	line-height: 0.4em;
 	min-height: var(--ck-sample-editor-min-height);
 	padding: 1.5em 2em;
 }

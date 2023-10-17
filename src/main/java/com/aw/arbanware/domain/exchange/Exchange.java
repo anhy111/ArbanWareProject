@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Exchange {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "EXCHANGE_SEQUENCE")
     @Column(name = "EXCHANGE_ID")
     private Long id;    // 교환번호
 
