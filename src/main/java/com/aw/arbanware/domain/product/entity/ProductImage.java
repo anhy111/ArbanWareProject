@@ -11,16 +11,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@IdClass(ProductImageKey.class)
 @EntityListeners(AuditingEntityListener.class)
 public class ProductImage implements Serializable {
-    @Id
+
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "PRODUCT_IMAGE_SEQUENCE")
+    @Column(name = "PRODUCT_IMAGE_ID")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
-    @Id @GeneratedValue
-    @Column(name = "SEQUENCE")
     private int sequence;
 
     private String storedPath;

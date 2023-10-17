@@ -23,9 +23,9 @@ public class ProductController {
 
     @GetMapping("/products/new")
     public String newProducts(Model model) {
-//        final Optional<Product> findProduct = productRepository.findById(1L);
-//        model.addAttribute("product", findProduct.get());
-        model.addAttribute("product", new Product());
+        final Optional<Product> findProduct = productRepository.findById(1L);
+        model.addAttribute("product", findProduct.get());
+//        model.addAttribute("product", new Product());
         return "page/product/createProductForm";
     }
 }

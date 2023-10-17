@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Getter @Setter
 public class Inquiry extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "INQUIRY_SEQUENCE")
     @Column(name = "INQUIRY_ID")
     private Long id; //문의 번호
 

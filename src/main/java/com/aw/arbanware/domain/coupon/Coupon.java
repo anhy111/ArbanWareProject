@@ -12,7 +12,8 @@ import javax.persistence.*;
 @DiscriminatorColumn(name="CTYPE")
 public class Coupon extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "COUPON_SEQUENCE")
     @Column(name = "COUPON_ID")
     private Long id; //쿠폰번호
 
