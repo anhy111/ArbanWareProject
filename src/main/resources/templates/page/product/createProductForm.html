@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>Create Product</title>
+    <style>
+        table {
+            font-size: 14px;
+        }
+
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        table th {
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+            width: 20%;
+        }
+
+        .table td {
+            width: 80%;
+            padding-left: 1.25rem;
+        }
+
+        .inputGroup {
+            width: 40%;
+        }
+
+        input:enabled {
+            cursor: text;
+        }
+
+        input:hover:enabled {
+            border: 1px #1C1C1C solid;
+        }
+
+        input:focus {
+            border: 1px solid #1C1C1C !important;
+        }
+
+        input::placeholder {
+            font-size: 14px;
+        }
+
+        .form-control:disabled {
+            background: #F9F9F9;
+        }
+
+        .btnCustom {
+            font-size: 12px;
+            border: #BCBCBC solid 1px;
+            height: 40px;
+            width: 90px;
+            color: #1C1C1C;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        .ck-editor__editable[role="textbox"] {
+            min-height: 500px;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/ckEditor5/sample/styles.css">
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container offset-2 col-8">
+        <div class="row justify-content-center pb-5">
+            <h4>상품 추가</h4>
+        </div>
+        <div class="row">
+            <div class=" d-flex justify-content-between pb-3" style="width: 100%">
+                <span class="font-weight-bold d-inline-block" style="font-size: 16px;color: #1C1C1C">상품기본정보</span>
+            </div>
+        </div>
+        <div class="row">
+            <form id="newForm" action="/products/new" method="post" th:object="${product}" style="width: 100%">
+                <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">상품명</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${product.name}" required/>
+                            </div>
+                            <div id="loginIdSuccessDisp" style="display: none;">
+                                <span id="loginIdSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 아이디입니다.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">내용</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block">
+                                <div id="editor">[[${product.content}]]</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">원가</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       id="loginPasswordCheck"
+                                       th:field="${product.cost}" required autocomplete="off"/>
+                            </div>
+                            <div id="loginPwCheckErrorDisp" style="display: none;">
+                                <span id="loginPwCheckErrorMsg" class="error">비밀번호가 일치하지 않습니다.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">판매가</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${product.price}"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="width: 100%" class="text-center">
+                    <button style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="submit">
+                        회원가입
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
+    <script th:src="@{/js/product/UploadAdapter.js}"></script>
+    <script th:src="@{/js/product/createProductForm.js}"></script>
+</th:block>
+</body>
+</html>

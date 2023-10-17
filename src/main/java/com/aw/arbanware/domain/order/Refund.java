@@ -12,7 +12,8 @@ import javax.persistence.*;
 public class Refund {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "REFUND_SEQUENCE")
     @Column(name = "REFUND_ID")
     private Long id; //환불 번호
 

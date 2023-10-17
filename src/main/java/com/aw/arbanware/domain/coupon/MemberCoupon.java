@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class MemberCoupon {
     
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "MEMBER_COUPON_SEQUENCE")
     @Column(name = "MEMBER_COUPON_ID")
     private Long id; //회원 쿠폰 번호
     

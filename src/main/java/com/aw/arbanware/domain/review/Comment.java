@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 public class Comment extends BaseTimeEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "COMMENT_SEQUENCE")
     @Column(name = "COMMENT_ID")
     private Long id;    //댓글번호
 

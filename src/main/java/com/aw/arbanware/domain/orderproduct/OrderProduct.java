@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 public class OrderProduct extends BaseTimeEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "ORDER_PRODUCT_SEQUENCE")
     @Column(name = "ORDER_PRODUCT_ID")
     private Long id;    //주문상품번호
 
