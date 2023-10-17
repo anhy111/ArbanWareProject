@@ -67,14 +67,4 @@ public class CartController {
 //        return productInfos;
 //    }
 
-    @GetMapping("/orderWrite")
-    public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
-        Long id = securityUser.getId();
-        log.info("id={}" + id);
-        if (id != null){
-            List<Cart> carts = cartService.cartList(id);
-            model.addAttribute("cartList", carts);
-        }
-        return "page/cart/orderWrite";
-    }
 }

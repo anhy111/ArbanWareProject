@@ -1,7 +1,7 @@
 package com.aw.arbanware.domain.orderproduct;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
-import com.aw.arbanware.domain.order.Order;
+import com.aw.arbanware.domain.order.entity.Order;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import lombok.Getter;
 import lombok.Setter;

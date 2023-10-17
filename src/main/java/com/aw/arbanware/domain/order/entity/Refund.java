@@ -1,5 +1,7 @@
-package com.aw.arbanware.domain.order;
+package com.aw.arbanware.domain.order.entity;
 
+import com.aw.arbanware.domain.order.RefundMethod;
+import com.aw.arbanware.domain.order.RefundStatus;
 import com.aw.arbanware.domain.payment.BankType;
 import lombok.Getter;
 import lombok.Setter;

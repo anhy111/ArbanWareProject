@@ -30,7 +30,7 @@
                     <tr th:each="list, i : ${cartList}">
                         <td class="align-middle text-center" th:text="${i.index+1}"></td>
                         <td class="align-middle">
-                            <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <h6 class="font-weight-bold productName" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                         </td>
                         <td class="align-middle text-center">
                             <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
@@ -146,8 +146,19 @@
 </div>
 
 <th:block layout:fragment="script">
+    <script th:src="@{https://js.tosspayments.com/v1/payment-widget}"></script>
     <script th:src="@{//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js}"></script>
-    <script th:src="@{/js/cart/orderWrite.js}"></script>
+    <script th:src="@{/js/order/register.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        const customerKey = [[${user.getId}]]; // 내 상점에서 고객을 구분하기 위해 발급한 고객의 고유 ID
+        // const customerName = [[${user.getName}]];
+
+        let productName = [[${cartList.get(0).getProductInfo().getProduct().getName()}]];
+        let cartLenth = [[${cartList.size()}]];
+
+
+    </script>
 </th:block>
 </body>
 </html>

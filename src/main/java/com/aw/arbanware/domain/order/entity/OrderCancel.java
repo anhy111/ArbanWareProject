@@ -1,5 +1,7 @@
-package com.aw.arbanware.domain.order;
+package com.aw.arbanware.domain.order.entity;
 
+import com.aw.arbanware.domain.order.OrderCancelProgress;
+import com.aw.arbanware.domain.order.OrderCancelStatus;
 import com.aw.arbanware.domain.orderproduct.OrderProduct;
 import lombok.Getter;
 import lombok.Setter;

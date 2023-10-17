@@ -13,7 +13,7 @@ $(function(){
     });
 
     $('#orderBtn').click(function (){
-        $(location).attr('href', '/cart/orderWrite');
+        $(location).attr('href', '/order/new');
     });
 
 })

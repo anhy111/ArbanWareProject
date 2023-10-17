@@ -1,7 +1,10 @@
-package com.aw.arbanware.domain.payment;
+package com.aw.arbanware.domain.payment.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
-import com.aw.arbanware.domain.order.Order;
+import com.aw.arbanware.domain.order.entity.Order;
+import com.aw.arbanware.domain.payment.BankType;
+import com.aw.arbanware.domain.payment.PaymentMethod;
+import com.aw.arbanware.domain.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
 

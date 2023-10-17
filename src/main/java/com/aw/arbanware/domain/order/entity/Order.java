@@ -1,8 +1,9 @@
-package com.aw.arbanware.domain.order;
+package com.aw.arbanware.domain.order.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.delivery.Delivery;
+import com.aw.arbanware.domain.order.OrderStatus;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
