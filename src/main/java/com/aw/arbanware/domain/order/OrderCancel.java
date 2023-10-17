@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 public class OrderCancel {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "ORDER_CANCEL_SEQUENCE")
     @Column(name = "ORDER_CANCEL_ID")
     private Long id;
 

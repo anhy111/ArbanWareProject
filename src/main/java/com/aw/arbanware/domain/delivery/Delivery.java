@@ -10,7 +10,8 @@ import java.util.Objects;
 @Entity
 @Getter @Setter
 public class Delivery {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "DELIVERY_SEQUENCE")
     @Column(name = "DELIVERY_ID")
     private Long id;    // 배송지번호
 

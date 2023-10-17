@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @Table(name = "ORDERS")
 public class Order extends BaseTimeEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "ORDERS_SEQUENCE")
     @Column(name = "ORDER_ID")
     private Long id;    // 주문번호
 

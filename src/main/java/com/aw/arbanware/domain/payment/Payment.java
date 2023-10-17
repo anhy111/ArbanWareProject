@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 public class Payment extends BaseTimeEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "PAYMENT_SEQUENCE")
     @Column(name = "PAYMENT_ID")
     private Long id;        // 결제 번호
 

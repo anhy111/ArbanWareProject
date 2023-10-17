@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Getter @Setter
 public class Notice extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "NOTICE_SEQUENCE")
     @Column(name = "NOTICE_ID")
     private Long id; //공지사항 번호
 
