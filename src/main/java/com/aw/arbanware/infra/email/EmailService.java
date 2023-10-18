@@ -35,7 +35,7 @@ public class EmailService {
                 .addMarshaller(JsonMarshaller.getInstance())
                 .addMarshaller(XmlMarshaller.getInstance())
                 .addMarshaller(FormMarshaller.getInstance())
-                .setCredentials(new PropertiesFileCredentialsProvider("emailApi.properties").getCredentials())
+                .setCredentials(new PropertiesFileCredentialsProvider("./emailApi.properties").getCredentials())
                 .setLogging(true)
                 .build();
 
