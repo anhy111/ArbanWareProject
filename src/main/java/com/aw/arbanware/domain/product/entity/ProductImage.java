@@ -23,8 +23,6 @@ public class ProductImage implements Serializable {
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
-    private int sequence;
-
     private String storedPath;
     private String storedFileName;
     private String originalFileName;
