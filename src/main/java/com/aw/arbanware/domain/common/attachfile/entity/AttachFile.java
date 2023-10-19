@@ -1,5 +1,6 @@
-package com.aw.arbanware.domain.common.attachfile;
+package com.aw.arbanware.domain.common.attachfile.entity;
 
+import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,18 +16,16 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 public class AttachFile {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "ATTACH_FILE_SEQUENCE")
+                    generator = "attach_file_seq")
+    @SequenceGenerator(name = "attach_file_seq",sequenceName = "ATTACH_FILE_SEQUENCE",allocationSize = 1)
     @Column(name = "ATTACH_FILE_ID")
     private Long id;    // 첨부파일번호
 
     @Id
     private int sequence;   // 순번
 
-    private String storedName;  // 저장파일명
-    private String originalName;    // 원본파일명
-    private String storedPath;  //저장경로
-    private String extensionName;   // 확장자명
-    private int fileSize;   // 파일크기
+    @Embedded
+    private AttachFileInfo attachFileInfo;
 
     @CreatedDate
     @Column(updatable = false)

@@ -11,7 +11,8 @@ import java.util.Objects;
 @Getter @Setter
 public class Delivery {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "DELIVERY_SEQUENCE")
+                        generator = "delivery_seq")
+    @SequenceGenerator(name = "delivery_seq",sequenceName = "DELIVERY_SEQUENCE",allocationSize = 1)
     @Column(name = "DELIVERY_ID")
     private Long id;    // 배송지번호
 

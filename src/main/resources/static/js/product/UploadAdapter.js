@@ -25,14 +25,16 @@ class UploadAdapter {
         xhr.addEventListener('error', () => {reject(genericErrorText)})
         xhr.addEventListener('abort', () => reject())
         xhr.addEventListener('load', () => {
-            const response = xhr.response
+            const response = xhr.response;
             if(!response || response.error) {
                 return reject( response && response.error ? response.error.message : genericErrorText );
             }
-
-            resolve({
-                default: response.url //업로드된 파일 주소
-            })
+            console.log(response);
+            response.forEach(function (val, inx) {
+                resolve({
+                    default: val.urls['default'] //업로드된 파일 주소
+                })
+            });
         })
     }
 

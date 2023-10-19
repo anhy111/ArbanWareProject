@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product.entity;
 
+import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,7 +16,8 @@ import java.time.LocalDateTime;
 public class ProductImage implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "PRODUCT_IMAGE_SEQUENCE")
+                        generator = "product_image_seq")
+    @SequenceGenerator(name = "product_image_seq",sequenceName = "PRODUCT_IMAGE_SEQUENCE",allocationSize = 1)
     @Column(name = "PRODUCT_IMAGE_ID")
     private Long id;
 
@@ -23,10 +25,8 @@ public class ProductImage implements Serializable {
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
 
-    private String storedPath;
-    private String storedFileName;
-    private String originalFileName;
-    private Long fileSize;
+    @Embedded
+    private AttachFileInfo attachFileInfo;
 
     @CreatedDate
     @Column(updatable = false)

@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class LoginLog {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "LOGIN_LOG_SEQUENCE")
+                        generator = "login_log_seq")
+    @SequenceGenerator(name = "login_log_seq",sequenceName = "LOGIN_LOG_SEQUENCE",allocationSize = 1)
     @Column(name = "LOGIN_LOG_ID")
     private Long id;    //로그인로그번호
 

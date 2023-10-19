@@ -14,7 +14,8 @@ import java.util.List;
 @Getter @Setter
 public class Category extends BaseEntity implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "CATEGORY_SEQUENCE")
+                        generator = "category_seq")
+    @SequenceGenerator(name = "category_seq",sequenceName = "CATEGORY_SEQUENCE",allocationSize = 1)
     @Column(name = "CATEGORY_ID")
     private Long id;    // 카테고리 번호
 

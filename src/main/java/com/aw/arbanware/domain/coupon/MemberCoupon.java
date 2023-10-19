@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class MemberCoupon {
     
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "MEMBER_COUPON_SEQUENCE")
+            generator = "member_coupon_seq")
+    @SequenceGenerator(name = "member_coupon_seq",sequenceName = "MEMBER_COUPON_SEQUENCE",allocationSize = 1)
     @Column(name = "MEMBER_COUPON_ID")
     private Long id; //회원 쿠폰 번호
     

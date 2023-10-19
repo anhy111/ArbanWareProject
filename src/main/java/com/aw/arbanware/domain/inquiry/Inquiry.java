@@ -13,7 +13,8 @@ import javax.persistence.*;
 public class Inquiry extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "INQUIRY_SEQUENCE")
+                        generator = "inquiry_seq")
+    @SequenceGenerator(name = "inquiry_seq",sequenceName = "INQUIRY_SEQUENCE",allocationSize = 1)
     @Column(name = "INQUIRY_ID")
     private Long id; //문의 번호
 

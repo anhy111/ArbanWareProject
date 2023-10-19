@@ -25,6 +25,16 @@
             padding-left: 1.25rem;
         }
 
+        #option td{
+            width:inherit;
+            border: 0.1em #e6e6e6 solid;
+        }
+
+        #option th{
+            width:inherit;
+            border: 0.1em #e6e6e6 solid;
+        }
+
         .inputGroup {
             width: 40%;
         }
@@ -69,7 +79,6 @@
         }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="/ckEditor5/sample/styles.css">
 </head>
 <body>
 
@@ -97,6 +106,42 @@
                             </div>
                             <div id="loginIdSuccessDisp" style="display: none;">
                                 <span id="loginIdSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 아이디입니다.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">옵션</span>
+                        </th>
+                        <td>
+                            <div>
+                                <table id="option" class="table text-center">
+                                    <tr>
+                                        <th style="width: 40%">옵션명</th>
+                                        <th>옵션값</th>
+                                    </tr>
+                                    <tr>
+                                        <td>SIZE</td>
+                                        <td class="text-left pl-3">
+                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
+                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
+                                            ></span>
+                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
+                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
+                                            ></span>
+                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
+                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
+                                            ></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>COLOR</td>
+                                        <td>L</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="optionSuccessDisp" style="display: none;">
+                                <span id="optionSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 옵션입니다.</span>
                             </div>
                         </td>
                     </tr>

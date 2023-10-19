@@ -15,12 +15,19 @@ spring:
         #        show_sql: true
         format_sql: true
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
+
   messages:
     basename: message,errors
-  thymeleaf:
-    c
 
 
 logging:
   level:
     org.hibernate.SQL: debug
+
+arbanWare:
+  upload:
+    url: /upload/

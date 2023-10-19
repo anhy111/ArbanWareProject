@@ -17,7 +17,8 @@ public class Return {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "RETURN_SEQUENCE")
+                    generator = "return_seq")
+    @SequenceGenerator(name = "return_seq",sequenceName = "RETURN_SEQUENCE",allocationSize = 1)
     @Column(name = "RETURN_ID")
     private Long id; //반품 번호
 
