@@ -13,7 +13,8 @@ import javax.persistence.*;
 public class Coupon extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "COUPON_SEQUENCE")
+                    generator = "coupon_seq")
+    @SequenceGenerator(name = "coupon_seq",sequenceName = "COUPON_SEQUENCE",allocationSize = 1)
     @Column(name = "COUPON_ID")
     private Long id; //쿠폰번호
 

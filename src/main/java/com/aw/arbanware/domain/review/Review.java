@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Getter @Setter
 public class Review extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "REVIEW_SEQUENCE")
+                        generator = "review_seq")
+    @SequenceGenerator(name = "review_seq",sequenceName = "REVIEW_SEQUENCE",allocationSize = 1)
     @Column(name = "REVIEW_ID")
     private Long id; // 후기번호
 

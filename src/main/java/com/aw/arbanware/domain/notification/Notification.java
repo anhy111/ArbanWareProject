@@ -16,7 +16,8 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "NOTIFICATION_SEQUENCE")
+                    generator = "notification_seq")
+    @SequenceGenerator(name = "notification_seq",sequenceName = "NOTIFICATION_SEQUENCE",allocationSize = 1)
     @Column(name = "NOTIFICATION_ID")
     private Long id; //알림 번호
 

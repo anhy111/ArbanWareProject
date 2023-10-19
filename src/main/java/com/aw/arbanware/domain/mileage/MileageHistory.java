@@ -14,7 +14,8 @@ public class MileageHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "MILEAGE_HISTORY_SEQUENCE")
+                    generator = "mileage_seq")
+    @SequenceGenerator(name = "mileage_seq",sequenceName = "MILEAGE_HISTORY_SEQUENCE",allocationSize = 1)
     @Column(name = "MILEAGE_HISTORY_ID")
     private Long id; //마일리지 내역
 

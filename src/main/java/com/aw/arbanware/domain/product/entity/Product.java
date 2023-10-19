@@ -15,7 +15,8 @@ import java.util.List;
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "PRODUCT_SEQUENCE")
+                    generator = "product_seq")
+    @SequenceGenerator(name = "product_seq",sequenceName = "PRODUCT_SEQUENCE",allocationSize = 1)
     @Column(name = "PRODUCT_ID")
     private Long id;    // 상품번호
 
