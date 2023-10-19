@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.delivery;
+package com.aw.arbanware.domain.order.entity;
 
 import com.aw.arbanware.domain.common.embedded.Address;
 import lombok.Getter;

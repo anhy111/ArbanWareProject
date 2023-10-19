@@ -3,14 +3,15 @@ $(function(){
 
     let price;
     let priceAll = 0;
-    let email = $('inputEmail').val();
+    let requirements;
 
-    const clientKey = 'test_ck_DLJOpm5QrlxzAkdbmPdrPNdxbWnY' // 테스트용 클라이언트 키
-    const tossPayments = TossPayments(clientKey)
+    let clientKey = 'test_ck_DLJOpm5QrlxzAkdbmPdrPNdxbWnY' // 테스트용 클라이언트 키
+    let tossPayments = TossPayments(clientKey)
 
-    $("#searchAddress").on('click',searchAddressFunc);
+    $("#searchAddress").on('click',searchAddressFunc); //우편번호 불러오기
+    // $('#orderBtn').on('click', paymentStart); //주문 및 결제 시작
 
-    $(".price").text(function(index, element ) {
+    $(".price").text(function(index, element) {
 
         console.log("index : ", index, " element : ", element)
 
@@ -21,12 +22,30 @@ $(function(){
         $('#orderBtn').text(priceAll.toLocaleString('ko-KR') + '원 주문하기');
     });
 
+    $("select[name=deliveryRequest]").change(function(){
+        requirements = $("select[name=deliveryRequest] option:selected").text();
+
+        console.log(requirements); //text값 가져오기
+    });
+
     $('#orderBtn').click(function (){
 
+        let orderer = $('#inputOrderer').val(); //주문자
         let email = $('#inputEmail').val();
-        let orderer = $('#inputOrderer').val();
+        let ordererPhone = $('#inputPhone').val();
 
-        console.log("email : ", email, " name : ", orderer, " productName : ", productName, " cartLenth : ", cartLenth);
+        let recipient = $('#inputRecipient').val(); //받는 사람
+        let recipientPhone = $('#recipientPhone').val();
+        let zipcode = $('#zipcodeView').val(); //우편 번호
+        let city = $('#cityView').val(); //기본 주소
+        let street = $('#street').val(); //나머지 주소
+
+        let deliverySave = $('#deliverySave').is(':checked');
+
+
+
+        console.log("email : ", email, " name : ", orderer, " productName : ", productName, " cartLenth : ", cartLenth, " deliverySave : ", deliverySave,
+            " recipient : ", recipient, " zipcode : ", zipcode, " city : ", city, " street : ", street);
 
         // ------ 결제창 띄우기 ------
         tossPayments.requestPayment('CARD', {
@@ -40,9 +59,10 @@ $(function(){
             // successUrl: 'http://localhost:8081/api/v1/payments/toss/success',
             // failUrl: 'http://localhost:8081/api/v1/payments/toss/fail'
         });
+
     });
 
-})
+});
 
 function searchAddressFunc() {
     new daum.Postcode({
@@ -56,4 +76,27 @@ function searchAddressFunc() {
             formReg.regAddress.status = true;
         }
     }).open();
+}
+
+function paymentStart() {
+
+    let email = $('#inputEmail').val();
+    let orderer = $('#inputOrderer').val();
+    let deliverySave = $('#deliverySave').is(':checked');
+
+    console.log("email : ", email, " name : ", orderer, " productName : ", productName, " cartLenth : ", cartLenth, " deliverySave : ", deliverySave);
+
+    // ------ 결제창 띄우기 ------
+    tossPayments.requestPayment('CARD', {
+        amount: priceAll,
+        orderId: '100000', //6자 이상
+        orderName: productName + ' 외 ' + (cartLenth-1),
+        customerName: orderer,
+        customerEmail: email,
+        successUrl: 'http://localhost:8088/order/success',
+        failUrl: 'http://localhost:8088/order/fail'
+        // successUrl: 'http://localhost:8081/api/v1/payments/toss/success',
+        // failUrl: 'http://localhost:8081/api/v1/payments/toss/fail'
+    });
+
 }
