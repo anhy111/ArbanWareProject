@@ -48,9 +48,9 @@ $(function(){
             " recipient : ", recipient, " zipcode : ", zipcode, " city : ", city, " street : ", street);
 
         // ------ 결제창 띄우기 ------
-        tossPayments.requestPayment('CARD', {
+        tossPayments.requestPayment({
             amount: priceAll,
-            orderId: '100000', //6자 이상
+            orderId: '165165165151kkhhiu', //6자 이상
             orderName: productName + ' 외 ' + (cartLenth-1),
             customerName: orderer,
             customerEmail: email,

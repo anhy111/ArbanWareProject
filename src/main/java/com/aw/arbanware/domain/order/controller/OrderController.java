@@ -2,6 +2,7 @@ package com.aw.arbanware.domain.order.controller;
 
 import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.service.CartService;
+import com.aw.arbanware.domain.payment.service.PaymentService;
 import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.global.config.security.SecurityUser;
@@ -25,15 +26,16 @@ public class OrderController {
 
     private final CartService cartService;
     private final MemberService memberService;
+    private final PaymentService paymentService;
 
     @GetMapping("/new")
     public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
-        log.info("id={}" + id);
+        log.info("id={}", id);
         if (id != null) {
             Optional<Member> member = memberService.findById(id);
             if (member.get().getDelivery() != null) {
-                log.info(" delivery 으ㅏ아아아아아앙아아아아아아아아아아아아 ", member.get().getDelivery());
+                log.info(" delivery 으ㅏ아아아아아앙아아아아아아아아아아아아 " + member.get().getDelivery());
             }
             List<Cart> carts = cartService.cartList(id);
             model.addAttribute("cartList", carts);
@@ -45,6 +47,11 @@ public class OrderController {
     @GetMapping("/success")
     public String orderSuccess(@RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount) {
 
+        if (paymentService.callApiAuth(paymentKey, orderId, amount)) {
+            log.info("결제 성고옹");
+        } else {
+            log.info("결제 실패 ㅠㅠㅠ");
+        }
         return "page/order/register_success";
     }
 
