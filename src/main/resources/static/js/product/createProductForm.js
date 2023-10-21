@@ -38,6 +38,14 @@ $(document).ready(function (){
         const editorData = editor.getData();
         console.log(editorData);
     });
+
+    $(".color").css('backgroundColor', function () {
+        let color = $(this).data('color');
+        if (color == 'WHITE') {
+            $(this).css('border', '1px solid black');
+        }
+        return color;
+    });
 })
 
 function MyCustomUploadAdapterPlugin( editor ) {

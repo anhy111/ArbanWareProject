@@ -69,6 +69,36 @@
             cursor: pointer;
         }
 
+        .btn-outline-primary.focus {
+            box-shadow: 0 0 0 0.1rem rgba(209, 156, 151, 0.5) !important;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: inherit;
+            color: #D19C97;
+        }
+
+        .color {
+            position: relative;
+        }
+
+        .color.active::before {
+            background-image: url("/img/checkmark_circle.png");
+            content: "";
+            background-size: 43px;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            width: 45px;
+            height: 45px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            padding: 0;
+            margin: 0;
+            border-radius: 10%;
+        }
+
         .error {
             color: red;
             font-size: 12px;
@@ -120,23 +150,28 @@
                                         <th style="width: 40%">옵션명</th>
                                         <th>옵션값</th>
                                     </tr>
-                                    <tr>
+                                    <tr class="align-self-center">
                                         <td>SIZE</td>
                                         <td class="text-left pl-3">
-                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
-                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
-                                            ></span>
-                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
-                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
-                                            ></span>
-                                            <span class="px-1 mr-2" style="background-color: #fee1e8;font-size: 13px">
-                                                XXS<button type="button" class="btn p-0" style="font-size: 11px; color: #adb5bd">&nbsp;X</button
-                                            ></span>
+                                            <div class="mr-1 btn-group-toggle d-inline-block" data-toggle="buttons"
+                                                 th:each="size : ${T(com.aw.arbanware.domain.product.Size).values()}">
+                                                <label class="btn btn-sm btn-outline-primary" th:for="${size}" style="width: 42px">
+                                                    <input type="checkbox" class="size" th:id="${size}" autocomplete="off">[[${size}]]
+                                                </label>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>COLOR</td>
-                                        <td>L</td>
+                                        <td class="text-left pl-3 pt-1 pb-2">
+                                            <div class="mr-1 mt-2 mb-1 btn-group-toggle d-inline-block" data-toggle="buttons"
+                                                 th:each="color : ${T(com.aw.arbanware.domain.product.Color).values()}">
+                                                <label class="btn btn-sm text-center color" th:for="${color}" th:attr="data-color=${color}"
+                                                       style="width: 43px; height: 43px; border-radius: 50%;">
+                                                    <input type="checkbox" class="size" th:id="${color}" autocomplete="off">&nbsp;
+                                                </label>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -194,6 +229,9 @@
 <th:block layout:fragment="script">
     <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
     <script th:src="@{/js/product/UploadAdapter.js}"></script>
+    <script th:inline="javascript">
+        let color = [[${T(com.aw.arbanware.domain.product.Color).values()}]];
+    </script>
     <script th:src="@{/js/product/createProductForm.js}"></script>
 </th:block>
 </body>
