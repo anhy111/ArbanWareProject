@@ -30,11 +30,15 @@ public class CartController {
     private final ProductInfoService productInfoService;
 
     @GetMapping("")
-    @PreAuthorize("isAuthenticated()")
     public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
-        List<Cart> carts = cartService.cartList(id);
-        model.addAttribute("cartList", carts);
+        log.info("id={}" + id);
+        if (id != null){
+            List<Cart> carts = cartService.cartList(id);
+            model.addAttribute("cartList", carts);
+        }else {
+
+        }
         return "page/cart/list";
     }
 
@@ -60,4 +64,5 @@ public class CartController {
 //        List<ProductInfo> productInfos = productInfoService.cartOptionUpdate(productId);
 //        return productInfos;
 //    }
+
 }

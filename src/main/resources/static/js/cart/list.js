@@ -12,6 +12,9 @@ $(function(){
         $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
     });
 
+    $('#orderBtn').click(function (){
+        $(location).attr('href', '/order/new');
+    });
 
 })
 function quantityUpdate(id, quantity, inventory, plusMinus){

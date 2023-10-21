@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/default_layout}">
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문 실패</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+        </div>
+    </div>
+
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/order/register.js}"></script>
+</th:block>
+</body>
+</html>
