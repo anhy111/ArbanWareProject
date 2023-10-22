@@ -77,26 +77,3 @@ function searchAddressFunc() {
         }
     }).open();
 }
-
-function paymentStart() {
-
-    let email = $('#inputEmail').val();
-    let orderer = $('#inputOrderer').val();
-    let deliverySave = $('#deliverySave').is(':checked');
-
-    console.log("email : ", email, " name : ", orderer, " productName : ", productName, " cartLenth : ", cartLenth, " deliverySave : ", deliverySave);
-
-    // ------ 결제창 띄우기 ------
-    tossPayments.requestPayment('CARD', {
-        amount: priceAll,
-        orderId: '100000', //6자 이상
-        orderName: productName + ' 외 ' + (cartLenth-1),
-        customerName: orderer,
-        customerEmail: email,
-        successUrl: 'http://localhost:8088/order/success',
-        failUrl: 'http://localhost:8088/order/fail'
-        // successUrl: 'http://localhost:8081/api/v1/payments/toss/success',
-        // failUrl: 'http://localhost:8081/api/v1/payments/toss/fail'
-    });
-
-}
