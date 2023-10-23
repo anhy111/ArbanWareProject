@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.order.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
+import com.aw.arbanware.domain.common.embedded.Address;
 import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.order.OrderStatus;
 import com.aw.arbanware.domain.user.entity.Member;
@@ -41,10 +42,13 @@ public class Order extends BaseTimeEntity {
     private int usage_mileage;  // 사용 마일리지
     private int totalPaymentPrice;  // 총 결제 금액
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DELIVERY_ID")
-    private Delivery delivery;  // 배송지 번호
     private String orderer; // 주문자
-    private String phoneNumber; // 핸드폰
+    private String ordererPhoneNumber; // 핸드폰
     private String email;       // 이메일
+
+    private String recipient;   // 받는사람
+    private Address address;    //주소
+    private String recipientPhoneNumber;     // 핸드폰
+    private String requirements;    // 요청사항
+
 }

@@ -32,7 +32,7 @@ public class CartController {
     @GetMapping("")
     public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
-        log.info("id={}" + id);
+        log.info("id={}", id);
         if (id != null){
             List<Cart> carts = cartService.cartList(id);
             model.addAttribute("cartList", carts);

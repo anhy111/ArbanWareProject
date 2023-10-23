@@ -3,7 +3,7 @@ package com.aw.arbanware.domain.delivery;
 import com.aw.arbanware.domain.authorization.Authorization;
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.common.embedded.Address;
-import com.aw.arbanware.domain.order.entity.Delivery;
+import com.aw.arbanware.domain.delivery.entity.Delivery;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;

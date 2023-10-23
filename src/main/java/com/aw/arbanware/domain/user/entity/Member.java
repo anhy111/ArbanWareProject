@@ -1,7 +1,7 @@
 package com.aw.arbanware.domain.user.entity;
 
 import com.aw.arbanware.domain.common.embedded.Address;
-import com.aw.arbanware.domain.order.entity.Delivery;
+import com.aw.arbanware.domain.delivery.entity.Delivery;
 import lombok.Getter;
 import lombok.Setter;
 
