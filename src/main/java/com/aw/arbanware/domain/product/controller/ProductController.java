@@ -11,6 +11,10 @@ import com.aw.arbanware.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,8 +40,23 @@ public class ProductController {
     private String uploadUrl;
 
     @GetMapping("/products")
-    public String products() {
+    public String products(Model model,
+                           @PageableDefault(size = 12, sort = "id",
+                               direction = Sort.Direction.DESC) Pageable pageable) {
+        final Page<Product> pageProduct = productService.findByAll(pageable);
+        model.addAttribute("products", pageProduct.getContent());
+        model.addAttribute("totalPage", pageProduct.getTotalPages());
         return "page/product/products";
+    }
+
+    @GetMapping("/products/{id}")
+    public String productDetail(@PathVariable("id") Long id, Model model) {
+        final Optional<Product> findProduct = productService.findById(id);
+        if (findProduct.isEmpty()) {
+            return "page/product/notFoundProduct";
+        }
+        model.addAttribute("product", findProduct.get());
+        return "page/product/productDetail";
     }
 
     @GetMapping("/products/new")
