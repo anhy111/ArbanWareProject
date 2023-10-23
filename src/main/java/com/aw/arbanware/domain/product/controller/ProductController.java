@@ -2,6 +2,8 @@ package com.aw.arbanware.domain.product.controller;
 
 import com.aw.arbanware.domain.common.apiobj.CkEditor5RespForm;
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
+import com.aw.arbanware.domain.product.Color;
+import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
@@ -19,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +39,18 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductImageService productImageService;
+
+    private final Color[] colorValues = Color.values();
+    private final Size[] sizeValues = Size.values();
+
+    @ModelAttribute("colorValues")
+    public Color[] colorValues() {
+        return colorValues;
+    }
+    @ModelAttribute("sizeValues")
+    public Size[] sizeValues() {
+        return sizeValues;
+    }
 
     @Value("${arbanWare.upload.url}")
     private String uploadUrl;
@@ -63,9 +79,19 @@ public class ProductController {
     public String newProducts(Model model) {
 //        final Optional<Product> findProduct = productService.findById(1L);
 //        model.addAttribute("product", findProduct.get());
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new CreateProductForm());
         model.addAttribute("productInfo", new ProductInfo());
         return "page/product/createProductForm";
+    }
+
+    @PostMapping("/products/new")
+    public String newProductsPost(@Validated @ModelAttribute("product") CreateProductForm createProductForm,
+                                  BindingResult bindingResult) {
+        log.info("createProductForm = {}", createProductForm);
+        if (bindingResult.hasErrors()) {
+            return "page/product/createProductForm";
+        }
+        return "page/product/successCreateProduct";
     }
 
     @PostMapping("/products/imageUpload")

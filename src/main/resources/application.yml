@@ -21,7 +21,7 @@ spring:
       max-request-size: 50MB
 
   messages:
-    basename: message,errors
+    basename: errors
 
 
 logging:
