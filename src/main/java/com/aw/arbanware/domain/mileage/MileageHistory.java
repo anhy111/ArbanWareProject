@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.mileage;
 
-import com.aw.arbanware.domain.order.Order;
+import com.aw.arbanware.domain.order.entity.Order;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;

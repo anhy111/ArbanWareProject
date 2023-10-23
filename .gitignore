@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 smsApi.properties
 emailApi.properties
+toss.properties
 
 ### STS ###
 .apt_generated

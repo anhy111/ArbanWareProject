@@ -18,8 +18,14 @@
                 <thead>
                     <tr class="text-center">
                         <th class="col-1">번호</th>
+                        <th class="col-1">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="cartList">
+                                <label class="custom-control-label" for="cartList"></label>
+                            </div>
+                        </th>
                         <th class="col-5">상품정보</th>
-                        <th class="col-2">수량</th>
+                        <th class="col-1">수량</th>
                         <th class="col-2">주문금액</th>
                         <th class="col-2">선택</th>
                     </tr>
@@ -28,6 +34,12 @@
                     <tr th:each="list, i : ${cartList}">
                         <td class="align-middle text-center" th:text="${i.index+1}"></td>
 <!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
+                        <td class="align-middle text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" th:id="${'cartCheck' + (i.index+1)}">
+                                <label class="custom-control-label" th:for="${'cartCheck' + (i.index+1)}"></label>
+                            </div>
+                        </td>
                         <td class="align-middle">
                             <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                             <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
@@ -61,7 +73,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td class="text-right font-weight-bold" colspan="5">
+                    <td class="text-right font-weight-bold" colspan="6">
                         <span> 합계 : </span>
                         <span id="priceAll"></span>
                     </td>
@@ -69,7 +81,7 @@
                 </tfoot>
             </table>
             <div>
-                <button class="btn btn-block btn-primary my-3 py-3">전체 상품 주문</button>
+                <button class="btn btn-block btn-primary my-3 py-3" id="orderBtn">전체 상품 주문</button>
             </div>
         </div>
     </div>

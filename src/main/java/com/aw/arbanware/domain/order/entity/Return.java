@@ -1,5 +1,6 @@
-package com.aw.arbanware.domain.order;
+package com.aw.arbanware.domain.order.entity;
 
+import com.aw.arbanware.domain.order.ReturnStatus;
 import com.aw.arbanware.domain.orderproduct.OrderProduct;
 import com.aw.arbanware.domain.user.entity.Admin;
 import lombok.Getter;
