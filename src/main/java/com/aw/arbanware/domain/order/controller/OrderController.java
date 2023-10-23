@@ -2,18 +2,24 @@ package com.aw.arbanware.domain.order.controller;
 
 import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.service.CartService;
+import com.aw.arbanware.domain.common.apiobj.DefaultResponse;
+import com.aw.arbanware.domain.common.apiobj.ResponseMessage;
+import com.aw.arbanware.domain.common.apiobj.StatusCode;
+import com.aw.arbanware.domain.delivery.entity.Delivery;
+import com.aw.arbanware.domain.delivery.service.DeliveryService;
+import com.aw.arbanware.domain.order.service.OrderService;
 import com.aw.arbanware.domain.payment.service.PaymentService;
 import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +33,8 @@ public class OrderController {
     private final CartService cartService;
     private final MemberService memberService;
     private final PaymentService paymentService;
+    private final OrderService orderService;
+    private final DeliveryService deliveryService;
 
     @GetMapping("/new")
     public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
@@ -60,4 +68,13 @@ public class OrderController {
 
         return "page/order/register_fail";
     }
+
+    @PostMapping("/{id}/new")
+    public ResponseEntity deliverySave(@PathVariable("id") Long memberId, @RequestBody Delivery delivery) {
+        memberService.deliverySave(memberId, delivery);
+
+        return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATE_LOGIN_ID)
+                , HttpStatus.OK);
+    }
+
 }
