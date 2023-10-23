@@ -46,6 +46,25 @@ $(document).ready(function (){
         }
         return color;
     });
+
+    $('#thumbnail').on('change', function() {
+        let imagePreview = $('#image-preview');
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.attr('src', e.target.result);
+                imagePreview.css('display', 'block');
+            };
+            reader.readAsDataURL(this.files[0]);
+            $('#thumbnail_label').text(this.files[0].name);
+        }
+    });
+
+    $("#create").on('click', function () {
+        $("#newForm").submit();
+    });
+
+
 })
 
 function MyCustomUploadAdapterPlugin( editor ) {

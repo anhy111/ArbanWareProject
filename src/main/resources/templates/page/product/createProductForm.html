@@ -123,7 +123,8 @@
             </div>
         </div>
         <div class="row">
-            <form id="newForm" action="/products/new" method="post" th:object="${product}" style="width: 100%">
+            <form id="newForm" action="/products/new" method="post" th:object="${product}" style="width: 100%"
+                enctype="multipart/form-data">
                 <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
                     <tr>
                         <th class="align-middle">
@@ -132,10 +133,10 @@
                         <td>
                             <div class="d-inline-block inputGroup">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       th:field="${product.name}" required/>
+                                       th:field="${product.name}" />
                             </div>
-                            <div id="loginIdSuccessDisp" style="display: none;">
-                                <span id="loginIdSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 아이디입니다.</span>
+                            <div th:if="${#fields.hasErrors('name')}" >
+                                <span class="error" th:errors="${product.name}">상품명 오류</span>
                             </div>
                         </td>
                     </tr>
@@ -154,10 +155,14 @@
                                         <td>SIZE</td>
                                         <td class="text-left pl-3">
                                             <div class="mr-1 btn-group-toggle d-inline-block" data-toggle="buttons"
-                                                 th:each="size : ${T(com.aw.arbanware.domain.product.Size).values()}">
-                                                <label class="btn btn-sm btn-outline-primary" th:for="${size}" style="width: 42px">
-                                                    <input type="checkbox" class="size" th:id="${size}" autocomplete="off">[[${size}]]
+                                                 th:each="size : ${sizeValues}">
+                                                <label class="btn btn-sm btn-outline-primary" th:for="${#ids.next('sizes')}" style="width: 42px">
+                                                    <input type="checkbox" th:field="${product.sizes}" th:value="${size}"
+                                                           class="size" autocomplete="off">[[${size}]]
                                                 </label>
+                                            </div>
+                                            <div th:if="${#fields.hasErrors('sizes')}" >
+                                                <span class="error" th:errors="${product.sizes}">사이즈 오류</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -165,18 +170,39 @@
                                         <td>COLOR</td>
                                         <td class="text-left pl-3 pt-1 pb-2">
                                             <div class="mr-1 mt-2 mb-1 btn-group-toggle d-inline-block" data-toggle="buttons"
-                                                 th:each="color : ${T(com.aw.arbanware.domain.product.Color).values()}">
-                                                <label class="btn btn-sm text-center color" th:for="${color}" th:attr="data-color=${color}"
+                                                 th:each="color : ${colorValues}">
+                                                <label class="btn btn-sm text-center color" th:for="${#ids.next('colors')}" th:attr="data-color=${color}"
                                                        style="width: 43px; height: 43px; border-radius: 50%;">
-                                                    <input type="checkbox" class="size" th:id="${color}" autocomplete="off">&nbsp;
+                                                    <input type="checkbox" th:field="${product.colors}" class="size" th:value="${color}" autocomplete="off">&nbsp;
                                                 </label>
+                                            </div>
+                                            <div th:if="${#fields.hasErrors('colors')}" >
+                                                <span class="error" th:errors="${product.colors}">컨텐츠 오류</span>
                                             </div>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <div id="optionSuccessDisp" style="display: none;">
-                                <span id="optionSuccessMsg" class="" style="color: #288CFF; font-size: 12px">사용가능한 옵션입니다.</span>
+                                <span id="optionSuccessMsg" style="color: #288CFF; font-size: 12px">사용가능한 옵션입니다.</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">대표 이미지</span>
+                        </th>
+                        <td>
+                            <div class="mb-3">
+                                <img id="image-preview" src="#" alt="Selected Image" style="max-width: 100%; display: none;">
+                            </div>
+                            <div class="d-inline-block custom-file inputGroup">
+                                <input type="file" style="height: 40px;display: none" class="custom-file-input d-inline-block"
+                                       th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
+                                <label id="thumbnail_label" class="custom-file-label" th:for="${product.thumbnail}">이미지 선택</label>
+                            </div>
+                            <div th:if="${#fields.hasErrors('thumbnail')}" >
+                                <span class="error" th:errors="${product.thumbnail}">대표 이미지 오류</span>
                             </div>
                         </td>
                     </tr>
@@ -186,7 +212,10 @@
                         </th>
                         <td>
                             <div class="d-inline-block">
-                                <div id="editor">[[${product.content}]]</div>
+                                <textarea id="editor" style="display: none" th:field="${product.content}">[[${product.content}]]</textarea>
+                                <div th:if="${#fields.hasErrors('content')}" >
+                                    <span class="error" th:errors="${product.content}">컨텐츠 오류</span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -197,11 +226,10 @@
                         <td>
                             <div class="d-inline-block inputGroup">
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
-                                       id="loginPasswordCheck"
-                                       th:field="${product.cost}" required autocomplete="off"/>
+                                       th:field="${product.cost}" autocomplete="off"/>
                             </div>
-                            <div id="loginPwCheckErrorDisp" style="display: none;">
-                                <span id="loginPwCheckErrorMsg" class="error">비밀번호가 일치하지 않습니다.</span>
+                            <div th:if="${#fields.hasErrors('cost')}" >
+                                <span class="error" th:errors="${product.cost}">원가 오류</span>
                             </div>
                         </td>
                     </tr>
@@ -214,11 +242,14 @@
                                 <input type="text" style="height: 40px" class="form-control d-inline-block"
                                        th:field="${product.price}"/>
                             </div>
+                            <div th:if="${#fields.hasErrors('price')}" >
+                                <span class="error" th:errors="${product.price}">판매가 오류</span>
+                            </div>
                         </td>
                     </tr>
                 </table>
                 <div style="width: 100%" class="text-center">
-                    <button style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="submit">
+                    <button id="create" style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="button">
                         회원가입
                     </button>
                 </div>
@@ -230,7 +261,7 @@
     <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
     <script th:src="@{/js/product/UploadAdapter.js}"></script>
     <script th:inline="javascript">
-        let color = [[${T(com.aw.arbanware.domain.product.Color).values()}]];
+        let color = [[${colorValues}]];
     </script>
     <script th:src="@{/js/product/createProductForm.js}"></script>
 </th:block>
