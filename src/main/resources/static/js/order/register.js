@@ -89,17 +89,17 @@ $(function(){
         }
 
         // ------ 결제창 띄우기 ------
-        // tossPayments.requestPayment({
-        //     amount: priceAll,
-        //     orderId: '165165165151kkhhiu', //6자 이상
-        //     orderName: productName + ' 외 ' + (cartLenth-1),
-        //     customerName: orderer,
-        //     customerEmail: email,
-        //     successUrl: 'http://localhost:8088/order/success',
-        //     failUrl: 'http://localhost:8088/order/fail'
-        //     // successUrl: 'http://localhost:8081/api/v1/payments/toss/success',
-        //     // failUrl: 'http://localhost:8081/api/v1/payments/toss/fail'
-        // });
+        tossPayments.requestPayment({
+            amount: priceAll,
+            orderId: '165165165151kkhhiu', //6자 이상
+            orderName: productName + ' 외 ' + (cartLenth-1),
+            customerName: orderer,
+            customerEmail: email,
+            successUrl: 'http://localhost:8088/order/success',
+            failUrl: 'http://localhost:8088/order/fail'
+            // successUrl: 'http://localhost:8081/api/v1/payments/toss/success',
+            // failUrl: 'http://localhost:8081/api/v1/payments/toss/fail'
+        });
 
     });
 
