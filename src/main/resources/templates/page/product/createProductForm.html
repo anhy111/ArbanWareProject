@@ -142,6 +142,23 @@
                     </tr>
                     <tr>
                         <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">카테고리</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <select class="custom-select" th:field="${product.categoryId}">
+                                    <option value="0">카테고리</option>
+                                    <option th:each="category : ${categories}" th:value="${category.id}"
+                                        th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${#fields.hasErrors('categoryId')}" >
+                                <span class="error" th:errors="${product.categoryId}">카테고리 오류</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
                             <span class="ml-2 font-weight-semi-bold">옵션</span>
                         </th>
                         <td>
@@ -156,7 +173,7 @@
                                         <td class="text-left pl-3">
                                             <div class="mr-1 btn-group-toggle d-inline-block" data-toggle="buttons"
                                                  th:each="size : ${sizeValues}">
-                                                <label class="btn btn-sm btn-outline-primary" th:for="${#ids.next('sizes')}" style="width: 42px">
+                                                <label class="btn btn-sm btn-outline-primary" th:for="${#ids.next('sizes')}" style="width: 44px">
                                                     <input type="checkbox" th:field="${product.sizes}" th:value="${size}"
                                                            class="size" autocomplete="off">[[${size}]]
                                                 </label>
@@ -183,8 +200,19 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div id="optionSuccessDisp" style="display: none;">
-                                <span id="optionSuccessMsg" style="color: #288CFF; font-size: 12px">사용가능한 옵션입니다.</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="align-middle">
+                            <span class="ml-2 font-weight-semi-bold">기본 재고수량</span>
+                        </th>
+                        <td>
+                            <div class="d-inline-block inputGroup">
+                                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                                       th:field="${product.inventory}" autocomplete="off"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('inventory')}" >
+                                <span class="error" th:errors="${product.inventory}">재고수량 오류</span>
                             </div>
                         </td>
                     </tr>
@@ -193,13 +221,20 @@
                             <span class="ml-2 font-weight-semi-bold">대표 이미지</span>
                         </th>
                         <td>
-                            <div class="mb-3">
-                                <img id="image-preview" src="#" alt="Selected Image" style="max-width: 100%; display: none;">
+                            <div th:id="image-preview_div" class="mb-3" style="display: none">
+                                <img th:id="image-preview" src="#" alt="Selected Image" style="max-width: 100%; ">
                             </div>
-                            <div class="d-inline-block custom-file inputGroup">
-                                <input type="file" style="height: 40px;display: none" class="custom-file-input d-inline-block"
+                            <div class="d-inline-block custom-file inputGroup" >
+                                <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
                                        th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
-                                <label id="thumbnail_label" class="custom-file-label" th:for="${product.thumbnail}">이미지 선택</label>
+                                <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
+                                    이미지 선택
+                                </label>
+                            </div>
+                            <div class="d-inline-block custom-file inputGroup" th:unless="${product.thumbnail != null}">
+                                <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
+                                       th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
+
                             </div>
                             <div th:if="${#fields.hasErrors('thumbnail')}" >
                                 <span class="error" th:errors="${product.thumbnail}">대표 이미지 오류</span>
@@ -212,6 +247,7 @@
                         </th>
                         <td>
                             <div class="d-inline-block">
+                                <input type="hidden" th:field="${product.productImages}">
                                 <textarea id="editor" style="display: none" th:field="${product.content}">[[${product.content}]]</textarea>
                                 <div th:if="${#fields.hasErrors('content')}" >
                                     <span class="error" th:errors="${product.content}">컨텐츠 오류</span>
@@ -250,7 +286,7 @@
                 </table>
                 <div style="width: 100%" class="text-center">
                     <button id="create" style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="button">
-                        회원가입
+                        상품추가
                     </button>
                 </div>
             </form>

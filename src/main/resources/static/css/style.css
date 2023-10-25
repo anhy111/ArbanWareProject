@@ -3738,7 +3738,7 @@ input[type="button"].btn-block {
   line-height: 1.5;
   color: #495057;
   background-color: #fff;
-  border: 1px solid #EDF1FF;
+  border: 1px solid #e6e6e6;
 }
 
 .custom-file-label::after {

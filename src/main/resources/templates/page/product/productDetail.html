@@ -350,9 +350,21 @@
     </div>
     <!-- Products End -->
 
-
-
 </div>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        let addProduct = [[${addProduct}]];
+        if (addProduct) {
+            Swal.fire({
+                html: '<b>상품이 추가되었습니다.</b>',
+                icon: 'success'
+            });
+        }
+    </script>
+</th:block>
 </body>
+
+
 
 </html>

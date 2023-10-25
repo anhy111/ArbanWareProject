@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.category;
+package com.aw.arbanware.domain.category.entity;
 
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;

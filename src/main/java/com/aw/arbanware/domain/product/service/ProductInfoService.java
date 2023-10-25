@@ -21,4 +21,8 @@ public class ProductInfoService {
         return productInfoRepository.findByProductId(productId);
     }
 
+    public List<ProductInfo> saveAll(List<ProductInfo> productInfos) {
+        return productInfoRepository.saveAll(productInfos);
+    }
+
 }
