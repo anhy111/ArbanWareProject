@@ -8,6 +8,7 @@ import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,12 +16,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 @Table(name = "ORDERS")
-public class Order extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "orders_seq")
-    @SequenceGenerator(name = "orders_seq",sequenceName = "ORDERS_SEQUENCE",allocationSize = 1)
+public class Order extends BaseTimeEntity implements Persistable<String> {
+    @Id
     @Column(name = "ORDER_ID")
-    private Long id;    // 주문번호
+    private String id;    // 주문번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
@@ -50,5 +49,10 @@ public class Order extends BaseTimeEntity {
     private Address address;    //주소
     private String recipientPhoneNumber;     // 핸드폰
     private String requirements;    // 요청사항
+
+    @Override
+    public boolean isNew() {
+        return  super.getRegistrationTime() == null;
+    }
 
 }

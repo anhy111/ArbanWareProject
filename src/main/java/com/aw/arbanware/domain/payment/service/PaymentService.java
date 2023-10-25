@@ -1,9 +1,11 @@
 package com.aw.arbanware.domain.payment.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -16,10 +18,12 @@ import static java.util.Base64.*;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@Transactional
 public class PaymentService {
 
 
-    public boolean callApiAuth(String paymentKey, String orderId, Long amount) {
+    public JSONObject callApiAuth(String paymentKey, String orderId, Long amount) {
         String secretKey = readKey();
         Encoder encoder = getEncoder();
         byte[] encodedBytes = new byte[0];
@@ -58,7 +62,7 @@ public class PaymentService {
                 log.info("승인요청응답 예외발생 {}", code);
                 log.info("message={}, code={}", jsonObject.get("message"), jsonObject.get("code"));
             }
-            return isSuccess;
+            return jsonObject;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
