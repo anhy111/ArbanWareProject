@@ -46,5 +46,7 @@ public class ProductImageService {
         return productImageRepository.saveAll(productImages);
     }
 
-
+    public List<ProductImage> findByIdList(List<Long> ids) {
+        return productImageRepository.findAllById(ids);
+    }
 }

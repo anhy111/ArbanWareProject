@@ -20,7 +20,7 @@ class ProductInfoTest {
     @DisplayName("상품_정보_테스트")
     public void 상품_정보_테스트() throws Exception {
         // given
-        new ProductInfo();
+//        new ProductInfo();
         // when
 
         // then

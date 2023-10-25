@@ -3,7 +3,9 @@ package com.aw.arbanware.domain.product.entity;
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductInfo extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "product_info_seq")
@@ -29,6 +32,13 @@ public class ProductInfo extends BaseTimeEntity {
     private Size size;
 
     private int inventory;
+
+    public ProductInfo(final Product product, final Size size, final Color color, final int inventory) {
+        this.product = product;
+        this.size = size;
+        this.color = color;
+        this.inventory = inventory;
+    }
 
     @Override
     public boolean equals(final Object o) {

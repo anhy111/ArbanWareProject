@@ -32,12 +32,14 @@ $(document).ready(function (){
         })
         .then( editor => {
             window.editor = editor
-        } );
+            const imageUploadEditing = editor.plugins.get( 'ImageUploadEditing' );
 
-    $("#price").on('click', function () {
-        const editorData = editor.getData();
-        console.log(editorData);
-    });
+            imageUploadEditing.on( 'uploadComplete', ( evt, { data, imageElement } ) => {
+                editor.model.change( writer => {
+                    writer.setAttribute( 'alt', data.imageId, imageElement );
+                } );
+            } );
+        } );
 
     $(".color").css('backgroundColor', function () {
         let color = $(this).data('color');
@@ -53,7 +55,7 @@ $(document).ready(function (){
             var reader = new FileReader();
             reader.onload = function(e) {
                 imagePreview.attr('src', e.target.result);
-                imagePreview.css('display', 'block');
+                $('#image-preview_div').css('display', 'block');
             };
             reader.readAsDataURL(this.files[0]);
             $('#thumbnail_label').text(this.files[0].name);
@@ -61,10 +63,17 @@ $(document).ready(function (){
     });
 
     $("#create").on('click', function () {
+        let str  = '';
+        $('figure img').attr('alt', function (inx, val) {
+            str += val + ',';
+            return val;
+        });
+
+        $('#productImages').val(str);
         $("#newForm").submit();
     });
 
-
+    $('#thumbnail').change();
 })
 
 function MyCustomUploadAdapterPlugin( editor ) {

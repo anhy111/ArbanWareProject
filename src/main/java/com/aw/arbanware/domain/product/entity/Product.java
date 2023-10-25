@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.product.entity;
 
-import com.aw.arbanware.domain.category.Category;
+import com.aw.arbanware.domain.category.entity.Category;
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
 import lombok.Getter;
@@ -35,6 +35,6 @@ public class Product extends BaseEntity {
     private String thumbnail;   //대표이미지
 
     @Enumerated(EnumType.STRING)
-    private DeleteYn deleteYn;  //삭제여부
+    private DeleteYn deleteYn = DeleteYn.N;  //삭제여부
 
 }

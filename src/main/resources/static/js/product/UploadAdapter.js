@@ -32,7 +32,8 @@ class UploadAdapter {
             console.log(response);
             response.forEach(function (val, inx) {
                 resolve({
-                    default: val.urls['default'] //업로드된 파일 주소
+                    default: val.urls['default'], //업로드된 파일 주소
+                    imageId : val.imageId
                 })
             });
         })

@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.category;
 
+import com.aw.arbanware.domain.category.entity.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
