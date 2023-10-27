@@ -25,4 +25,8 @@ public class ProductInfoService {
         return productInfoRepository.saveAll(productInfos);
     }
 
+    public List<ProductInfo> findByProductId(Long productId) {
+        return productInfoRepository.findByProductId(productId);
+    }
+
 }
