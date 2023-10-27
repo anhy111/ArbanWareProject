@@ -7,7 +7,9 @@ import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
+import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.service.ProductImageService;
+import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ import java.util.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductInfoService productInfoService;
     private final ProductImageService productImageService;
     private final CategoryService categoryService;
 
@@ -67,19 +70,27 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model,
                                 @RequestParam(required = false) boolean addProduct) {
-        final Optional<Product> findProduct = productService.findById(id);
-        if (findProduct.isEmpty()) {
+        final List<ProductInfo> findProductInfos = productInfoService.findByProductId(id);
+        if (findProductInfos.isEmpty()) {
             return "page/product/notFoundProduct";
         }
-        model.addAttribute("product", findProduct.get());
+
+        List<Color> existsColors = existsColorsAndSorted(findProductInfos);
+        List<Size> existsSizes = existsSizesAndSorted(findProductInfos);
+
+        model.addAttribute("product", findProductInfos.get(0).getProduct());
+        model.addAttribute("colors", existsColors);
+        model.addAttribute("sizes", existsSizes);
+        model.addAttribute("productInfos", findProductInfos);
+        model.addAttribute("form", new OrderProductForm());
         model.addAttribute("addProduct", addProduct);
         return "page/product/productDetail";
     }
 
+
+
     @GetMapping("/products/new")
     public String newProducts(Model model) {
-//        final Optional<Product> findProduct = productService.findById(1L);
-//        model.addAttribute("product", findProduct.get());
         model.addAttribute("product", new CreateProductForm());
         model.addAttribute("categories", categoryService.findAllCategories());
         return "page/product/createProductForm";
@@ -107,9 +118,11 @@ public class ProductController {
         log.info("images = {}", images);
         final List<ProductImage> productImages = productImageService.saveAll(images);
         List<CkEditor5RespForm> forms = new ArrayList<>();
+
         for (ProductImage productImage : productImages) {
             final CkEditor5RespForm ckEditor5RespForm = new CkEditor5RespForm();
             ckEditor5RespForm.setImageId(productImage.getId());
+
             final Map<String, String> urls = ckEditor5RespForm.getUrls();
             final String domain = request.getRequestURL().toString().replace(request.getRequestURI(), "");
 
@@ -119,5 +132,33 @@ public class ProductController {
             forms.add(ckEditor5RespForm);
         }
         return new ResponseEntity<>(forms, HttpStatus.OK);
+    }
+
+    private List<Color> existsColorsAndSorted(final List<ProductInfo> productInfos) {
+        Set<Color> set = new HashSet<>();
+        for (ProductInfo productInfo : productInfos) {
+            set.add(productInfo.getColor());
+        }
+
+        final List<Color> colors = new ArrayList<>(set);
+        colors.sort(
+                (o1, o2) -> o1.ordinal() - o2.ordinal()
+        );
+
+        return colors;
+    }
+
+    private List<Size> existsSizesAndSorted(final List<ProductInfo> productInfos) {
+        Set<Size> set = new HashSet<>();
+        for (ProductInfo productInfo : productInfos) {
+            set.add(productInfo.getSize());
+        }
+
+        final List<Size> sizes = new ArrayList<>(set);
+        sizes.sort(
+                (o1, o2) -> o1.ordinal() - o2.ordinal()
+        );
+
+        return sizes;
     }
 }
