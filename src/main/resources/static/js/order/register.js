@@ -6,7 +6,10 @@ $(function(){
     let requirements;
 
     let clientKey = 'test_ck_DLJOpm5QrlxzAkdbmPdrPNdxbWnY' // 테스트용 클라이언트 키
-    let tossPayments = TossPayments(clientKey)
+    let tossPayments = TossPayments(clientKey);
+
+    let orderId = 0;
+    let paymentId = 0;
 
     $("#searchAddress").on('click',searchAddressFunc); //우편번호 불러오기
     // $('#orderBtn').on('click', paymentStart); //주문 및 결제 시작
@@ -21,12 +24,6 @@ $(function(){
         $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
         $('#orderBtn').text(priceAll.toLocaleString('ko-KR') + '원 주문하기');
     });
-
-    // $("select[name=deliveryRequest]").change(function(){
-    //     requirements = $("select[name=deliveryRequest] option:selected").text();
-    //
-    //     console.log(requirements); //text값 가져오기
-    // });
 
     $('#orderBtn').click(function (){
 
@@ -68,31 +65,62 @@ $(function(){
             }
         };
 
-        $.ajax({
-            type: 'post',
-            url: '/order/'+customerKey+'/new',
-            contentType:"application/json;charset=utf-8",
-            data:JSON.stringify(orderData),
-            success :function(data){
-                console.log("deliverySave성공이라해주라 ", data.id);
+        let paymentData = {
+            'status' : 'AWAITING_PAYMENT',
+            'totalAmount' : priceAll
+        }
 
-                // ------ 결제창 띄우기 ------
-                tossPayments.requestPayment('CARD',{
-                    amount: priceAll,
-                    orderId: data.id, //6자 이상
-                    orderName: productName + ' 외 ' + (cartLenth-1),
-                    customerName: orderer,
-                    customerEmail: email,
-                    successUrl: 'http://localhost:8088/payment/success',
-                    failUrl: 'http://localhost:8088/payment/fail'
+        if (orderId == 0) {
+            findOrderSeq(orderData, paymentData);
+        }
+        console.log("orderId :  ", orderId);
+
+        // ------ 결제창 띄우기 ------
+        tossPayments.requestPayment('CARD',{
+            amount: priceAll,
+            orderId: orderId, //6자 이상
+            orderName: productName + ' 외 ' + (cartLenth-1),
+            customerName: orderer,
+            customerEmail: email,
+            // successUrl: 'http://localhost:8088/payment/success',
+            // failUrl: 'http://localhost:8088/payment/fail'
+        }).then(function (data) {
+            // 성공 처리: 결제 승인 API를 호출하세요
+            console.log("성공 data=", data);
+
+           location.replace('http://localhost:8088/payment/success?paymentKey=' + data.paymentKey
+                                + '&orderId=' + data.orderId
+                                + '&amount=' + data.amount
+                                + '&paymentId=' + paymentId);
+        }).catch(function (error) {
+            console.log(error.code);
+            if (error.code === 'PAY_PROCESS_CANCELED') {
+                // 사용자의 결제취소
+                Swal.fire({
+                    html: '<b>결제가 취소되었습니다.</b>',
+                    icon: 'info'
                 });
 
-                // window.location.reload(true);
-            },
-            error:function(request, status, error){
-                console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+                $.ajax({
+                    async:false,
+                    type: 'post',
+                    url: '/payment/cancel/'+paymentId + '/' + orderId,
+                    contentType:"application/json;charset=utf-8",
+                    success :function(paymentCancelData){
+                        console.log("paymentCancelData : ", paymentCancelData);
+
+                    },
+                    error:function(request, status, error){
+                        console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+                    }
+                });
+
+
             }
         });
+
+        // window.location.reload(true);
+
 
         // if(deliverySave){ 배송지 저장
         //     if(deliveryYN ==null){
@@ -116,6 +144,42 @@ $(function(){
 
     });
 
+
+    function findOrderSeq(orderData, paymentData) {
+        $.ajax({
+            async:false,
+            type: 'post',
+            url: '/order/'+customerKey+'/new',
+            contentType:"application/json;charset=utf-8",
+            data:JSON.stringify(orderData),
+            success :function(data){
+                orderId = data.id;
+
+                paymentData.order = {'id' : orderId};
+
+                $.ajax({
+                    async:false,
+                    type: 'post',
+                    url: '/payment/new',
+                    contentType:"application/json;charset=utf-8",
+                    data:JSON.stringify(paymentData),
+                    success :function(returnPayment){
+                        console.log("paymentData : ", returnPayment);
+                        paymentId = returnPayment.id;
+
+                    },
+                    error:function(request, status, error){
+                        console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+                        // orderId = 0;
+                    }
+                });
+            },
+            error:function(request, status, error){
+                console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+                orderId = 0;
+            }
+        });
+    }
 });
 
 function searchAddressFunc() {
@@ -131,3 +195,4 @@ function searchAddressFunc() {
         }
     }).open();
 }
+

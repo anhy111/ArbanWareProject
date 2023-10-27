@@ -11,6 +11,7 @@ import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/new")
+    @PreAuthorize("isAuthenticated()")
     public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
         log.info("id={}", id);

@@ -1,5 +1,9 @@
 package com.aw.arbanware.domain.payment.service;
 
+import com.aw.arbanware.domain.payment.PaymentMethod;
+import com.aw.arbanware.domain.payment.PaymentStatus;
+import com.aw.arbanware.domain.payment.entity.Payment;
+import com.aw.arbanware.domain.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -12,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.Properties;
 
 import static java.util.Base64.*;
@@ -22,6 +27,7 @@ import static java.util.Base64.*;
 @Transactional
 public class PaymentService {
 
+    private final PaymentRepository paymentRepository;
 
     public JSONObject callApiAuth(String paymentKey, String orderId, Long amount) {
         String secretKey = readKey();
@@ -80,5 +86,23 @@ public class PaymentService {
         }
 
         return properties.getProperty("secretKey");
+    }
+
+    public Payment paymentSave(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
+    public Payment paymentSuccess(JSONObject paymentJson, Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new IllegalArgumentException("해당 결제가 없습니다."));
+        payment.setPaymentKey((String)paymentJson.get("paymentKey"));
+        payment.setMethod(PaymentMethod.findStatus((String)paymentJson.get("method")));
+        payment.setStatus(PaymentStatus.COMPLETE_PAYMENT);
+        return payment;
+    }
+
+    public Payment paymentCancel(Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new IllegalArgumentException("해당 결제가 없습니다."));
+        payment.setStatus(PaymentStatus.EXPIRES_PAYMENT);
+        return payment;
     }
 }

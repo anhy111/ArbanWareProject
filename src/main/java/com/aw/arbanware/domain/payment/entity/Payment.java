@@ -7,6 +7,7 @@ import com.aw.arbanware.domain.payment.PaymentMethod;
 import com.aw.arbanware.domain.payment.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,11 +30,16 @@ public class Payment extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;   // 결제수단
 
-    private String status;   // 결제상태
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;   // 결제상태
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime paymentDate;  // 결제일
 
     private int totalAmount;        // 실 결제금액
     private int additionalAmount;   // 추가 입금액
+
     private int depositAmount;      // 입금액
     private String depositor;   // 입금자
 
