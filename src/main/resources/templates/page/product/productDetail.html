@@ -14,6 +14,15 @@
         .nav-tabs .nav-link.active {
             font-weight: bold ;
         }
+
+        .btnCustom {
+            font-size: 12px;
+            border: #BCBCBC solid 1px;
+            height: 40px;
+            color: #1C1C1C;
+            background-color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -65,18 +74,21 @@
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-minus" >
-                                <i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-primary btn-minus" id="subAmount">
+                                    <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary text-center" value="1">
+                            <input type="text" th:field="${form.amount}" class="form-control bg-secondary text-center">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-plus">
+                                <button type="button" class="btn btn-primary btn-plus" id="addAmount">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    </div>
+                    <div class="d-flex ">
+                        <button type="button" class="btn btnCustom btn-primary flex-fill mr-2" style="font-size: 14px"><b>장바구니</b></button>
+                        <button type="submit" class="btn btn-primary flex-fill ml-2" style="font-size: 14px"><b>바로구매</b></button>
                     </div>
                 </form>
             </div>
