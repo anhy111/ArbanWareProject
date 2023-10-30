@@ -36,15 +36,13 @@
 <!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
                         <td class="align-middle text-center">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" th:id="${'cartCheck' + (i.index+1)}">
+                                <input type="checkbox" class="custom-control-input cartCheck" th:id="${'cartCheck' + (i.index+1)}" th:value="${list.getProductInfo().getId()}">
                                 <label class="custom-control-label" th:for="${'cartCheck' + (i.index+1)}"></label>
                             </div>
                         </td>
                         <td class="align-middle">
                             <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                             <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
-<!--                            <a class="text-dark mb-2" >옵션변경</a>-->
-
                         </td>
                         <td class="align-middle text-center">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -80,9 +78,10 @@
                 </tr>
                 </tfoot>
             </table>
-            <div>
-                <button class="btn btn-block btn-primary my-3 py-3" id="orderBtn">전체 상품 주문</button>
-            </div>
+        </div>
+        <div class="row justify-content-center">
+                <button class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
+                <button class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
         </div>
     </div>
 
@@ -110,6 +109,11 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/js/cart/list.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        let cartLenth = [[${cartList.size()}]];
+
+    </script>
 </th:block>
 </body>
 </html>

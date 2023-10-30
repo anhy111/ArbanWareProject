@@ -12,9 +12,51 @@ $(function(){
         $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
     });
 
+
     $('#orderBtn').click(function (){
+
+        let dataArray 	= new Array();
+
+        $.each($('.cartCheck'), function (index, item){
+            // console.log("idx : ", index, " itme : ", item, " this : ", $(this).val());
+            let dataObj		= new Object();
+
+            if($(this).is(':checked')){
+
+                let tr = $('.cartCheck').parent().parent().parent().eq(index);
+                let checkQuantity = tr.children().eq(3).children().children().eq(1).val();
+                let checkPrice = tr.children().eq(4).children().eq(1).text();
+
+                dataObj.checkQuantity = checkQuantity;
+                dataObj.checkPrice = checkPrice;
+
+                dataObj = JSON.stringify(dataObj);
+                //String 형태로 파싱한 객체를 다시 json으로 변환
+                dataArray.push(JSON.parse(dataObj));
+
+                console.log(" checkQuantity : ", checkQuantity, " checkPrice : ", checkPrice);
+            }
+        });
+
+
+        console.log( " dataArray : ", dataArray)
+
+        // $(location).attr('href', '/order/new');
+    });
+
+    $('#orderAllBtn').click(function (){
         $(location).attr('href', '/order/new');
     });
+
+    $('#cartList').click(function (){
+        if($('#cartList').is(':checked')){
+            $('.cartCheck').prop('checked',true);
+        }else {
+            $('.cartCheck').prop('checked',false);
+        }
+
+    });
+
 
 })
 function quantityUpdate(id, quantity, inventory, plusMinus){
@@ -116,7 +158,7 @@ function optionUpdate(productId) { //보류
         error:function(request, status, error){
             console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
             Swal.fire(
-                "삭제 실패",
+                "옵션변경 실패",
                 "에러 났어요!", // had a missing comma
                 "error"
             )
