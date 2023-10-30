@@ -37,4 +37,14 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DeleteYn deleteYn = DeleteYn.N;  //삭제여부
 
+    public void updateProductExceptThumbnail(Product other) {
+        this.category = other.category;
+        this.name = other.name;
+        this.content = other.content;
+        this.cost = other.cost;
+        this.price = other.price;
+        this.productImages = other.productImages;
+        this.deleteYn = other.deleteYn;
+    }
+
 }

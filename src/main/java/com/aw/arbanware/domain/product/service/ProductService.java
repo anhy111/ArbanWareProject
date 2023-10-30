@@ -2,6 +2,7 @@ package com.aw.arbanware.domain.product.service;
 
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.controller.CreateProductForm;
+import com.aw.arbanware.domain.product.controller.UpdateProductForm;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
@@ -65,5 +66,36 @@ public class ProductService {
         });
 
         return saveProduct;
+    }
+
+    @Transactional
+    public Product updateProduct(final UpdateProductForm form) {
+//        final Product updateProduct = UpdateProductForm.createProduct(form);
+//        final List<ProductInfo> findProductInfos = productInfoService.findByProductIdWithImage(form.getId());
+//        if (findProductInfos.size() == 0) {
+//            return null;
+//        }
+//        final Product findProduct = findProductInfos.get(0).getProduct();
+//
+//        // 대표이미지 변경
+//        if (form.getThumbnail().getSize() != 0) {
+//            // 기존 대표이미지 삭제
+//            final String[] thumbnailSplit = findProduct.getThumbnail().split("/");
+//            final ProductImage findProductImage = productImageService.findByStoredFileName(thumbnailSplit[thumbnailSplit.length - 1]);
+//            findProductImage.setProduct(null);
+//
+//            // 업데이트한 대표이미지로 변경
+//            final ProductImage thumbnail = productImageService.saveAll(new MultipartFile[]{form.getThumbnail()})
+//                    .get(0);
+//            final AttachFileInfo thumbnailFileInfo = thumbnail.getAttachFileInfo();
+//            updateProduct.setThumbnail(thumbnailFileInfo.getStoredPath() + thumbnailFileInfo.getStoredFileName());
+//        }
+//
+//        // 상품 변경
+//        findProduct.updateProductExceptThumbnail(updateProduct);
+
+
+
+        return null;
     }
 }

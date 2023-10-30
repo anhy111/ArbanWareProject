@@ -7,12 +7,12 @@
 <head>
     <title>Shop Detail</title>
     <style>
-        .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
             border: none;
         }
 
         .nav-tabs .nav-link.active {
-            font-weight: bold ;
+            font-weight: bold;
         }
 
         .btnCustom {
@@ -22,6 +22,79 @@
             color: #1C1C1C;
             background-color: white;
             cursor: pointer;
+        }
+
+        .card-header {
+            background-color: inherit;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            padding: 0.4rem 1.25rem;
+        }
+
+        .card {
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .btn-link {
+            color: #1C1C1C;
+            font-weight: bold;
+            text-decoration: none !important;
+        }
+
+        .btn-link:hover {
+            color: inherit;
+        }
+
+        .checkDown {
+            border: 2px solid black;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-top: 0;
+            border-right: 0;
+            transform: rotate(-45deg);
+            transform-origin: 25% 25%;
+        }
+
+        .checkUp {
+            border: 2px solid black;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-bottom: 0;
+            border-left: 0;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+        }
+
+        p {
+            margin-bottom: 0.1em;
+        }
+
+        p span {
+            text-align: left;
+            color: rgb(109, 109, 109);
+            background-color: rgb(255, 255, 255);
+            font-size: 13px;
+        }
+
+        #material {
+            border: #e6e6e6 1px solid;
+            border-radius: 2%;
+            padding-top: 3em;
+            padding-left: 2em;
+            padding-right: 2em;
+            padding-bottom: 2em;
+            margin-top: 2em;
+            margin-bottom: 2em;
+        }
+
+        #material img {
+            width: 70px;
+            height: 70px;
         }
     </style>
 </head>
@@ -36,7 +109,8 @@
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active text-center">
-                            <img style="width: 570px; max-width: 600px" th:src="@{'/upload/'+ ${product.thumbnail}}" alt="Image">
+                            <img style="width: 570px; max-width: 600px" th:src="@{'/upload/'+ ${product.thumbnail}}"
+                                 alt="Image">
                         </div>
                     </div>
                 </div>
@@ -54,22 +128,25 @@
                     </div>
                     <small class="pt-1" th:text="'(50 ' + '후기)'"></small>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4" data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA')}" ></h3>
+                <h3 class="font-weight-semi-bold mb-4"
+                    data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></h3>
                 <hr>
-                <form th:object="${form}" >
+                <form th:object="${form}">
                     <div class="d-flex mb-4">
                         <p class="text-dark font-weight-medium mb-0 mr-3" style="width: 42px">Color</p>
-                            <div class="custom-control custom-radio custom-control-inline mr-2" th:each="color : ${colors}">
-                                <input type="radio" class="custom-control-input" th:field="${form.color}" th:value="${color}">
-                                <label class="custom-control-label" th:for="${#ids.prev('color')}" th:text="${color}"></label>
-                            </div>
+                        <div class="custom-control custom-radio custom-control-inline mr-2" th:each="color : ${colors}">
+                            <input type="radio" class="custom-control-input" th:field="${form.color}"
+                                   th:value="${color}">
+                            <label class="custom-control-label" th:for="${#ids.prev('color')}"
+                                   th:text="${color}"></label>
+                        </div>
                     </div>
                     <div class="d-flex mb-3">
                         <p class="text-dark font-weight-medium mb-0 mr-3" style="width: 42px">Size</p>
-                            <div class="custom-control custom-radio custom-control-inline mr-2" th:each="size : ${sizes}">
-                                <input type="radio" class="custom-control-input" th:field="${form.size}" th:value="${size}">
-                                <label class="custom-control-label" th:for="${#ids.prev('size')}" th:text="${size}"></label>
-                            </div>
+                        <div class="custom-control custom-radio custom-control-inline mr-2" th:each="size : ${sizes}">
+                            <input type="radio" class="custom-control-input" th:field="${form.size}" th:value="${size}">
+                            <label class="custom-control-label" th:for="${#ids.prev('size')}" th:text="${size}"></label>
+                        </div>
                     </div>
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
@@ -78,7 +155,8 @@
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" th:field="${form.amount}" class="form-control bg-secondary text-center">
+                            <input type="text" th:field="${form.amount}" th:value="1"
+                                   class="form-control bg-secondary text-center">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-primary btn-plus" id="addAmount">
                                     <i class="fa fa-plus"></i>
@@ -87,8 +165,10 @@
                         </div>
                     </div>
                     <div class="d-flex ">
-                        <button type="button" class="btn btnCustom btn-primary flex-fill mr-2" style="font-size: 14px"><b>장바구니</b></button>
-                        <button type="submit" class="btn btn-primary flex-fill ml-2" style="font-size: 14px"><b>바로구매</b></button>
+                        <button type="button" class="btn btnCustom btn-primary flex-fill mr-2" style="font-size: 14px">
+                            <b>장바구니</b></button>
+                        <button type="submit" class="btn btn-primary flex-fill ml-2" style="font-size: 14px"><b>바로구매</b>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -105,49 +185,259 @@
                         <div id="content"></div>
                     </div>
                     <div class="tab-pane fade" id="tab-pane-2">
-                        <h4 class="mb-3">Additional Information</h4>
-                        <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item px-0">
-                                        Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                    </li>
-                                  </ul> 
+                        <div class="accordion mt-5" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button id="collapse1" class="btn btn-link text-left d-flex w-100" type="button"
+                                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne, collapseOne-down">
+                                            <span>소재세탁안내</span>
+                                            <span id="collapseOne-down" class="flex-fill text-right collapse">
+                                                <span class="checkDown"></span>
+                                            </span>
+                                            <span id="collapseOne-up" class="flex-fill text-right collapse show">
+                                                <span class="checkUp"></span>
+                                            </span>
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                                    <div id="material" class="card-body container">
+                                        <div class="row mb-4">
+                                            <div class="col-5 d-flex"
+                                                 style="text-align: left;color: #6D6D6D; background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/cotton.png"
+                                                        alt="면" style="border: none;">
+                                                    <p class="mt-2">면</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">보온성과 흡습성이 좋고
+                                                    가볍고 내구성도 좋아 가장 많이 사용하는 원단입니다.<br>어떠한 세탁방법에도 무난하지만 색상별로 구분하여 세탁해야 색상이
+                                                    선명하게 유지됩니다.</p>
+                                            </div>
+                                            <div class="col-5 offset-1 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/polyester.png"
+                                                        alt="폴리" style="border: none;">
+                                                    <p class="mt-2">폴리</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">구김이 적고 내구성이
+                                                    좋고 세탁시 변형기 거의 없는 소재입니다.<br>미지근한 물에 중성세제를 이용하여 세탁합니다. 다림질 할 때에는 약한
+                                                    온도로 천을 덧대어 사용합니다.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-5 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/acryl.png"
+                                                        alt="아크릴" style="border: none;">
+                                                    <p class="mt-2">아크릴</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">부드러우며 내구성,
+                                                    보온성이 좋지만 세탁시 수축될 수 있습니다.<br>30&deg;C이하의 미지근한 물에 뒤집어서 세탁 후 그늘 건조를
+                                                    권장합니다.</p>
+                                            </div>
+                                            <div class="col-5 offset-1 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/chiffon.png"
+                                                        alt="쉬폰" style="border: none;">
+                                                    <p class="mt-2">쉬폰</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">얇고 가벼워 원피스,
+                                                    블라우스, 스커트에 주로 사용되며 부드러움이 특징입니다.<br>미지근한 물로 중성세제를 풀어준 후 단독손세탁을 권장합니다.
+                                                    다림질 할 때에는 약한 온도로 천을 덧대어 사용합니다.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-5 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/rayon.png"
+                                                        alt="레이온" style="border: none;">
+                                                    <p class="mt-2">레이온</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">광택이 느껴지며 실크와
+                                                    비슷한 부드러운 촉감의 원단입니다.<br>물에 젖으면 수축되는 현상과 구김이 잘 가므로 드라이클리닝을 권장합니다.</p>
+                                            </div>
+                                            <div class="col-5 offset-1 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/wool.png" alt="울"
+                                                        style="border: none;">
+                                                    <p class="mt-2">울</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">모, 양모라고 불리우며
+                                                    도톰한 두께감으로 보온성과 내구성이 좋고 겨울철에 주로 많이 사용되는 원단입니다.<br>물에 닿을 시 수축현상이 심할 수
+                                                    있어 드라이클리닝을 권장합니다.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-5 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/denim.png"
+                                                        alt="데님" style="border: none;">
+                                                    <p class="mt-2">데님</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">질기고 튼튼한 소재로
+                                                    4계절 내내 활용성이 좋은 원단입니다.<br>물빠짐이 쉬운 소재로 처음 몇 번정도는 드라이클리닝을 권장합니다. 물
+                                                    세탁시에는 단추, 지버등을 채우고 중성세제를 사용해 뒤집어 필히 단독세탁합니다.</p>
+                                            </div>
+                                            <div class="col-5 offset-1 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/linen.png"
+                                                        alt="린넨" style="border: none;">
+                                                    <p class="mt-2">린넨</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">여름철 대표적인 원단으로
+                                                    시원하고 통풍성이 좋은 원단입니다.<br>섬유유연제와 세탁기를 이용한 탈수는 주름이 생길 수 있어 사용을 자제해주세요.
+                                                    중성세제를 사용하여 30&deg;C이하의 미지근한 물에 또는 차가운물 세탁을 권장합니다.</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 d-flex"
+                                                 style="text-align: left;color: rgb(109, 109, 109);background-color: rgb(255, 255, 255);font-size: 13px;">
+                                                <div class="text-center mr-3"><img
+                                                        src="https://www.ggsing.com/uiux/gayoun/fabric/leather.png"
+                                                        alt="가죽" style="border: none;">
+                                                    <p class="mt-2">가죽</p>
+                                                </div>
+                                                <p class="align-self-center pb-2" style="font-size: 12px;">보온성이 좋아 외투류에
+                                                    많이 사용되며 산과 염기에 강한 원단입니다.<br>최대한 습기를 피하고 통풍이 잘 되는곳에 보관하여 주세요. 물과 열에
+                                                    약한 소재이므로 반드시 드라이클리닝을 권장합니다.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item px-0">
-                                        Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                    </li>
-                                    <li class="list-group-item px-0">
-                                        Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                    </li>
-                                  </ul> 
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class="mb-0">
+                                        <button id="collapse2" class="btn btn-link collapsed text-left d-flex w-100"
+                                                type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                            <span>배송, 취소, 교환 & 반품안내</span>
+                                            <span id="collapseTwo-down" class="flex-fill text-right collapse show">
+                                                <span class="checkDown"></span>
+                                            </span>
+                                            <span id="collapseTwo-up" class="flex-fill text-right collapse">
+                                                <span class="checkUp"></span>
+                                            </span>
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                                    <div class="card-body">
+                                        <h5 class="font-weight-bold">배송안내</h5>
+                                        <p><span>- 배송 지역 : 전국 지역(국내)</span></p>
+                                        <p><span>- 택배사 : CJ대한통운택배 (1588-1255)</span></p>
+                                        <p><span>- 배송 비용 : 무료배송</span></p>
+                                        <p><span>- 배송 안내 : 일반 상품일 경우 보통 2~3일이내의 준비 기간 소요 후 출고</span></p>
+                                        <p><span>- 당일 발송 : 어반웨어의 당일발송 상품은 평일 오후 5시까지 결제 시 당일발송 가능</span></p>
+                                        <p><span>- 일요일은 오후 2시 30분까지 결제 시 당일발송 됩니다.</span></p>
+                                        <p><span>※ 단, 당일발송 상품끼리 주문시에만 가능 ※</span></p>
+                                        <p><span>- 입고 지연이 생길 시 &ndash; 영업일 기준 3일이상 지연됐을 경우에는 주문상품 중 발송 가능한 상품 먼저 부분 발송 처리 도와드리고 있습니다.</span>
+                                        </p>
+                                        <p><span>- 제주도 및 도서 섬 지역 제외</span></p>
+                                        <p><br></p>
+                                        <p><br></p>
+                                        <h5 class="font-weight-bold">취소안내</h5>
+                                        <p><span>- 주문 후 상품 취소를 원하시는 경우,</span></p>
+                                        <p><span>- 전화상담(1688-0000), 질문하기/비밀 게시판으로 문의 남겨주시면 처리 도와드리고 있습니다.</span></p>
+                                        <p><span>- 배송 전일 경우에만 취소 처리 가능하시며 배송 중인 상품은 수령 후 반품으로 요청해주셔야 합니다.</span></p>
+                                        <p><span>- 구매자가 미성년자인 경우에는 상품 구입 시 법정대리인이 동의하지 아니하면 미성년자 본인 또는 법정대리인이 구매 취소할 수 있습니다.</span>
+                                        </p>
+                                        <p><br></p>
+                                        <p><br></p>
+                                        <h5 class="font-weight-bold">교환, 반품안내</h5>
+                                        <p><span>접수 방법 : 전화접수 [1688-3073] 또는 게시판 접수 [배송 후 교환&amp;반품 게시판에 글 작성]시</span>
+                                        </p>
+                                        <p><span>&nbsp;&nbsp;&darr;</span></p>
+                                        <p><span>접수 완료</span></p>
+                                        <p><span>&nbsp;&nbsp;&darr;</span></p>
+                                        <p>
+                                            <span>3일이내 기사님 방문 &gt;&gt; 1-2일 이내 제품 도착 &gt;&gt; 7일이내 교환 및 환불 처리 완료 후 문자 연락</span>
+                                        </p>
+                                        <p><br></p>
+                                        <p><span>- 교환/반품비용 안내</span></p>
+                                        <p><span>반품 비용 : 2500원 / 무료배송 받았을 시 전체반품비용 : 5000원</span></p>
+                                        <p><span>네이버 페이, 휴대폰결제건 전체 반품(무료배송 아닐 시) : 4400원</span></p>
+                                        <p><span>교환 비용 : 5000원</span></p>
+                                        <p><span>불량 상품 타택배 이용시에는 선불로 보내주시면 2500원까지 보상 가능하시며,</span></p>
+                                        <p><span>혹시라도 착불로 교환/반품을 보내주신 경우에는 2500원 제외 나머지 금액을 부담해주셔야 합니다.</span></p>
+                                        <p><span>불량 상품 반품 + 단순 변심 교환을 함께 타택배(착불)로 보내주신 경우 2500원 제외</span></p>
+                                        <p><span>나머지금액 + 교환비용 2500원을 부담해주셔야 합니다.</span></p>
+                                        <p><br></p>
+                                        <p><span>- 교환/반품시에 꼭 확인 사항</span></p>
+                                        <p>
+                                            <span>상품 수령 후 7일이내에 고객센터 또는 게시판으로 반품 신청 후 교환/반품 양식서를 작성하여 상품과 함께 포장해주세요.</span>
+                                        </p>
+                                        <p>
+                                            <span>한 주문건 당 교환/반품 한번만 가능하시며 부분배송으로 받으신 경우 나머지 상품 수령 후 7일이내 접수 해주셔도 됩니다.</span>
+                                        </p>
+                                        <p><span>대한통운이 아닌 타택배 이용시에는 꼭 선불로 보내주세요.</span></p>
+                                        <p><span>교환반품비용은 상품 안에 동봉 해주실 경우 분실 위험이 크기 때문에 꼭 입금해주셔야 처리가 가능합니다.</span></p>
+                                        <p><span>교환반품비용 입금확인은 자동이 아닌 수동으로 검색 후 확인해드리고 있습니다.</span></p>
+                                        <p><span>택배비 입금하셨을 때에는 꼭 게시판(질문하기, 비밀 게시판) 또는 고객센터로 연락해주시길 바랍니다.</span></p>
+                                        <p><br></p>
+                                        <p><span>- 교환/반품이 불가한 경우</span></p>
+                                        <p><span>상품 수령 후 7일이내 교환 및 반품 의사를 전달하지 않은 경우</span></p>
+                                        <p><span>새 상품이 아닌 고객님의 책임으로 훼손되어 상품 가치가 상실된 경우</span></p>
+                                        <p><span>착용흔적, 부분변색, 향수냄새, 체취가 있을 경우</span></p>
+                                        <p><br></p>
+                                        <p><span>- 반품주소</span></p>
+                                        <p><span>대전특별시 둔산동 854번길</span></p>
+                                        <p><span>어반웨어 고객 센터 : 1688-0000, 대한통운 택배 : 1588-0000</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button id="collapse3" class="btn btn-link collapsed text-left d-flex w-100"
+                                                type="button" data-toggle="collapse" data-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                            <span>꼭 확인해주세요!</span>
+                                            <span id="collapseThree-down" class="flex-fill text-right collapse show">
+                                                <span class="checkDown"></span>
+                                            </span>
+                                            <span id="collapseThree-up" class="flex-fill text-right collapse">
+                                                <span class="checkUp"></span>
+                                            </span>
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                                    <div class="card-body">
+                                        <p><span>- 모니터의 해상도와 밝기에 따라 실제 제품의 색상과 차이가 있을 수 있습니다.</span><br>
+                                            <span>- 모델컷보다 제품 디테일컷이 실제 상품의 색상에 가까우니 반드시 확인하여 주세요.</span><br>
+                                            <span>- 밝은 컬러 특성상 비침이 있을 수 있으니, 이너 제품에 유의하여 주시기 바랍니다.</span><br>
+                                            <span>- 워싱 된 제품이나 데미지, 전체적으로 패턴이 들어간 경우, 워싱 위치나 데미지모양, 패턴 등이 약간씩 다를 수 있어요.</span><br>
+                                            <span>- 데님 소재 및 컬러감이 어둡고 강한 의류의 경우 밝은 소재(의류, 가방, 슈즈)와 함께 착용 시 이염 가능성이 있을 수 있으니 주의하여 주세요.</span><br>
+                                            <br><span>- 본 제품의 품질에 이상이 있을 경우 공정거래위원회 고시에 의거하여 보상해 드리며, 고객센터로 연락주시기 바랍니다.</span><br>
+                                            <span>- 소비자 취급 부주의 또는 품질보증기간이 경과된 제품은 피해 보상의 책임을 지지 않습니다.</span><br>
+                                            <span>- 교환.반품을 원하시는 경우 교환 및 반품 안내를 참조하시기 바랍니다.</span><br>
+                                            <br>
+                                            <span>품질보증기준 품질보증 기준에 관하여 전자상거래 등에서의 소비자 보호에 권한 법률로 규정되어 있는</span><br>
+                                            <span>소비자청약철회 기능범위에 해당하는 경우 교환/반품신청이 가능하며 소비자분쟁 해결기준에 따르고 있습니다.</span><br>
+                                            <span><b>AS관련책임자: (주)어반웨어 콜센터 1688-0000</b></span></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tab-pane-3">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+                                <h4 class="mb-4">후기</h4>
                                 <div class="media mb-4">
-<!--                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">-->
+                                    <!--                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">-->
                                     <div class="media-body">
                                         <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
                                         <div class="text-primary mb-2">
@@ -157,7 +447,8 @@
                                             <i class="fas fa-star-half-alt"></i>
                                             <i class="far fa-star"></i>
                                         </div>
-                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
+                                            et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                     </div>
                                 </div>
                             </div>
@@ -197,18 +488,13 @@
                 </div>
             </div>
         </div>
+        <div class="text-right" style="width: 100%">
+            <a class="btn btn-primary" th:href="@{|/products/${product.id}/edit|}">수정</a>
+            <a class="btn btn-primary" th:href="@{|/products/${product.id}/edit|}">삭제</a>
+        </div>
     </div>
     <!-- Shop Detail End -->
 
-
-    <!-- Products Start -->
-    <div class="container-fluid py-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
-        </div>
-
-    </div>
-    <!-- Products End -->
 
 </div>
 
@@ -228,7 +514,6 @@
     <script th:src="@{/js/product/productDetail.js}"></script>
 </th:block>
 </body>
-
 
 
 </html>

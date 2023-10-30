@@ -112,6 +112,34 @@ public class ProductController {
         return "redirect:/products/" + product.getId();
     }
 
+    @GetMapping("/products/{id}/edit")
+    public String updateProducts(@PathVariable Long id, Model model) {
+        final UpdateProductForm updateForm = productInfoService.findUpdateFormByProductId(id);
+        if (updateForm == null) {
+            return "page/product/notFoundProduct";
+        }
+
+        model.addAttribute("product", updateForm);
+        model.addAttribute("categories", categoryService.findAllCategories());
+        return "page/product/updateProductForm";
+    }
+
+    @PostMapping("/products/{id}/edit")
+    public String updateProductsPost(@Validated @ModelAttribute("product") UpdateProductForm form,
+                                    BindingResult bindingResult,
+                                    @PathVariable Long id,
+                                    Model model) {
+        log.info("form = {}", form);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAllCategories());
+            return "page/product/updateProductForm";
+        }
+
+        productService.updateProduct(form);
+
+        return "redirect:/products/" + id;
+    }
+
     @PostMapping("/products/imageUpload")
     @ResponseBody
     public ResponseEntity<List<CkEditor5RespForm>> imageUpload(MultipartFile[] images, HttpServletRequest request) {
