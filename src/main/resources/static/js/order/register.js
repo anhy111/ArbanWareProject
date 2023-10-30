@@ -88,6 +88,20 @@ $(function(){
             // 성공 처리: 결제 승인 API를 호출하세요
             console.log("성공 data=", data);
 
+            $.ajax({
+                async:false,
+                type: 'post',
+                url: '/orderProduct/new',
+                contentType:"application/json;charset=utf-8",
+                success :function(paymentCancelData){
+                    console.log("paymentCancelData : ", paymentCancelData);
+
+                },
+                error:function(request, status, error){
+                    console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
+                }
+            });
+
            location.replace('http://localhost:8088/payment/success?paymentKey=' + data.paymentKey
                                 + '&orderId=' + data.orderId
                                 + '&amount=' + data.amount

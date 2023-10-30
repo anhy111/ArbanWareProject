@@ -26,7 +26,7 @@ public class OrderProduct extends BaseTimeEntity {
     private ProductInfo productInfo;    // 상품정보번호
 
     @Enumerated(EnumType.STRING)
-    private OrderProductStatus status;  // 상태
+    private OrderProductStatus status = OrderProductStatus.ORDER;  // 상태
 
     private int price;      //판매가
     private int discountPrice;//할인금액
