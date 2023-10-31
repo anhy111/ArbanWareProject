@@ -31,6 +31,7 @@
                         <td class="align-middle text-center" th:text="${i.index+1}"></td>
                         <td class="align-middle">
                             <h6 class="font-weight-bold productName" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <span class="prodInfoId" hidden th:text="${list.getProductInfo().getId()}"></span>
                         </td>
                         <td class="align-middle text-center">
                             <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
@@ -38,6 +39,7 @@
                         <td class="align-middle text-center">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <input type="text" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
+                                <span class="amount" hidden th:text="${list.getQuantity()}"></span>
                             </div>
                         </td>
                         <td class="align-middle text-center">

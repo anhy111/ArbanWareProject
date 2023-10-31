@@ -1,6 +1,6 @@
 package com.aw.arbanware.domain.exchange;
 
-import com.aw.arbanware.domain.orderproduct.OrderProduct;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.user.entity.Admin;
 import lombok.Getter;

@@ -2,6 +2,8 @@ $(function(){
     // alert("하이");
 
     let price;
+    let productInfoId;
+    let amount;
     let priceAll = 0;
     let requirements;
 
@@ -11,6 +13,9 @@ $(function(){
     let orderId = 0;
     let paymentId = 0;
 
+    let orderProductArr = new Array();
+    let orderProductData;
+
     $("#searchAddress").on('click',searchAddressFunc); //우편번호 불러오기
     // $('#orderBtn').on('click', paymentStart); //주문 및 결제 시작
 
@@ -18,12 +23,28 @@ $(function(){
 
         console.log("index : ", index, " element : ", element)
 
+        orderProductData = new Object();
         price = Number(element);
+        orderProductData.price = price;
+        orderProductArr.push(orderProductData);
+
         priceAll += price;
 
         $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
         $('#orderBtn').text(priceAll.toLocaleString('ko-KR') + '원 주문하기');
     });
+
+    $(".prodInfoId").text(function(index, element) {
+        productInfoId = Number(element);
+        orderProductArr[index].productInfo = {'id' : productInfoId};
+    });
+
+    $(".amount").text(function(index, element) {
+        amount = Number(element);
+        orderProductArr[index].amount = amount;
+    });
+
+    console.log(" orderProductArr : ", orderProductArr);
 
     $('#orderBtn').click(function (){
 
@@ -88,13 +109,18 @@ $(function(){
             // 성공 처리: 결제 승인 API를 호출하세요
             console.log("성공 data=", data);
 
+            $.each(orderProductArr, function (idx, item){
+                orderProductArr[idx].order = {'id' : orderId}
+            })
+
             $.ajax({
                 async:false,
                 type: 'post',
                 url: '/orderProduct/new',
                 contentType:"application/json;charset=utf-8",
-                success :function(paymentCancelData){
-                    console.log("paymentCancelData : ", paymentCancelData);
+                data:JSON.stringify(orderProductArr),
+                success :function(orderProductData){
+                    console.log("orderProductData : ", orderProductData);
 
                 },
                 error:function(request, status, error){
@@ -106,6 +132,8 @@ $(function(){
                                 + '&orderId=' + data.orderId
                                 + '&amount=' + data.amount
                                 + '&paymentId=' + paymentId);
+
+
         }).catch(function (error) {
             console.log(error.code);
             if (error.code === 'PAY_PROCESS_CANCELED') {
