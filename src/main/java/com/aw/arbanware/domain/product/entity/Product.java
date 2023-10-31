@@ -43,7 +43,6 @@ public class Product extends BaseEntity {
         this.content = other.content;
         this.cost = other.cost;
         this.price = other.price;
-        this.productImages = other.productImages;
         this.deleteYn = other.deleteYn;
     }
 

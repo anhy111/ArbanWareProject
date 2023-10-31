@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product.entity;
 
+import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
@@ -32,6 +33,9 @@ public class ProductInfo extends BaseTimeEntity {
     private Size size;
 
     private int inventory;
+
+    @Enumerated(EnumType.STRING)
+    private DeleteYn deleteYn = DeleteYn.N;
 
     public ProductInfo(final Product product, final Size size, final Color color, final int inventory) {
         this.product = product;

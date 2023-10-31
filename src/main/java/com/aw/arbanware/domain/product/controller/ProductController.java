@@ -59,8 +59,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public String products(Model model,
-                           @PageableDefault(size = 12, sort = "id",
-                               direction = Sort.Direction.DESC) Pageable pageable) {
+                           @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                           @RequestParam(required = false) String deleteProduct) {
         final Page<Product> pageProduct = productService.findByAll(pageable);
         model.addAttribute("products", pageProduct.getContent());
         model.addAttribute("totalPage", pageProduct.getTotalPages());
@@ -138,6 +138,14 @@ public class ProductController {
         productService.updateProduct(form);
 
         return "redirect:/products/" + id;
+    }
+
+    @GetMapping("/products/{id}/delete")
+    public String deleteProducts(@PathVariable Long id,
+                                 RedirectAttributes redirectAttributes) {
+        productService.deleteProduct(id);
+        redirectAttributes.addAttribute("deleteProduct", true);
+        return "redirect:/products";
     }
 
     @PostMapping("/products/imageUpload")

@@ -53,4 +53,8 @@ public class ProductImageService {
     public ProductImage findByStoredFileName(String storedFileName) {
         return productImageRepository.findByStoredFileName(storedFileName);
     }
+
+    public ProductImage save(ProductImage productImage) {
+        return productImageRepository.save(productImage);
+    }
 }
