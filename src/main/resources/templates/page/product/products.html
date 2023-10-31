@@ -243,6 +243,18 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 </div>
+<th:block layout:fragment="script">
+    <script th:inlien="javascript">
+        let deleteProduct = [[${deleteProduct}]];
+        if (deleteProduct) {
+            Swal.fire({
+                html: '<b>삭제되었습니다.</b>',
+                icon : 'success'
+            })
+        }
+    </script>
+    <!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
 </body>
 
 </html>

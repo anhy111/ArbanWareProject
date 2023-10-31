@@ -3,6 +3,7 @@ package com.aw.arbanware.domain.product.entity;
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class ProductImage implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,

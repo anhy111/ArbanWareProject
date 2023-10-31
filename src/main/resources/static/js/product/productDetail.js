@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     let $amount = $('#amount');
 
+
     ClassicEditor
         .create( document.querySelector( '#content' ) )
         .then( editor => {
@@ -17,6 +18,48 @@ $(document).ready(function () {
             } );
             editor.enableReadOnlyMode('#content');
         } );
+
+    let $collapseOne = $("#collapseOne");
+    let $collapseOne_down = $("#collapseOne-down");
+    let $collapseOne_up = $("#collapseOne-up");
+    $("#collapse1").on('click', function () {
+        if ($collapseOne.css('display') === 'block') {
+            $collapseOne_down.css('display', 'block');
+            $collapseOne_up.css('display', 'none');
+        } else {
+            $collapseOne_down.css('display', 'none');
+            $collapseOne_up.css('display', 'block');
+        }
+
+    });
+
+    let $collapseTwo = $("#collapseTwo");
+    let $collapseTwo_down = $("#collapseTwo-down");
+    let $collapseTwo_up = $("#collapseTwo-up");
+    $("#collapse2").on('click', function () {
+        if ($collapseTwo.css('display') === 'block') {
+            $collapseTwo_down.css('display', 'block');
+            $collapseTwo_up.css('display', 'none');
+        } else {
+            $collapseTwo_down.css('display', 'none');
+            $collapseTwo_up.css('display', 'block');
+        }
+
+    });
+
+    let $collapseThree = $("#collapseThree");
+    let $collapseThree_down = $("#collapseThree-down");
+    let $collapseThree_up = $("#collapseThree-up");
+    $("#collapse3").on('click', function () {
+        if ($collapseThree.css('display') === 'block') {
+            $collapseThree_down.css('display', 'block');
+            $collapseThree_up.css('display', 'none');
+        } else {
+            $collapseThree_down.css('display', 'none');
+            $collapseThree_up.css('display', 'block');
+        }
+
+    });
 
     $("#subAmount").on('click', function () {
         let val = $amount.val();

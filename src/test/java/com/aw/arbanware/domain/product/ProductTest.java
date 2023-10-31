@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.product;
 
 import com.aw.arbanware.domain.common.DeleteYn;
+import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +31,10 @@ class ProductTest {
         em.persist(product);
 
         final ProductImage productImage = new ProductImage();
-        productImage.setStoredPath("setStoredPath");
-        productImage.setStoredFileName("setStoredFileName");
-        productImage.setOriginalFileName("setOriginalFileName");
-        productImage.setFileSize(989898L);
+//        productImage.setStoredPath("setStoredPath");
+//        productImage.setStoredFileName("setStoredFileName");
+//        productImage.setOriginalFileName("setOriginalFileName");
+//        productImage.setFileSize(989898L);
         em.persist(productImage);
         // when
 

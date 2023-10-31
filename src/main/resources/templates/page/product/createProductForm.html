@@ -194,7 +194,7 @@
                                                 </label>
                                             </div>
                                             <div th:if="${#fields.hasErrors('colors')}" >
-                                                <span class="error" th:errors="${product.colors}">컨텐츠 오류</span>
+                                                <span class="error" th:errors="${product.colors}">색상 오류</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -224,7 +224,7 @@
                             <div th:id="image-preview_div" class="mb-3" style="display: none">
                                 <img th:id="image-preview" src="#" alt="Selected Image" style="max-width: 100%; ">
                             </div>
-                            <div class="d-inline-block custom-file inputGroup" >
+                            <div class="d-inline-block custom-file inputGroup" th:if="${product.thumbnail != null}">
                                 <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
                                        th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
                                 <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
@@ -234,7 +234,9 @@
                             <div class="d-inline-block custom-file inputGroup" th:unless="${product.thumbnail != null}">
                                 <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
                                        th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
-
+                                <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
+                                    이미지 선택
+                                </label>
                             </div>
                             <div th:if="${#fields.hasErrors('thumbnail')}" >
                                 <span class="error" th:errors="${product.thumbnail}">대표 이미지 오류</span>

@@ -49,4 +49,12 @@ public class ProductImageService {
     public List<ProductImage> findByIdList(List<Long> ids) {
         return productImageRepository.findAllById(ids);
     }
+
+    public ProductImage findByStoredFileName(String storedFileName) {
+        return productImageRepository.findByStoredFileName(storedFileName);
+    }
+
+    public ProductImage save(ProductImage productImage) {
+        return productImageRepository.save(productImage);
+    }
 }

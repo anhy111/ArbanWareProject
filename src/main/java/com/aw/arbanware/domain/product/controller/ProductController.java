@@ -59,8 +59,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public String products(Model model,
-                           @PageableDefault(size = 12, sort = "id",
-                               direction = Sort.Direction.DESC) Pageable pageable) {
+                           @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                           @RequestParam(required = false) String deleteProduct) {
         final Page<Product> pageProduct = productService.findByAll(pageable);
         model.addAttribute("products", pageProduct.getContent());
         model.addAttribute("totalPage", pageProduct.getTotalPages());
@@ -110,6 +110,42 @@ public class ProductController {
         final Product product = productService.addProduct(form);
         redirectAttributes.addAttribute("addProduct", true);
         return "redirect:/products/" + product.getId();
+    }
+
+    @GetMapping("/products/{id}/edit")
+    public String updateProducts(@PathVariable Long id, Model model) {
+        final UpdateProductForm updateForm = productInfoService.findUpdateFormByProductId(id);
+        if (updateForm == null) {
+            return "page/product/notFoundProduct";
+        }
+
+        model.addAttribute("product", updateForm);
+        model.addAttribute("categories", categoryService.findAllCategories());
+        return "page/product/updateProductForm";
+    }
+
+    @PostMapping("/products/{id}/edit")
+    public String updateProductsPost(@Validated @ModelAttribute("product") UpdateProductForm form,
+                                    BindingResult bindingResult,
+                                    @PathVariable Long id,
+                                    Model model) {
+        log.info("form = {}", form);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAllCategories());
+            return "page/product/updateProductForm";
+        }
+
+        productService.updateProduct(form);
+
+        return "redirect:/products/" + id;
+    }
+
+    @GetMapping("/products/{id}/delete")
+    public String deleteProducts(@PathVariable Long id,
+                                 RedirectAttributes redirectAttributes) {
+        productService.deleteProduct(id);
+        redirectAttributes.addAttribute("deleteProduct", true);
+        return "redirect:/products";
     }
 
     @PostMapping("/products/imageUpload")

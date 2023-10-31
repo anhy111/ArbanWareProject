@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+  <title>update Product</title>
+  <style>
+    table {
+      font-size: 14px;
+    }
+
+    table tr {
+      border-bottom: 0.1em #e6e6e6 solid;
+    }
+
+    table th {
+      background-color: #F6F6F6;
+      color: #1C1C1C;
+      width: 20%;
+    }
+
+    .table td {
+      width: 80%;
+      padding-left: 1.25rem;
+    }
+
+    #option td{
+      width:inherit;
+      border: 0.1em #e6e6e6 solid;
+    }
+
+    #option th{
+      width:inherit;
+      border: 0.1em #e6e6e6 solid;
+    }
+
+    .inputGroup {
+      width: 40%;
+    }
+
+    input:enabled {
+      cursor: text;
+    }
+
+    input:hover:enabled {
+      border: 1px #1C1C1C solid;
+    }
+
+    input:focus {
+      border: 1px solid #1C1C1C !important;
+    }
+
+    input::placeholder {
+      font-size: 14px;
+    }
+
+    .form-control:disabled {
+      background: #F9F9F9;
+    }
+
+    .btnCustom {
+      font-size: 12px;
+      border: #BCBCBC solid 1px;
+      height: 40px;
+      width: 90px;
+      color: #1C1C1C;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .btn-outline-primary.focus {
+      box-shadow: 0 0 0 0.1rem rgba(209, 156, 151, 0.5) !important;
+    }
+
+    .btn-outline-primary:hover {
+      background-color: inherit;
+      color: #D19C97;
+    }
+
+    .color {
+      position: relative;
+    }
+
+    .color.active::before {
+      background-image: url("/img/checkmark_circle.png");
+      content: "";
+      background-size: 43px;
+      background-repeat: no-repeat;
+      opacity: 0.6;
+      width: 45px;
+      height: 45px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 99;
+      padding: 0;
+      margin: 0;
+      border-radius: 10%;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+    }
+
+    .ck-editor__editable[role="textbox"] {
+      min-height: 500px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+  <div class="container offset-2 col-8">
+    <div class="row justify-content-center pb-5">
+      <h4>상품 수정</h4>
+    </div>
+    <div class="row">
+      <div class=" d-flex justify-content-between pb-3" style="width: 100%">
+        <span class="font-weight-bold d-inline-block" style="font-size: 16px;color: #1C1C1C">상품기본정보</span>
+      </div>
+    </div>
+    <div class="row">
+      <form id="updateForm" th:action="@{|/products/${product.id}/edit|}" method="post" th:object="${product}" style="width: 100%"
+            enctype="multipart/form-data">
+        <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">상품명</span>
+            </th>
+            <td>
+              <div class="d-inline-block inputGroup">
+                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                       th:field="${product.name}" />
+              </div>
+              <div th:if="${#fields.hasErrors('name')}" >
+                <span class="error" th:errors="${product.name}">상품명 오류</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">카테고리</span>
+            </th>
+            <td>
+              <div class="d-inline-block inputGroup">
+                <select class="custom-select" th:field="${product.categoryId}">
+                  <option value="0">카테고리</option>
+                  <option th:each="category : ${categories}" th:value="${category.id}"
+                          th:text="${category.name}"></option>
+                </select>
+              </div>
+              <div th:if="${#fields.hasErrors('categoryId')}" >
+                <span class="error" th:errors="${product.categoryId}">카테고리 오류</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">옵션</span>
+            </th>
+            <td>
+              <div>
+                <table id="option" class="table text-center">
+                  <tr>
+                    <th style="width: 40%">옵션명</th>
+                    <th>옵션값</th>
+                  </tr>
+                  <tr class="align-self-center">
+                    <td>SIZE</td>
+                    <td class="text-left pl-3">
+                      <div class="mr-1 btn-group-toggle d-inline-block" data-toggle="buttons"
+                           th:each="size : ${sizeValues}">
+                        <label class="btn btn-sm btn-outline-primary" th:for="${#ids.next('sizes')}" style="width: 44px">
+                          <input type="checkbox" th:field="${product.sizes}" th:value="${size}"
+                                 class="size" autocomplete="off">[[${size}]]
+                        </label>
+                      </div>
+                      <div th:if="${#fields.hasErrors('sizes')}" >
+                        <span class="error" th:errors="${product.sizes}">사이즈 오류</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>COLOR</td>
+                    <td class="text-left pl-3 pt-1 pb-2">
+                      <div class="mr-1 mt-2 mb-1 btn-group-toggle d-inline-block" data-toggle="buttons"
+                           th:each="color : ${colorValues}">
+                        <label class="btn btn-sm text-center color" th:for="${#ids.next('colors')}" th:attr="data-color=${color}"
+                               style="width: 43px; height: 43px; border-radius: 50%;">
+                          <input type="checkbox" th:field="${product.colors}" class="size" th:value="${color}" autocomplete="off">&nbsp;
+                        </label>
+                      </div>
+                      <div th:if="${#fields.hasErrors('colors')}" >
+                        <span class="error" th:errors="${product.colors}">색상 오류</span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">대표 이미지</span>
+            </th>
+            <td>
+              <div th:id="image-preview_div" class="mb-3" style="">
+                <img th:id="image-preview" th:src="@{|/upload/${product.thumbnailStr}|}" alt="Selected Image" style="max-width: 100%; ">
+              </div>
+              <div class="d-inline-block custom-file inputGroup" th:if="${product.thumbnail != null}">
+                <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
+                       th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
+                <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
+                  이미지 선택
+                </label>
+              </div>
+              <div class="d-inline-block custom-file inputGroup" th:unless="${product.thumbnail != null}">
+                <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
+                       th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
+                <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
+                  이미지 선택
+                </label>
+              </div>
+              <div th:if="${#fields.hasErrors('thumbnail')}" >
+                <span class="error" th:errors="${product.thumbnail}">대표 이미지 오류</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">내용</span>
+            </th>
+            <td>
+              <div class="d-inline-block">
+                <input type="hidden" th:field="${product.productImages}">
+                <textarea id="editor" style="display: none" th:field="${product.content}">[[${product.content}]]</textarea>
+                <div th:if="${#fields.hasErrors('content')}" >
+                  <span class="error" th:errors="${product.content}">컨텐츠 오류</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">원가</span>
+            </th>
+            <td>
+              <div class="d-inline-block inputGroup">
+                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                       th:field="${product.cost}" autocomplete="off"/>
+              </div>
+              <div th:if="${#fields.hasErrors('cost')}" >
+                <span class="error" th:errors="${product.cost}">원가 오류</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th class="align-middle">
+              <span class="ml-2 font-weight-semi-bold">판매가</span>
+            </th>
+            <td>
+              <div class="d-inline-block inputGroup">
+                <input type="text" style="height: 40px" class="form-control d-inline-block"
+                       th:field="${product.price}"/>
+              </div>
+              <div th:if="${#fields.hasErrors('price')}" >
+                <span class="error" th:errors="${product.price}">판매가 오류</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div style="width: 100%" class="text-center">
+          <button id="update" style="font-size: 14px" class="btn btn-primary font-weight-bold my-3 px-4" type="button">
+            상품수정
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<th:block layout:fragment="script">
+  <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
+  <script th:src="@{/js/product/UploadAdapter.js}"></script>
+  <script th:inline="javascript">
+    let color = [[${colorValues}]];
+  </script>
+  <script th:src="@{/js/product/updateProductForm.js}"></script>
+</th:block>
+</body>
+</html>

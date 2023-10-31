@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product.service;
 
+import com.aw.arbanware.domain.product.controller.UpdateProductForm;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.repository.ProductInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,16 @@ public class ProductInfoService {
 
     public List<ProductInfo> findByProductId(Long productId) {
         return productInfoRepository.findByProductId(productId);
+    }
+
+    public UpdateProductForm findUpdateFormByProductId(Long productId) {
+        final List<ProductInfo> findProductInfos = productInfoRepository.findByProductIdWithImage(productId);
+        log.info("findProductInfos.size = {}", findProductInfos.size());
+        return UpdateProductForm.createUpdateForm(findProductInfos);
+    }
+
+    public List<ProductInfo> findByProductIdWithImage(Long productId) {
+        return productInfoRepository.findByProductIdWithImage(productId);
     }
 
 }
