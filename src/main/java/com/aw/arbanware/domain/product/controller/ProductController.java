@@ -60,10 +60,12 @@ public class ProductController {
     @GetMapping("/products")
     public String products(Model model,
                            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                           @RequestParam(required = false) String deleteProduct) {
+                           @RequestParam(required = false) String deleteProduct,
+                           @ModelAttribute("condition") ProductSearchCondition condition) {
         final Page<Product> pageProduct = productService.findByAll(pageable);
         model.addAttribute("products", pageProduct.getContent());
         model.addAttribute("totalPage", pageProduct.getTotalPages());
+        model.addAttribute("deleteProduct", deleteProduct);
         return "page/product/products";
     }
 
