@@ -13,37 +13,6 @@ $(function(){
     });
 
 
-    $('#orderBtn').click(function (){
-
-        let dataArray 	= new Array();
-
-        $.each($('.cartCheck'), function (index, item){
-            // console.log("idx : ", index, " itme : ", item, " this : ", $(this).val());
-            let dataObj		= new Object();
-
-            if($(this).is(':checked')){
-
-                let tr = $('.cartCheck').parent().parent().parent().eq(index);
-                let checkQuantity = tr.children().eq(3).children().children().eq(1).val();
-                let checkPrice = tr.children().eq(4).children().eq(1).text();
-
-                dataObj.checkQuantity = checkQuantity;
-                dataObj.checkPrice = checkPrice;
-
-                dataObj = JSON.stringify(dataObj);
-                //String 형태로 파싱한 객체를 다시 json으로 변환
-                dataArray.push(JSON.parse(dataObj));
-
-                console.log(" checkQuantity : ", checkQuantity, " checkPrice : ", checkPrice);
-            }
-        });
-
-
-        console.log( " dataArray : ", dataArray)
-
-        // $(location).attr('href', '/order/new');
-    });
-
     $('#orderAllBtn').click(function (){
         $(location).attr('href', '/order/new');
     });
@@ -54,6 +23,15 @@ $(function(){
         }else {
             $('.cartCheck').prop('checked',false);
         }
+
+    });
+
+    $('.cartCheck').click(function (){
+        $.each($('.cartCheck'), function (idx, item){
+           if(!$(this).is(':checked')){
+               $('#cartList').prop('checked',false);
+           }
+        });
 
     });
 
