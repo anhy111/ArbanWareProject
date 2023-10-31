@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class CartService {
 
@@ -26,6 +27,11 @@ public class CartService {
         Cart quantityUp = cartRepository.findByMemberIdAndProductInfoId(memberId, productInfoId);
         quantityUp.setQuantity(cart.getQuantity());
         return quantityUp;
+    }
+
+    public Cart cartOrder(Long memberId, Long productInfoId) {
+        Cart cartOrder = cartRepository.findByMemberIdAndProductInfoId(memberId, productInfoId);
+        return cartOrder;
     }
 
     public void cartOneDelete(Long memberId, Long productInfoId) {
