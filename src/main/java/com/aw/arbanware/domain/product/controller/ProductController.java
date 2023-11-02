@@ -8,6 +8,7 @@ import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
+import com.aw.arbanware.domain.product.repository.ProductProductInfoDto;
 import com.aw.arbanware.domain.product.service.ProductImageService;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -23,12 +25,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 
@@ -58,11 +62,17 @@ public class ProductController {
     private String uploadUrl;
 
     @GetMapping("/products")
-    public String products(Model model,
+    public String products(@Valid  @ModelAttribute("condition") ProductSearchCondition condition,
+                           BindingResult bindingResult,
+                           Model model,
                            @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                           @RequestParam(required = false) String deleteProduct,
-                           @ModelAttribute("condition") ProductSearchCondition condition) {
-        final Page<Product> pageProduct = productService.findByAll(pageable);
+                           @RequestParam(required = false) boolean deleteProduct) {
+        if (bindingResult.hasFieldErrors("minPrice") || bindingResult.hasFieldErrors("maxPrice")) {
+            bindingResult.reject("price","숫자만 입력해주세요.");
+            return "page/product/products";
+        }
+        final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageable);
+        log.info("condition = {}", condition);
         model.addAttribute("products", pageProduct.getContent());
         model.addAttribute("totalPage", pageProduct.getTotalPages());
         model.addAttribute("deleteProduct", deleteProduct);
@@ -88,8 +98,6 @@ public class ProductController {
         model.addAttribute("addProduct", addProduct);
         return "page/product/productDetail";
     }
-
-
 
     @GetMapping("/products/new")
     public String newProducts(Model model) {
@@ -132,6 +140,10 @@ public class ProductController {
                                     @PathVariable Long id,
                                     Model model) {
         log.info("form = {}", form);
+        if (form.getThumbnail().getSize() > 1000000) {
+            bindingResult.rejectValue("thumbnail", "thumbnail");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllCategories());
             return "page/product/updateProductForm";

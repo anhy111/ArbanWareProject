@@ -207,17 +207,10 @@
               <span class="ml-2 font-weight-semi-bold">대표 이미지</span>
             </th>
             <td>
-              <div th:id="image-preview_div" class="mb-3" style="">
+              <div th:id="image-preview_div" class="mb-3" style="display: none">
                 <img th:id="image-preview" th:src="@{|/upload/${product.thumbnailStr}|}" alt="Selected Image" style="max-width: 100%; ">
               </div>
-              <div class="d-inline-block custom-file inputGroup" th:if="${product.thumbnail != null}">
-                <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
-                       th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
-                <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
-                  이미지 선택
-                </label>
-              </div>
-              <div class="d-inline-block custom-file inputGroup" th:unless="${product.thumbnail != null}">
+              <div class="d-inline-block custom-file inputGroup" >
                 <input type="file" style="display: none !important;" class="custom-file-input d-inline-block"
                        th:field="${product.thumbnail}" autocomplete="off" accept="image/*"/>
                 <label th:id="thumbnail_label" class="custom-file-label" th:for="thumbnail">
@@ -286,6 +279,9 @@
   <script th:src="@{/js/product/UploadAdapter.js}"></script>
   <script th:inline="javascript">
     let color = [[${colorValues}]];
+    if ([[${product.thumbnailStr}]]) {
+      $("#image-preview_div").css('display', 'block');
+    }
   </script>
   <script th:src="@{/js/product/updateProductForm.js}"></script>
 </th:block>
