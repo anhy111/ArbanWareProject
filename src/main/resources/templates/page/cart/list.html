@@ -19,7 +19,7 @@
                     <thead>
                         <tr class="text-center">
                             <th class="col-1">번호</th>
-                            <th class="col-1">
+                            <th th:if="${cartList.size()}>0" class="col-1">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="cartList">
                                     <label class="custom-control-label" for="cartList"></label>
@@ -32,7 +32,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="list, i : ${cartList}">
+                        <tr th:if="${cartList.size()}<=0">
+                            <td class="text-center font-weight-bold" colspan="6">
+                                <span> 장바구니가 비어있습니다. </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${cartList.size()}>0" th:each="list, i : ${cartList}">
                             <td class="align-middle text-center" th:text="${i.index+1}"></td>
     <!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
                             <td class="align-middle text-center">
@@ -62,7 +67,7 @@
                             </td>
                             <td class="align-middle text-center">
                                 <span th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
-                                <input class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
+                                <span class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
                             </td>
                             <td class="align-middle text-center">
                                 <button type="button" class="btn btn-primary" th:onclick="optionUpdate([[${list.getProductInfo().getProduct().getId()}]])" data-toggle="modal" data-target="#optionModal">옵션변경</button>
@@ -70,7 +75,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot>
+                    <tfoot th:if="${cartList.size()}>0">
                     <tr>
                         <td class="text-right font-weight-bold" colspan="6">
                             <span> 합계 : </span>
@@ -81,8 +86,8 @@
                 </table>
             </div>
             <div class="row justify-content-center">
-                    <button type="submit" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
-                    <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
+                <button type="submit" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
+                <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
             </div>
         </form>
     </div>

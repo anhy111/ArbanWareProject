@@ -35,4 +35,9 @@ public class OrderService {
         return order;
     }
 
+    public Order orderFind(String orderId){
+        Order order = orderRepostiory.findById(orderId).orElseThrow(() -> new IllegalArgumentException("해당 주문번호가 없습니다."));
+        return order;
+    }
+
 }

@@ -3,6 +3,7 @@ $(function(){
 
     let price;
     let priceAll = 0;
+    let orderCheck = 0;
 
     $(".price").text(function(index, element ) {
 
@@ -14,6 +15,15 @@ $(function(){
 
 
     $('#orderAllBtn').click(function (){
+
+        if (cartLenth <= 0){
+            Swal.fire({
+                title:'장바구니에 담긴 상품이 없습니다.',         // Alert 제목
+                icon:'warning',                         // Alert 타입
+            });
+            return
+        }
+
         $(location).attr('href', '/order/new');
     });
 
@@ -94,9 +104,6 @@ function cartOneDelete(id) {
                 type: 'post',
                 url: '/cart/'+id+'/delete',
                 contentType:"application/json;charset=utf-8",
-                // beforeSend:function(xhr){
-                //     xhr.setRequestHeader(header, token);
-                // },
                 success :function(data){
                     console.log("delete성공이라해주라 ", data);
 
@@ -144,4 +151,21 @@ function optionUpdate(productId) { //보류
 
     });
 
+}
+
+function checkOrderProduct() {
+    $.each($('.cartCheck'), function (idx, item){
+        if($(this).is(':checked')){
+            orderCheck += 1
+        }
+    });
+    if (orderCheck <= 0){
+        Swal.fire({
+            title:'선택된 상품이 없습니다.',         // Alert 제목
+            icon:'warning',                         // Alert 타입
+        });
+        return
+    }else {
+        $('#orderBtn').submit();
+    }
 }

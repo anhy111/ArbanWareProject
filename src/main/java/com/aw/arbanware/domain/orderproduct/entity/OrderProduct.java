@@ -6,11 +6,13 @@ import com.aw.arbanware.domain.orderproduct.OrderProductStatus;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@ToString
 public class OrderProduct extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "order_product_seq")

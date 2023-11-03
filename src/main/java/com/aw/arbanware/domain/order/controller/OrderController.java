@@ -43,7 +43,7 @@ public class OrderController {
 
     @GetMapping("/check/new")
     @PreAuthorize("isAuthenticated()")
-    public String checkOrderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam List<Long> checkedValue, @RequestParam List<String> checkedQuantity, @RequestParam List<String> checkedPrice) {
+    public String checkOrderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam List<Long> checkedValue) {
         Long id = securityUser.getId();
         List<Cart> carts = new ArrayList<Cart>();
         Optional<Member> member = memberService.findById(id);
@@ -66,6 +66,7 @@ public class OrderController {
     @ResponseBody
     public Order deliverySave(@PathVariable("id")Long memberId, @RequestBody Order order) {
         Order orderRegister = orderService.orderRegister(order);
+        orderRegister.getId();
         return orderRegister;
     }
 
