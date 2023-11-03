@@ -3,11 +3,14 @@ package com.aw.arbanware.domain.cart.service;
 import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.entity.CartKey;
 import com.aw.arbanware.domain.cart.repository.CartRepository;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
+import com.aw.arbanware.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,6 +44,22 @@ public class CartService {
         cartKey.setProductInfoId(productInfoId);
 
         cartRepository.deleteById(cartKey);
+    }
+
+    public void cartDelete(SecurityUser user, List<OrderProduct> orderProduct){
+        if (orderProduct == null) {
+            return;
+        }
+
+        List<Cart> carts = new ArrayList<>();
+        for (OrderProduct orderProducts : orderProduct) {
+            final Cart cart = new Cart();
+            cart.setMemberId(user.getId());
+            cart.setProductInfoId(orderProducts.getProductInfo().getId());
+            carts.add(cart);
+        }
+        cartRepository.deleteAll(carts);
+
     }
 
 }

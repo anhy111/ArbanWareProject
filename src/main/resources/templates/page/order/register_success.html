@@ -9,12 +9,27 @@
 <div layout:fragment="content">
     <div class="container-fluid">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문 완료</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문완료 되었습니다.</h1>
         </div>
     </div>
 
     <div class="container">
         <div class="row justify-content-center">
+            <div class="card">
+                <div class="card-body">
+                    <span class="font-weight-bold"> 주문번호 </span>
+                    <p th:text="${order.getId()}"></p>
+
+                    <span class="font-weight-bold"> 배송 정보</span>
+                    <p th:text="${order.getRecipient()}"></p>
+                    <p th:text="${order.getAddress().getZipcode()}"></p>
+                    <p th:text="${order.getAddress().getCity()}"></p>
+                    <p th:text="${order.getAddress().getStreet()}"></p>
+
+                    <span class="font-weight-bold"> 총 주문금액 </span>
+                    <p th:text="${order.getTotalPrice()}"></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
