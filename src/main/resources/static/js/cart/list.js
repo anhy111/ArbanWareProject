@@ -27,6 +27,26 @@ $(function(){
         $(location).attr('href', '/order/new');
     });
 
+    $('#orderBtn').click(function (){
+
+        $.each($('.cartCheck'), function (idx, item){
+            if($(this).is(':checked')){
+                orderCheck += 1;
+            }
+        });
+
+        if(orderCheck <= 0){
+            Swal.fire({
+                title:'상품을 1개 이상 선택해주세요.',         // Alert 제목
+                icon:'warning',                         // Alert 타입
+            });
+            return
+        }else{
+            $('#newFrom').submit();
+        }
+
+    });
+
     $('#cartList').click(function (){
         if($('#cartList').is(':checked')){
             $('.cartCheck').prop('checked',true);

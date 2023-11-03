@@ -8,6 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -19,8 +23,13 @@ public class OrderService {
     private final OrderRepository orderRepostiory;
 
     public Order orderRegister(Order order) {
-        order.setId("arbanwareOrder_" + orderRepostiory.findSequence());
+        order.setId("arban_order_" + todayToFolder() + "_" + orderRepostiory.findSequence());
         return orderRepostiory.save(order);
+    }
+
+    private String todayToFolder() {
+        LocalDate now = LocalDate.now();
+        return now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
     public Order orderSuccess(String orderId) {
