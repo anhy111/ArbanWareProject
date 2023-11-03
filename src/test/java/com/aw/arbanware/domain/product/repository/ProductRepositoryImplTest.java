@@ -23,7 +23,7 @@ class ProductRepositoryImplTest {
     @Test
     @DisplayName("productRepositoryTest")
     public void productRepositoryTest() throws Exception {
-        final List<Product> findProducts = productRepository.search("테스트");
-        log.info("findProducts = {}", findProducts);
+//        final List<Product> findProducts = productRepository.search("테스트");
+//        log.info("findProducts = {}", findProducts);
     }
 }

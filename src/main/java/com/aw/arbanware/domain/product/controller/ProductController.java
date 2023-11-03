@@ -15,11 +15,9 @@ import com.aw.arbanware.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +32,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Controller
@@ -65,17 +65,48 @@ public class ProductController {
     public String products(@Valid  @ModelAttribute("condition") ProductSearchCondition condition,
                            BindingResult bindingResult,
                            Model model,
-                           @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                            @RequestParam(required = false) boolean deleteProduct) {
         if (bindingResult.hasFieldErrors("minPrice") || bindingResult.hasFieldErrors("maxPrice")) {
             bindingResult.reject("price","숫자만 입력해주세요.");
             return "page/product/products";
         }
-        final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageable);
+
+        final long startTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        log.info("{}, produts 시작", startTime);
+
+        final PageRequest pageRequest = PageRequest.of(condition.getPage(), condition.getPageSize(), Sort.Direction.DESC, condition.getSortProperty());
+        final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
         log.info("condition = {}", condition);
+
+        // 페이징번호 처리
+        int startPage = 0;
+        int currentPage = pageProduct.getNumber();
+        int totalPage = pageProduct.getTotalPages();
+        while (startPage + 5 <= currentPage) {
+            startPage += 5;
+        }
+
+        // 마지막페이지 처리
+        int endPage = startPage + 4;
+        if (endPage > totalPage) {
+            endPage = totalPage - 1;
+        }
+        final long endTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        log.info("{}, products 종료", endTime);
+        log.info("경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
+
+        log.info("currentPage = {}", currentPage);
+        log.info("startPage = {}", startPage);
+        log.info("endPage = {}", endPage);
+
         model.addAttribute("products", pageProduct.getContent());
-        model.addAttribute("totalPage", pageProduct.getTotalPages());
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("page", pageProduct);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("deleteProduct", deleteProduct);
+
         return "page/product/products";
     }
 

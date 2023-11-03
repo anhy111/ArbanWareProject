@@ -27,6 +27,11 @@ $(document).ready(function () {
         $searchForm.submit();
     });
 
+    $(".page-link").on('click', function () {
+        $("#page").val($(this).val());
+        $searchForm.submit();
+    });
+
     $(".color").css('backgroundColor', function () {
         let color = $(this).data('color');
         if (color == 'WHITE') {
