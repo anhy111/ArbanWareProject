@@ -58,6 +58,7 @@ $(document).ready(function (){
             };
             reader.readAsDataURL(this.files[0]);
             $('#thumbnail_label').text(this.files[0].name);
+            $("#image-preview_div").css('display', 'block');
         }
     });
 

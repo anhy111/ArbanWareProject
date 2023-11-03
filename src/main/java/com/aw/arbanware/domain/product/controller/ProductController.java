@@ -8,28 +8,32 @@ import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
+import com.aw.arbanware.domain.product.repository.ProductProductInfoDto;
 import com.aw.arbanware.domain.product.service.ProductImageService;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Controller
@@ -58,14 +62,51 @@ public class ProductController {
     private String uploadUrl;
 
     @GetMapping("/products")
-    public String products(Model model,
-                           @PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                           @RequestParam(required = false) String deleteProduct,
-                           @ModelAttribute("condition") ProductSearchCondition condition) {
-        final Page<Product> pageProduct = productService.findByAll(pageable);
+    public String products(@Valid  @ModelAttribute("condition") ProductSearchCondition condition,
+                           BindingResult bindingResult,
+                           Model model,
+                           @RequestParam(required = false) boolean deleteProduct) {
+        if (bindingResult.hasFieldErrors("minPrice") || bindingResult.hasFieldErrors("maxPrice")) {
+            bindingResult.reject("price","숫자만 입력해주세요.");
+            return "page/product/products";
+        }
+
+        final long startTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        log.info("{}, produts 시작", startTime);
+
+        final PageRequest pageRequest = PageRequest.of(condition.getPage(), condition.getPageSize(), Sort.Direction.DESC, condition.getSortProperty());
+        final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
+        log.info("condition = {}", condition);
+
+        // 페이징번호 처리
+        int startPage = 0;
+        int currentPage = pageProduct.getNumber();
+        int totalPage = pageProduct.getTotalPages();
+        while (startPage + 5 <= currentPage) {
+            startPage += 5;
+        }
+
+        // 마지막페이지 처리
+        int endPage = startPage + 4;
+        if (endPage > totalPage) {
+            endPage = totalPage - 1;
+        }
+        final long endTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
+        log.info("{}, products 종료", endTime);
+        log.info("경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
+
+        log.info("currentPage = {}", currentPage);
+        log.info("startPage = {}", startPage);
+        log.info("endPage = {}", endPage);
+
         model.addAttribute("products", pageProduct.getContent());
-        model.addAttribute("totalPage", pageProduct.getTotalPages());
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("page", pageProduct);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("deleteProduct", deleteProduct);
+
         return "page/product/products";
     }
 
@@ -88,8 +129,6 @@ public class ProductController {
         model.addAttribute("addProduct", addProduct);
         return "page/product/productDetail";
     }
-
-
 
     @GetMapping("/products/new")
     public String newProducts(Model model) {
@@ -132,6 +171,10 @@ public class ProductController {
                                     @PathVariable Long id,
                                     Model model) {
         log.info("form = {}", form);
+        if (form.getThumbnail().getSize() > 1000000) {
+            bindingResult.rejectValue("thumbnail", "thumbnail");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllCategories());
             return "page/product/updateProductForm";

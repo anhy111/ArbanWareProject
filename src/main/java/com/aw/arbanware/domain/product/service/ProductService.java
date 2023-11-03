@@ -5,10 +5,12 @@ import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.controller.CreateProductForm;
+import com.aw.arbanware.domain.product.controller.ProductSearchCondition;
 import com.aw.arbanware.domain.product.controller.UpdateProductForm;
 import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
+import com.aw.arbanware.domain.product.repository.ProductProductInfoDto;
 import com.aw.arbanware.domain.product.repository.ProductRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,10 @@ public class ProductService {
 
     public Page<Product> findByAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    public Page<ProductProductInfoDto> searchProducts(ProductSearchCondition condition, Pageable pageable) {
+        return productRepository.search(condition, pageable);
     }
 
     @Transactional
@@ -106,9 +112,11 @@ public class ProductService {
             final ProductImage thumbnail = productImageService.saveAll(new MultipartFile[]{form.getThumbnail()})
                     .get(0);
             thumbnail.setProduct(findProduct);
-            log.info("새로운 섬네일 thumbnail = {}", thumbnail);
+
             final AttachFileInfo thumbnailFileInfo = thumbnail.getAttachFileInfo();
-            updateProduct.setThumbnail(thumbnailFileInfo.getStoredPath() + thumbnailFileInfo.getStoredFileName());
+            findProduct.setThumbnail(thumbnailFileInfo.getStoredPath() + thumbnailFileInfo.getStoredFileName());
+            log.info("새로운 섬네일 예정 thumbnail = {}", thumbnail);
+            log.info("새로운 섬네일 updateProduct.thumbnail = {}", updateProduct.getThumbnail());
         }
 
         // 상품 변경
