@@ -35,7 +35,7 @@ public class CreateProductForm {
     private List<Size> sizes = new ArrayList<>();       // 사이즈
 
     @Pattern(regexp = "^[\\d]*$", message = "숫자만 입력해주세요")
-    @PositiveOrZero(message = "0 또는 양수를 입력해주세요")
+    @PositiveOrZero(message = "0 이상의 재고를 입력해주세요")
     private String inventory;           //기본재고수량
 
     @NotNull(message = "이미지를 선택해주세요")
@@ -45,11 +45,11 @@ public class CreateProductForm {
     private String content;    //내용
 
     @Pattern(regexp = "^[\\d]*$", message = "숫자만 입력해주세요")
-    @Positive(message = "양수만 입력해주세요")
+    @Positive(message = "0 이상의 원가를 입력해주세요")
     private String  cost;           //원가
 
     @Pattern(regexp = "^[\\d]*$", message = "숫자만 입력해주세요")
-    @Positive(message = "양수만 입력해주세요")
+    @Positive(message = "0 이상의 판매가를 입력해주세요")
     private String  price;          //판매가
 
     public static Product createProduct(CreateProductForm form) {

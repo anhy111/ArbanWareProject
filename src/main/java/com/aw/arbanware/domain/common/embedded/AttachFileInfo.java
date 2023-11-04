@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Embeddable;
@@ -26,7 +27,7 @@ public class AttachFileInfo {
     public AttachFileInfo(MultipartFile multipartFile, String storedPath) {
         originalFileName = multipartFile.getOriginalFilename();
         fileSize = multipartFile.getSize();
-        if (this.originalFileName != null) {
+        if (StringUtils.hasText(this.originalFileName)) {
             extensionName = originalFileName.substring(originalFileName.lastIndexOf("."));
             storedFileName = UUID.randomUUID().toString();
             this.storedPath = storedPath.replace("\\", "/");

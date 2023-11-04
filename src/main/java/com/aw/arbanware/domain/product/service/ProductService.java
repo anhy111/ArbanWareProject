@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -67,7 +68,11 @@ public class ProductService {
         StrProductImages.add(thumbnail.getId().toString());
         final List<Long> productImages = new ArrayList<>();
         for (String s : StrProductImages) {
-            productImages.add(Long.parseLong(s));
+            if (StringUtils.hasText(s)) {
+                productImages.add(Long.parseLong(s));
+            } else {
+                StrProductImages.remove(s);
+            }
         }
 
         final List<ProductImage> findProductImages = productImageService.findByIdList(productImages);
@@ -157,9 +162,12 @@ public class ProductService {
             }
         });
 
-        final List<ProductImage> productImages = productImageService.findByIdList(Arrays.stream(
-                formProductImages.split(",")
-        ).map(Long::parseLong).collect(Collectors.toList()));
+        if (!StringUtils.hasText(formProductImages)) {
+            return;
+        }
+        final List<ProductImage> productImages = productImageService.findByIdList(
+                Arrays.stream(formProductImages.split(","))
+                        .map(Long::parseLong).collect(Collectors.toList()));
         for (ProductImage productImage : productImages) {
             productImage.setProduct(product);
         }

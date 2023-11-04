@@ -1,35 +1,36 @@
+let $searchForm;
 $(document).ready(function () {
 
-    let $searchForm = $("#searchForm");
+    $searchForm = $("#searchForm");
     let $minPrice = $("#minPrice");
     let $maxPrice = $("#maxPrice");
 
     $("input[name=colors]").on('change', function () {
-        $searchForm.submit();
+        searchSubmit()
     });
 
 
     $(".conditionPrice").on('click', function () {
         $minPrice.val($(this).data("min-price"));
         $maxPrice.val($(this).data("max-price"));
-        $searchForm.submit();
+        searchSubmit()
     });
 
     $("#priceSearch").on("click", function () {
-        $searchForm.submit();
+        searchSubmit()
     });
 
     $("input[name=sizes]").on("change", function () {
-        $searchForm.submit();
+        searchSubmit()
     });
 
-    $("#sort").on('change', function () {
-        $searchForm.submit();
+    $("#sortProperty").on('change', function () {
+        searchSubmit()
     });
 
     $(".page-link").on('click', function () {
         $("#page").val($(this).val());
-        $searchForm.submit();
+        searchSubmit()
     });
 
     $(".color").css('backgroundColor', function () {
@@ -39,4 +40,11 @@ $(document).ready(function () {
         }
         return color;
     });
+
 });
+
+function searchSubmit() {
+    let keyword = $("#searchProductInput").val();
+    $("#name").val(keyword);
+    $searchForm.submit();
+}

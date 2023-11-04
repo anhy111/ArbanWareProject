@@ -12,6 +12,6 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> 
     @Query("select pi from ProductInfo pi join fetch pi.product p where pi.product.id = :productId")
     List<ProductInfo> findByProductId(@Param("productId") Long productId);
 
-    @Query("select distinct pi from ProductInfo pi join fetch pi.product p join fetch p.productImages pim where p.id = :productId")
+    @Query("select distinct pi from ProductInfo pi join fetch pi.product p left join fetch p.productImages pim where p.id = :productId")
     List<ProductInfo> findByProductIdWithImage(@Param("productId") Long productId);
 }

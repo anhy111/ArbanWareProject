@@ -3,22 +3,22 @@ package com.aw.arbanware.domain.product.repository;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.controller.ProductSearchCondition;
-import com.aw.arbanware.domain.product.entity.Product;
-import com.aw.arbanware.domain.product.entity.QProduct;
-import com.aw.arbanware.domain.product.entity.QProductInfo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.aw.arbanware.domain.product.entity.QProduct.product;
 import static com.aw.arbanware.domain.product.entity.QProductInfo.productInfo;
@@ -39,7 +39,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         product.id.as("productId"),
                         product.name,
                         product.price,
-                        product.thumbnail
+                        product.thumbnail,
+                        product.registrationTime
                 ))
                 .from(product)
                 .where(
@@ -47,6 +48,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         priceBetween(condition.getMinPrice(), condition.getMaxPrice())
 
                 )
+                .orderBy( getOrderSpecifier( pageable.getSort() ) )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -79,5 +81,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     private BooleanExpression nameEq(String name) {
         return hasText(name) ? product.name.eq(name) : null;
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
+        List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
+        sort.forEach(order -> {
+            final Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            final String property = order.getProperty();
+            final Path<Object> path = Expressions.path(Object.class, product, property);
+            orderSpecifiers.add(new OrderSpecifier(direction, path));
+        });
+        return orderSpecifiers.toArray(value -> new OrderSpecifier<?>[value]);
     }
 }
