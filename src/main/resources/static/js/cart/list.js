@@ -1,5 +1,4 @@
 $(function(){
-    // alert("하이");
 
     let price;
     let priceAll = 0;
@@ -37,7 +36,7 @@ $(function(){
 
         if(orderCheck <= 0){
             Swal.fire({
-                title:'상품을 1개 이상 선택해주세요.',         // Alert 제목
+                title:'상품을 선택해주세요.',         // Alert 제목
                 icon:'warning',                         // Alert 타입
             });
             return
