@@ -1,9 +1,11 @@
 package com.aw.arbanware.domain.product.repository;
 
+import com.aw.arbanware.domain.product.Color;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ProductProductInfoDto {
@@ -12,6 +14,7 @@ public class ProductProductInfoDto {
     private Integer price;
     private String thumbnail;
     private LocalDateTime registrationTime;
+    private List<Color> colors;
 
     @QueryProjection
     public ProductProductInfoDto(final Long productId, final String name, final Integer price, final String thumbnail, LocalDateTime registrationTime) {
