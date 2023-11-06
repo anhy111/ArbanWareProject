@@ -117,7 +117,6 @@ function cartOneDelete(id) {
         confirmButtonText: '삭제',
         cancelButtonText: '취소'
     }).then(function(result) {
-        console.log(">>>>>>>>>>>result", result);
         if(result.value){
             $.ajax({
                 type: 'post',
