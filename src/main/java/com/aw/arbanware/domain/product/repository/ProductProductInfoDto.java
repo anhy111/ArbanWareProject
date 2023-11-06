@@ -14,7 +14,6 @@ public class ProductProductInfoDto {
     private Integer price;
     private String thumbnail;
     private LocalDateTime registrationTime;
-    private List<Color> colors;
 
     @QueryProjection
     public ProductProductInfoDto(final Long productId, final String name, final Integer price, final String thumbnail, LocalDateTime registrationTime) {

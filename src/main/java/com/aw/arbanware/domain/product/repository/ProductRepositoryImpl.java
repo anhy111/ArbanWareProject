@@ -34,26 +34,29 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     @Override
     public Page<ProductProductInfoDto> search(ProductSearchCondition condition, Pageable pageable){
-        final QueryResults<ProductProductInfoDto> result = queryFactory
-                .select(new QProductProductInfoDto(
-                        product.id.as("productId"),
-                        product.name,
-                        product.price,
-                        product.thumbnail,
-                        product.registrationTime
-                ))
-                .from(product)
-                .where(
-                        nameEq(condition.getName()),
-                        priceBetween(condition.getMinPrice(), condition.getMaxPrice())
+//        final QueryResults<ProductProductInfoDto> result = queryFactory
+//                .select(new QProductProductInfoDto(
+//                        productInfo.product.id.as("productId"),
+//                        productInfo.product.name,
+//                        productInfo.product.price,
+//                        productInfo.product.thumbnail,
+//                        productInfo.product.registrationTime,
+//                        productInfo.color
+//                ))
+//                .from(productInfo)
+//                .rightJoin(product)
+//                .where(
+//                        nameEq(condition.getName()),
+//                        priceBetween(condition.getMinPrice(), condition.getMaxPrice())
+//
+//                )
+//                .orderBy( getOrderSpecifier( pageable.getSort() ) )
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
+//                .fetchResults();
 
-                )
-                .orderBy( getOrderSpecifier( pageable.getSort() ) )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+//        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+        return null;
     }
 
     private BooleanExpression colorEq(List<Color> colors) {
