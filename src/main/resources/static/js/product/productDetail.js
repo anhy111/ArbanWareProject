@@ -84,6 +84,38 @@ $(document).ready(function () {
         $amount.val(val - 0 + 1);
     });
 
+    $("#cartBtn").on('click', function () {
+        let checkSize = $('input[name=size]:checked').val();
+        let checkColor = $('input[name=color]:checked').val();
+        let amount = $amount.val();
+
+        if(checkSize == null){
+            Swal.fire({
+                html:'<b>사이즈를 선택해 주세요.</b>',
+                icon : 'warning'
+            })
+            return
+        }else if(checkColor == null){
+            Swal.fire({
+                html:'<b>색상을 선택해 주세요.</b>',
+                icon : 'warning'
+            })
+            return
+        }else if(amount <= 0){
+            Swal.fire({
+                html:'<b>수량을 1개 이상 선택해주세요.</b>',
+                icon : 'warning'
+            })
+            return
+        }
+
+        $('#newForm').action = '/cart/new';
+        $('#newForm').submit();
+
+        console.log(">>>>> color", checkColor, " >>>>>>>size ", checkSize, " >>>>>amount", amount);
+
+    });
+
     function regNumberAndSwal(val) {
         let regExp = /^[0-9]*$/g;
         if (regExp.test(val)) {

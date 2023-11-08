@@ -4,6 +4,7 @@ import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.entity.CartKey;
 import com.aw.arbanware.domain.cart.repository.CartRepository;
 import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
+import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.global.config.security.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,15 @@ public class CartService {
         Cart quantityUp = cartRepository.findByMemberIdAndProductInfoId(memberId, productInfoId);
         quantityUp.setQuantity(cart.getQuantity());
         return quantityUp;
+    }
+
+    public Cart cartSave(ProductInfo productInfo, Long memberId, int amount) {
+        Cart cart = new Cart();
+        cart.setProductInfoId(productInfo.getId());
+        cart.setMemberId(memberId);
+        cart.setQuantity(amount);
+        cartRepository.save(cart);
+        return cart;
     }
 
     public Cart cartOrder(Long memberId, Long productInfoId) {

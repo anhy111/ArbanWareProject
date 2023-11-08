@@ -34,12 +34,18 @@ public class CartController {
     public String cartList(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
         log.info("id={}", id);
-        if (id != null){
-            List<Cart> carts = cartService.cartList(id);
-            model.addAttribute("cartList", carts);
-        }else {
+        List<Cart> carts = cartService.cartList(id);
+        model.addAttribute("cartList", carts);
+        return "page/cart/list";
+    }
 
-        }
+    @PostMapping("/new")
+    public String cartRegister(Model model, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam ProductInfo productInfo, @RequestParam int amount) {
+        Long memberId = securityUser.getId();
+        ProductInfo productId = productInfoService.findByProductAndColorAndSize(productInfo);
+        cartService.cartSave(productId, memberId, amount);
+        List<Cart> carts = cartService.cartList(memberId);
+        model.addAttribute("cartList", carts);
         return "page/cart/list";
     }
 

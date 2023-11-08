@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ProductInfoService {
 
     private final ProductInfoRepository productInfoRepository;
@@ -38,6 +39,10 @@ public class ProductInfoService {
 
     public List<ProductInfo> findByProductIdWithImage(Long productId) {
         return productInfoRepository.findByProductIdWithImage(productId);
+    }
+
+    public ProductInfo findByProductAndColorAndSize(ProductInfo productInfo) {
+        return productInfoRepository.findByProductAndColorAndSize(productInfo.getProduct(), productInfo.getColor(), productInfo.getSize());
     }
 
 }

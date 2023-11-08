@@ -1,5 +1,8 @@
 package com.aw.arbanware.domain.product.repository;
 
+import com.aw.arbanware.domain.product.Color;
+import com.aw.arbanware.domain.product.Size;
+import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +17,6 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> 
 
     @Query("select distinct pi from ProductInfo pi join fetch pi.product p join fetch p.productImages pim where p.id = :productId")
     List<ProductInfo> findByProductIdWithImage(@Param("productId") Long productId);
+
+    ProductInfo findByProductAndColorAndSize(Product product, Color color, Size size);
 }

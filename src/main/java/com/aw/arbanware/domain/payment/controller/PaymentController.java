@@ -32,7 +32,6 @@ public class PaymentController {
     public String orderSuccess(@RequestParam String paymentKey, @RequestParam String orderId, @RequestParam Long amount, @RequestParam Long paymentId, Model model) {
 
         JSONObject jsonObject = paymentService.callApiAuth(paymentKey, orderId, amount);
-        log.info(">>>>>>>에?" + jsonObject);
         orderService.orderSuccess(orderId);
         paymentService.paymentSuccess(jsonObject, paymentId);
         OrderProduct orderProduct = orderProductService.orderProductFind(orderId);
