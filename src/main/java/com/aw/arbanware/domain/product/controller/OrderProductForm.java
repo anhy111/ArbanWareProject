@@ -11,5 +11,5 @@ import lombok.ToString;
 public class OrderProductForm {
     private Color color;
     private Size size;
-    private int amount;
+    private int amount = 1;
 }

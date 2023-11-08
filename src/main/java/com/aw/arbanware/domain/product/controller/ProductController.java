@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -74,6 +75,10 @@ public class ProductController {
         final long startTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
         log.info("{}, produts 시작", startTime);
 
+        if (!StringUtils.hasText(condition.getSortProperty())) {
+            condition.setSortProperty("registrationTime");
+        }
+
         final PageRequest pageRequest = PageRequest.of(condition.getPage(), condition.getPageSize(), Sort.Direction.DESC, condition.getSortProperty());
         final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
         log.info("condition = {}", condition);
@@ -112,7 +117,8 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model,
-                                @RequestParam(required = false) boolean addProduct) {
+                                @RequestParam(required = false) boolean addProduct,
+                                @RequestParam(required = false) boolean editProduct) {
         final List<ProductInfo> findProductInfos = productInfoService.findByProductId(id);
         if (findProductInfos.isEmpty()) {
             return "page/product/notFoundProduct";
@@ -127,6 +133,7 @@ public class ProductController {
         model.addAttribute("productInfos", findProductInfos);
         model.addAttribute("form", new OrderProductForm());
         model.addAttribute("addProduct", addProduct);
+        model.addAttribute("editProduct", editProduct);
         return "page/product/productDetail";
     }
 
@@ -143,6 +150,10 @@ public class ProductController {
                                   RedirectAttributes redirectAttributes,
                                   Model model) {
         log.info("createProductForm = {}", form);
+        if (form.getThumbnail().isEmpty()) {
+            bindingResult.rejectValue("thumbnail", "thumbnailNotNull");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllCategories());
             return "page/product/createProductForm";
@@ -169,6 +180,7 @@ public class ProductController {
     public String updateProductsPost(@Validated @ModelAttribute("product") UpdateProductForm form,
                                     BindingResult bindingResult,
                                     @PathVariable Long id,
+                                    RedirectAttributes redirectAttributes,
                                     Model model) {
         log.info("form = {}", form);
         if (form.getThumbnail().getSize() > 1000000) {
@@ -181,7 +193,7 @@ public class ProductController {
         }
 
         productService.updateProduct(form);
-
+        redirectAttributes.addAttribute("editProduct", true);
         return "redirect:/products/" + id;
     }
 

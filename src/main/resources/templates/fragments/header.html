@@ -42,16 +42,18 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                                <span class="input-group-text bg-transparent text-primary">
-                                    <i class="fa fa-search"></i>
-                                </span>
-                        </div>
+                <div class="input-group">
+                    <input type="hidden">
+                    <input type="text" id="searchProductInput" th:value="${condition == null ? '' : condition.name}"
+                           class="form-control" placeholder="무엇을 찾아드릴까요?">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary">
+                            <a th:href="'javascript:{' + ${condition == null ? 'searchProductKeyword();' : 'searchSubmit();'} + '}'"
+                                id="searchProductBtn"><i class="fa fa-search"></i>
+                            </a>
+                        </span>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="" class="btn border">
@@ -108,16 +110,14 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="/" class="nav-item nav-link">Home</a>
-                                <a href="/products" class="nav-item nav-link">Shop</a>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                <a href="/products" class="nav-item nav-link">상품</a>
                                 <a href="/notice" class="nav-item nav-link">공지사항</a>
                             </div>
                             <div class="navbar-nav ml-auto py-0">
-                                <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>
-                                <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">Logout</a>
+                                <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">로그인</a>
+                                <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">로그아웃</a>
                                 <a href="/cart" class="nav-item nav-link">장바구니</a>
-                                <a sec:authorize="isAnonymous()" href="/members/new" class="nav-item nav-link">Register</a>
+                                <a sec:authorize="isAnonymous()" href="/members/new" class="nav-item nav-link">회원가입</a>
                             </div>
                         </div>
                     </nav>

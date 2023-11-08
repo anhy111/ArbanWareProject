@@ -30,6 +30,13 @@
             outline: black solid 2px;
         }
 
+        .product-color {
+            position: relative;
+            width: 15px !important;
+            height: 15px !important;
+            border: 1px solid #e3e3e3;
+        }
+
         .bdr {
             border-top: 1px solid #e6e6e6;
             border-left: 1px solid #e6e6e6;
@@ -52,6 +59,10 @@
             border: 1px solid #1C1C1C !important;
         }
 
+        .product-item:hover img{
+            opacity: 0.8;
+        }
+
         .under-line:hover{
             text-decoration:underline;
         }
@@ -60,6 +71,7 @@
             color: red;
             font-size: 13px;
         }
+
     </style>
 </head>
 <body>
@@ -68,6 +80,7 @@
     <!-- Shop Start -->
     <div class="container-fluid">
         <form id="searchForm" method="get" action="/products" th:object="${condition}">
+            <input type="hidden" th:field="${condition.name}">
             <div class="row px-xl-5">
                 <!-- Shop Sidebar Start -->
                 <div class="col-lg-2 col-md-12">
@@ -129,42 +142,58 @@
                                 <div>
                                     <select class="custom-select" th:field="${condition.sortProperty}">
                                         <option selected value="registrationTime">신상품</option>
-                                        <option value="buy">인기상품</option>
-                                        <option value="review">사용후기</option>
+                                        <option value="">인기상품</option>
+                                        <option value="">사용후기</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-4 col-sm-12 pb-1" th:each="product : ${products}">
+                        <div class="col-lg-3 col-md-4 col-sm-12 pb-5" th:each="product : ${products}" th:unless="${products.isEmpty()}">
                             <div class="card product-item border-0 mb-4">
-                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100" style="min-height: 500px" th:src="@{|/upload/${product.thumbnail}|}" alt="">
+                                <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0">
+                                    <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0">
+                                        <img class="img-fluid w-100" style="min-height: 500px; max-height: 500px" th:src="@{|/upload/${product.thumbnail}|}">
+                                    </a>
                                 </div>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3" th:text="${product.name}">Colorful Stylish Shirt</h6>
-                                    <div class="d-flex justify-content-center">
-                                        <h6 th:text="${product.price}">$123.00</h6>
-                                        <h6 class="text-muted ml-2">
-                                            <del th:text="${product.price}">$123.00</del>
+                                <div class="card-body text-left pt-3 pl-0 pb-3">
+                                    <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0">
+                                        <h6 class="text-truncate font-weight-normal mb-3" th:text="${product.name}" style="font-size: 17px">Colorful Stylish Shirt</h6>
+                                    </a>
+                                    <div class="d-flex justify-content-start">
+                                        <h6 th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}" style="font-size: 20px">$123.00</h6>
+                                        <h6 class="text-muted align-self-center ml-2">
+                                            <del th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}" style="font-size: 18px">$123.00</del>
                                         </h6>
                                     </div>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                                        Detail</a>
-                                    <a href="" class="btn btn-sm text-dark p-0"><i
-                                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <div class="d-flex justify-content-start">
+                                        <div th:each="productColor : ${product.colors}" class="product-color d-inline-block" style="margin-right: 0.1em"
+                                              th:data-product-color="${productColor.color}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 text-center pt-5" th:if="${products.isEmpty()}">
+                            <img src="/img/info-icon.png" style="width: 60px">
+                            <p class="font-weight-semi-bold pt-4 mb-1" style="color: #1C1C1C; font-size: 13px;">검색결과가 없습니다</p>
+                            <p class="font-weight-semi-bold pt-1" style="color: #1C1C1C; font-size: 12px;">정확한 검색어 또는 조건인지 확인하시고 다시 검색해 주세요.</p>
+                            <p class="mt-3" style="font-size: 12px">검색어/제외검색어의 입력이 정확한지 확인해 보세요.<br>
+                                두 단어 이상의 검색어인 경우, 띄어쓰기를 확인해 보세요.</p>
+                        </div>
                         <div class="col-12 pb-1">
                             <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center mb-3">
+                                <ul class="pagination justify-content-center mb-3" th:classappend="${totalPage < 1 ? 'd-none' : ''}">
                                     <input type="hidden" th:field="${condition.page}">
                                     <input type="hidden" th:field="${condition.pageSize}">
+                                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                        <button type="button" class="page-link" aria-label="Previous" th:value="0">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">First</span>
+                                        </button>
+                                    </li>
                                     <li class="page-item" th:classappend="${!page.hasPrevious() ? 'disabled' : ''}">
                                         <button type="button" class="page-link" aria-label="Previous" th:value="${currentPage - 1}">
-                                            <span aria-hidden="true">&laquo;</span>
+                                            <span aria-hidden="true">&lsaquo;</span>
                                             <span class="sr-only">Previous</span>
                                         </button>
                                     </li>
@@ -173,8 +202,14 @@
                                         ><button type="button" class="page-link" th:text="${eachPage+1}" th:value="${eachPage}"></button></li>
                                     <li class="page-item" th:classappend="${!page.hasNext()} ? 'disabled' : ''">
                                         <button type="button" class="page-link" aria-label="Next" th:value="${currentPage + 1}">
-                                            <span aria-hidden="true">&raquo;</span>
+                                            <span aria-hidden="true">&rsaquo;</span>
                                             <span class="sr-only">Next</span>
+                                        </button>
+                                    </li>
+                                    <li class="page-item" th:classappend="${page.isLast()} ? 'disabled' : ''">
+                                        <button type="button" class="page-link" aria-label="Next" th:value="${currentPage + 1}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Last</span>
                                         </button>
                                     </li>
                                 </ul>

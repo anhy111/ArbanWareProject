@@ -27,6 +27,9 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImages = new ArrayList<>();   // 상품이미지들
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductInfo> productInfos = new ArrayList<>();
+
     private String name;    //상품명
 
     private String content;    //내용
