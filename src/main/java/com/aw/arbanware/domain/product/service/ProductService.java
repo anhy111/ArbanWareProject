@@ -42,6 +42,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Page<ProductProductInfoDto> searchProducts(ProductSearchCondition condition, Pageable pageable) {
         return productRepository.search(condition, pageable);
     }

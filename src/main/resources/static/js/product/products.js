@@ -41,6 +41,13 @@ $(document).ready(function () {
         return color;
     });
 
+    $(".product-color").css('backgroundColor', function () {
+        let color = $(this).data('product-color');
+        if (color == 'WHITE') {
+            return '#feffef'
+        }
+        return color;
+    });
 });
 
 function searchSubmit() {

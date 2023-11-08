@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +74,10 @@ public class ProductController {
 
         final long startTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
         log.info("{}, produts 시작", startTime);
+
+        if (!StringUtils.hasText(condition.getSortProperty())) {
+            condition.setSortProperty("registrationTime");
+        }
 
         final PageRequest pageRequest = PageRequest.of(condition.getPage(), condition.getPageSize(), Sort.Direction.DESC, condition.getSortProperty());
         final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
