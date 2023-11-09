@@ -5,6 +5,7 @@ import com.aw.arbanware.domain.cart.service.CartService;
 import com.aw.arbanware.domain.common.apiobj.DefaultResponse;
 import com.aw.arbanware.domain.common.apiobj.ResponseMessage;
 import com.aw.arbanware.domain.common.apiobj.StatusCode;
+import com.aw.arbanware.domain.product.controller.OrderProductForm;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.global.config.security.SecurityUser;
@@ -40,9 +41,12 @@ public class CartController {
     }
 
     @PostMapping("/new")
-    public String cartRegister(Model model, @AuthenticationPrincipal SecurityUser securityUser, @RequestParam ProductInfo productInfo, @RequestParam int amount) {
+    public String cartRegister(Model model, @AuthenticationPrincipal SecurityUser securityUser, @ModelAttribute OrderProductForm orderProductForm, @RequestParam int amount) {
         Long memberId = securityUser.getId();
-        ProductInfo productId = productInfoService.findByProductAndColorAndSize(productInfo);
+        log.info("orderProductForm = {}", orderProductForm);
+        ProductInfo productId = productInfoService.findByProductAndColorAndSize(orderProductForm);
+        log.info("productInfo = {}", productId);
+
         cartService.cartSave(productId, memberId, amount);
         List<Cart> carts = cartService.cartList(memberId);
         model.addAttribute("cartList", carts);

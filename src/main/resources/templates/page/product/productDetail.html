@@ -117,21 +117,22 @@
             </div>
 
             <div class="col-lg-5 pb-5">
-                <h3 class="font-weight-semi-bold" th:text="${product.name}"></h3>
-                <div class="d-flex mb-3">
-                    <div class="text-primary mr-2">
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star"></small>
-                        <small class="fas fa-star-half-alt"></small>
-                        <small class="far fa-star"></small>
-                    </div>
-                    <small class="pt-1" th:text="'(50 ' + '후기)'"></small>
-                </div>
-                <h3 class="font-weight-semi-bold mb-4"
-                    data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></h3>
-                <hr>
                 <form th:object="${form}" id="newForm" method="post">
+                    <h3 class="font-weight-semi-bold" th:text="${product.name}"></h3>
+                    <input hidden="hidden" name="product.id" th:value="${product.getId()}" />
+                    <div class="d-flex mb-3">
+                        <div class="text-primary mr-2">
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star-half-alt"></small>
+                            <small class="far fa-star"></small>
+                        </div>
+                        <small class="pt-1" th:text="'(50 ' + '후기)'"></small>
+                    </div>
+                    <h3 class="font-weight-semi-bold mb-4"
+                        data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></h3>
+                    <hr>
                     <div class="d-flex mb-4">
                         <p class="text-dark font-weight-medium mb-0 mr-3" style="width: 42px">Color</p>
                         <div class="custom-control custom-radio custom-control-inline mr-2" th:each="color : ${colors}">
