@@ -23,7 +23,7 @@ public class ProductSearchCondition {
     private String maxPrice;
 
     private String name;
-
+    private String category;
     private int page;
     private int pageSize=20;
     private String sortProperty = "registrationTime";

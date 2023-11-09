@@ -1,6 +1,5 @@
 package com.aw.arbanware.domain.product.controller;
 
-import com.aw.arbanware.domain.category.service.CategoryService;
 import com.aw.arbanware.domain.common.apiobj.CkEditor5RespForm;
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.Color;
@@ -16,15 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +41,6 @@ public class ProductController {
     private final ProductService productService;
     private final ProductInfoService productInfoService;
     private final ProductImageService productImageService;
-    private final CategoryService categoryService;
 
     private final Color[] colorValues = Color.values();
     private final Size[] sizeValues = Size.values();
@@ -58,6 +53,7 @@ public class ProductController {
     public Size[] sizeValues() {
         return sizeValues;
     }
+
 
     @Value("${arbanWare.upload.url}")
     private String uploadUrl;
@@ -73,7 +69,6 @@ public class ProductController {
         }
 
         final long startTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
-        log.info("{}, produts 시작", startTime);
 
         if (!StringUtils.hasText(condition.getSortProperty())) {
             condition.setSortProperty("registrationTime");
@@ -97,12 +92,8 @@ public class ProductController {
             endPage = totalPage - 1;
         }
         final long endTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
-        log.info("{}, products 종료", endTime);
-        log.info("경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
+        log.info("products목록 경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
 
-        log.info("currentPage = {}", currentPage);
-        log.info("startPage = {}", startPage);
-        log.info("endPage = {}", endPage);
 
         model.addAttribute("products", pageProduct.getContent());
         model.addAttribute("totalPage", totalPage);
@@ -140,7 +131,6 @@ public class ProductController {
     @GetMapping("/products/new")
     public String newProducts(Model model) {
         model.addAttribute("product", new CreateProductForm());
-        model.addAttribute("categories", categoryService.findAllCategories());
         return "page/product/createProductForm";
     }
 
@@ -155,7 +145,6 @@ public class ProductController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAllCategories());
             return "page/product/createProductForm";
         }
 
@@ -172,7 +161,6 @@ public class ProductController {
         }
 
         model.addAttribute("product", updateForm);
-        model.addAttribute("categories", categoryService.findAllCategories());
         return "page/product/updateProductForm";
     }
 
@@ -188,7 +176,6 @@ public class ProductController {
         }
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAllCategories());
             return "page/product/updateProductForm";
         }
 

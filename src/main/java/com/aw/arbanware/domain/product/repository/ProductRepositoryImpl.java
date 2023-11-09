@@ -51,7 +51,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         nameEq(condition.getName()),
                         priceBetween(condition.getMinPrice(), condition.getMaxPrice()),
                         colorEq(condition.getColors()),
-                        sizeEq(condition.getSizes())
+                        sizeEq(condition.getSizes()),
+                        categoryEq(condition.getCategory())
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
@@ -91,7 +92,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         nameEq(condition.getName()),
                         priceBetween(condition.getMinPrice(), condition.getMaxPrice()),
                         colorEq(condition.getColors()),
-                        sizeEq(condition.getSizes())
+                        sizeEq(condition.getSizes()),
+                        categoryEq(condition.getCategory())
                 )
                 .fetch()
                 .size();
@@ -122,6 +124,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     private BooleanExpression maxPrice(String  maxPrice) {
         return hasText(maxPrice) ? product.price.loe(Integer.parseInt(maxPrice)) : null;
+    }
+
+    private BooleanExpression categoryEq(String category) {
+        return hasText(category) ? product.category.id.eq(Long.parseLong(category)) : null;
     }
 
     private BooleanExpression nameEq(String name) {

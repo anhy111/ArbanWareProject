@@ -2,7 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/default_layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <title>Products</title>
@@ -81,6 +82,7 @@
     <div class="container-fluid">
         <form id="searchForm" method="get" action="/products" th:object="${condition}">
             <input type="hidden" th:field="${condition.name}">
+            <input type="hidden" th:field="${condition.category}">
             <div class="row px-xl-5">
                 <!-- Shop Sidebar Start -->
                 <div class="col-lg-2 col-md-12">
@@ -213,7 +215,7 @@
                                         </button>
                                     </li>
                                 </ul>
-                                <div class="flex-fill" style="float: right">
+                                <div class="flex-fill" style="float: right" sec:authorize="hasRole('ADMIN')">
                                     <a href="/products/new" class="btn btn-primary" style="font-size: 14px">상품 추가</a>
                                 </div>
                             </nav>

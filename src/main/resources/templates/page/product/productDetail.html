@@ -2,8 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
-
+      layout:decorate="~{layouts/default_layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Shop Detail</title>
     <style>
@@ -488,7 +488,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-right" style="width: 100%">
+        <div class="text-right" style="width: 100%"  sec:authorize="hasRole('ADMIN')">
             <a class="btn btn-primary" th:href="@{|/products/${product.id}/edit|}">수정</a>
             <a class="btn btn-primary" th:href="@{|/products/${product.id}/delete|}">삭제</a>
         </div>
