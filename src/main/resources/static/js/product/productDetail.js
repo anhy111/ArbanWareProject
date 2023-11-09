@@ -109,7 +109,7 @@ $(document).ready(function () {
             return
         }
 
-        $('#newForm').action = '/cart/new';
+        $('#newForm').attr('action', '/cart/new');
         $('#newForm').submit();
 
         console.log(">>>>> color", checkColor, " >>>>>>>size ", checkSize, " >>>>>amount", amount);

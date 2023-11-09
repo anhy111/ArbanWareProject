@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product.service;
 
+import com.aw.arbanware.domain.product.controller.OrderProductForm;
 import com.aw.arbanware.domain.product.controller.UpdateProductForm;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.repository.ProductInfoRepository;
@@ -41,7 +42,7 @@ public class ProductInfoService {
         return productInfoRepository.findByProductIdWithImage(productId);
     }
 
-    public ProductInfo findByProductAndColorAndSize(ProductInfo productInfo) {
+    public ProductInfo findByProductAndColorAndSize(OrderProductForm productInfo) {
         return productInfoRepository.findByProductAndColorAndSize(productInfo.getProduct(), productInfo.getColor(), productInfo.getSize());
     }
 
