@@ -4,6 +4,11 @@ import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.service.CartService;
 import com.aw.arbanware.domain.order.entity.Order;
 import com.aw.arbanware.domain.order.service.OrderService;
+import com.aw.arbanware.domain.product.controller.OrderProductForm;
+import com.aw.arbanware.domain.product.entity.Product;
+import com.aw.arbanware.domain.product.entity.ProductInfo;
+import com.aw.arbanware.domain.product.service.ProductInfoService;
+import com.aw.arbanware.domain.product.service.ProductService;
 import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.global.config.security.SecurityUser;
@@ -28,6 +33,8 @@ public class OrderController {
     private final CartService cartService;
     private final MemberService memberService;
     private final OrderService orderService;
+    private final ProductInfoService productInfoService;
+    private final ProductService productService;
 
     @GetMapping("/new")
     @PreAuthorize("isAuthenticated()")
@@ -38,6 +45,21 @@ public class OrderController {
         List<Cart> carts = cartService.cartList(id);
         model.addAttribute("cartList", carts);
         model.addAttribute("user", member);
+        return "page/order/register";
+    }
+
+    @PostMapping("/new")
+    @PreAuthorize("isAuthenticated()")
+    public String orderNew(Model model, @AuthenticationPrincipal SecurityUser securityUser, @ModelAttribute OrderProductForm orderProductForm) {
+        Long memberId = securityUser.getId();
+        Optional<Member> member = memberService.findById(memberId);
+        ProductInfo productInfo = productInfoService.findByProductAndColorAndSize(orderProductForm);
+        Cart cart = cartService.cartOrder(memberId, productInfo.getId());
+        List<Cart> carts = new ArrayList<Cart>();
+        carts.add(cart);
+
+        model.addAttribute("user", member);
+        model.addAttribute("cartList", carts);
         return "page/order/register";
     }
 
@@ -57,7 +79,6 @@ public class OrderController {
         model.addAttribute("user", member);
 
         log.info(" productInfo={}", checkedValue);
-
 
         return "page/order/register";
     }
