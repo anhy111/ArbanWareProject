@@ -2,7 +2,6 @@ $(document).ready(function () {
 
     let $amount = $('#amount');
 
-
     ClassicEditor
         .create( document.querySelector( '#content' ) )
         .then( editor => {
@@ -85,34 +84,22 @@ $(document).ready(function () {
     });
 
     $("#cartBtn").on('click', function () {
-        let checkSize = $('input[name=size]:checked').val();
-        let checkColor = $('input[name=color]:checked').val();
-        let amount = $amount.val();
-
-        if(checkSize == null){
-            Swal.fire({
-                html:'<b>사이즈를 선택해 주세요.</b>',
-                icon : 'warning'
-            })
-            return
-        }else if(checkColor == null){
-            Swal.fire({
-                html:'<b>색상을 선택해 주세요.</b>',
-                icon : 'warning'
-            })
-            return
-        }else if(amount <= 0){
-            Swal.fire({
-                html:'<b>수량을 1개 이상 선택해주세요.</b>',
-                icon : 'warning'
-            })
-            return
+        if (cartAndOrderNew() == false) {
+            return;
         }
 
         $('#newForm').attr('action', '/cart/new');
         $('#newForm').submit();
 
-        console.log(">>>>> color", checkColor, " >>>>>>>size ", checkSize, " >>>>>amount", amount);
+    });
+
+    $("#orderBtn").on('click', function () {
+        if (cartAndOrderNew() == false) {
+            return;
+        }
+
+        $('#newForm').attr('action', '/order/new');
+        $('#newForm').submit();
 
     });
 
@@ -126,5 +113,33 @@ $(document).ready(function () {
             icon : 'error'
         })
         return false;
+    }
+
+    function cartAndOrderNew(){
+        let checkSize = $('input[name=size]:checked').val();
+        let checkColor = $('input[name=color]:checked').val();
+        let amount = $amount.val();
+
+        if(checkColor == null){
+            Swal.fire({
+                html:'<b>색상을 선택해 주세요.</b>',
+                icon : 'warning'
+            })
+            return false;
+        }else if(checkSize == null){
+            Swal.fire({
+                html:'<b>사이즈를 선택해 주세요.</b>',
+                icon : 'warning'
+            })
+            return false;
+        }else if(amount <= 0){
+            Swal.fire({
+                html:'<b>수량을 1개 이상 선택해주세요.</b>',
+                icon : 'warning'
+            })
+            return false;
+        }
+
+        return true;
     }
 });
