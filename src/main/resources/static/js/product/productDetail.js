@@ -116,6 +116,53 @@ $(document).ready(function () {
 
     });
 
+
+    let $rating = $("#rating");
+    let $ratingSpan = $(".rating span");
+    $ratingSpan.hover(function () {
+        let rate = $(this).data('rate')
+        $ratingSpan.html(function (inx, val) {
+            if (inx + 1 <= rate) {
+                return "★";
+            } else {
+                return "☆";
+            }
+        });
+    }, function () {
+        $ratingSpan.html('☆');
+    }).on('click', function () {
+        $ratingSpan.unbind('mouseenter mouseleave');
+        let rate = $(this).data('rate')
+        $ratingSpan.html(function (inx, val) {
+            if (inx + 1 <= rate) {
+                return "★";
+            } else {
+                return "☆";
+            }
+        });
+        $rating.val($(this).data("rate"));
+    });
+
+    $('#images').on('change', function() {
+        $(".image").remove();
+        console.log(this.files);
+        if (this.files && this.files[0]) {
+            for(let file of this.files) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#beforePreview').before('<div class="col-3 px-1 mb-3 image">' +
+                        '<img src="' + e.target.result + '"style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">' +
+                        '</div>');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    $("#createReview").on('click', function () {
+        console.log($("#images").val());
+    });
+
     function regNumberAndSwal(val) {
         let regExp = /^[0-9]*$/g;
         if (regExp.test(val)) {

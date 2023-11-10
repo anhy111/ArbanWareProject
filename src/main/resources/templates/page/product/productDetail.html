@@ -96,6 +96,12 @@
             width: 70px;
             height: 70px;
         }
+
+        .rating > span {
+            font-size: 2.5em;
+            display: inline-block;
+        }
+
     </style>
 </head>
 
@@ -435,54 +441,79 @@
                     </div>
                     <div class="tab-pane fade" id="tab-pane-3">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="mb-4">후기</h4>
-                                <div class="media mb-4">
-                                    <!--                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">-->
-                                    <div class="media-body">
-                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                        <div class="text-primary mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
+                            <div class="col-12 pb-4 container-fluid border-bottom">
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <div class="text-center">
+                                            <i class="fas fa-2x fa-star text-primary"></i>
+                                            <h2 class="d-inline-block">4.3</h2>
+                                            <p>(0개의 리뷰평점)</p>
+                                            <button type="button" class="btn btn-primary font-weight-bold mt-4"
+                                                    data-toggle="modal" data-target="#reviewModal">상품 후기 작성</button>
                                         </div>
-                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                            et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                        <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body container-fluid">
+                                                        <div class="row pb-2 border-bottom">
+                                                            <div class="col-4" style="overflow: hidden">
+                                                                <img th:src="@{'/upload/'+${product.thumbnail}}" style="width: 100%; max-height: 200px; margin-top: -20%;margin-bottom: -20%">
+                                                            </div>
+                                                            <div class="col-8 align-self-center">
+                                                                <h6 class="pt-3" th:text="${product.name}"></h6>
+                                                                <span class="font-weight-semi-bold" style="font-size: 14px" th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></span><br>
+                                                                <p class="d-inline-block mt-2">리뷰</p><h6 class="ml-2 d-inline-block">?</h6>
+                                                                <p class="d-inline-block ml-4">평점</p><h6 class="ml-2 d-inline-block">?</h6>
+                                                            </div>
+                                                        </div>
+                                                        <form class="col">
+                                                            <div class="row">
+                                                                <div class=" col-12 d-flex my-3 justify-content-center">
+                                                                    <input type="hidden" th:field="${reviewForm.rating}">
+                                                                    <div class="text-primary rating">
+                                                                        <span id="rating1" data-rate="1">☆</span>
+                                                                        <span id="rating2" data-rate="2">☆</span>
+                                                                        <span id="rating3" data-rate="3">☆</span>
+                                                                        <span id="rating4" data-rate="4">☆</span>
+                                                                        <span id="rating5" data-rate="5">☆</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div id="beforePreview" class="col-3 px-1 mb-3">
+                                                                    <div class="text-center d-flex justify-content-center px-0"
+                                                                         style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">
+                                                                        <label for="images" class="align-self-center m-0">
+                                                                            <i class="fa fa-camera-retro fa-2x"></i>
+                                                                            <p style="font-size: 12px"><b>사진추가+</b></p>
+                                                                        </label>
+                                                                    </div>
+                                                                    <input id="images" type="file" style="display: none" multiple accept="image/*"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 px-0">
+                                                                    <textarea rows="8" class="form-control" th:field="${reviewForm.content}"
+                                                                              style="border: 1px solid #e6e6e6 !important;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary font-weight-bold" style="font-size: 14px" data-dismiss="modal">닫기</button>
+                                                        <button type="button" id="createReview" class="btn btn-primary font-weight-bold" style="font-size: 14px" >후기 등록</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 border-left" style="height: 150px">
+                                        사진들
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <h4 class="mb-4">Leave a review</h4>
-                                <small>Your email address will not be published. Required fields are marked *</small>
-                                <div class="d-flex my-3">
-                                    <p class="mb-0 mr-2">Your Rating * :</p>
-                                    <div class="text-primary">
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                                <form>
-                                    <div class="form-group">
-                                        <label for="message">Your Review *</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Your Name *</label>
-                                        <input type="text" class="form-control" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Your Email *</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
-                                    <div class="form-group mb-0">
-                                        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                    </div>
-                                </form>
+                            <div class="col-12 text-right pt-4 pr-0">
+
                             </div>
                         </div>
                     </div>

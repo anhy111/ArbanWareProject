@@ -1,4 +1,4 @@
-package com.aw.arbanware.domain.review;
+package com.aw.arbanware.domain.review.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.DeleteYn;

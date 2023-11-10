@@ -11,6 +11,7 @@ import com.aw.arbanware.domain.product.repository.ProductProductInfoDto;
 import com.aw.arbanware.domain.product.service.ProductImageService;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
+import com.aw.arbanware.domain.review.controller.CreateReviewForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -125,6 +126,7 @@ public class ProductController {
         model.addAttribute("form", new OrderProductForm());
         model.addAttribute("addProduct", addProduct);
         model.addAttribute("editProduct", editProduct);
+        model.addAttribute("reviewForm", new CreateReviewForm());
         return "page/product/productDetail";
     }
 
