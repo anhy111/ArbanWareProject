@@ -34,7 +34,6 @@ public class OrderController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final ProductInfoService productInfoService;
-    private final ProductService productService;
 
     @GetMapping("/new")
     @PreAuthorize("isAuthenticated()")
@@ -89,6 +88,13 @@ public class OrderController {
         Order orderRegister = orderService.orderRegister(order);
         orderRegister.getId();
         return orderRegister;
+    }
+
+    @GetMapping("/details")
+    @PreAuthorize("isAuthenticated()")
+    public String orderDetails() {
+
+        return "page/order/details";
     }
 
 }

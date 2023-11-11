@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/default_layout}">
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문내역</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <form action="/order/check/new" id="newFrom" method="get">
+            <div class="row justify-content-center">
+                <table class="table">
+                    <thead>
+                    <tr class="text-center">
+                        <th class="col-5">상품정보</th>
+                        <th class="col-2">주문일</th>
+                        <th class="col-1">수량</th>
+                        <th class="col-2">주문금액</th>
+                        <th class="col-2">주문상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${cartList.size()}<=0">
+                        <td class="text-center font-weight-bold" colspan="6">
+                            <span>구매하신 내역이 없습니다.</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${cartList.size()}>0" th:each="list, i : ${cartList}">
+                        <td class="align-middle text-center" th:text="${i.index+1}"></td>
+                        <!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
+                        <td class="align-middle text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" name="checkedValue" class="custom-control-input cartCheck" th:id="${'cartCheck' + (i.index+1)}" th:value="${list.getProductInfo().getId()}">
+                                <label class="custom-control-label" th:for="${'cartCheck' + (i.index+1)}"></label>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
+                        </td>
+                        <td class="align-middle text-center">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'minus')">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" name="checkedQuantity" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'plus')">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
+                            <span class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
+                        </td>
+                        <td class="align-middle text-center">
+                            <button type="button" class="btn btn-primary" th:onclick="optionUpdate([[${list.getProductInfo().getProduct().getId()}]])" data-toggle="modal" data-target="#optionModal">옵션변경</button>
+                            <button type="button" class="btn btn-primary" th:onclick="cartOneDelete([[${list.getProductInfo().getId()}]])">삭제</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot th:if="${cartList.size()}>0">
+                    <tr>
+                        <td class="text-right font-weight-bold" colspan="6">
+                            <span> 합계 : </span>
+                            <span id="priceAll"></span>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="row justify-content-center">
+                <button type="button" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
+                <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/order/details.js}"></script>
+</th:block>
+</body>
+</html>
