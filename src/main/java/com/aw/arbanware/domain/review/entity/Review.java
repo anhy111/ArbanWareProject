@@ -2,6 +2,7 @@ package com.aw.arbanware.domain.review.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
@@ -18,9 +19,9 @@ public class Review extends BaseTimeEntity {
     @Column(name = "REVIEW_ID")
     private Long id; // 후기번호
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_INFO_ID")
-    private ProductInfo productInfo;    //상품 정보 번호
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORDER_PRODUCT_ID")
+    private OrderProduct orderProduct;    //상품 정보 번호
 
     private int rating; //별점
     private String content; //내용

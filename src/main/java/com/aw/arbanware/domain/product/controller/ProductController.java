@@ -126,7 +126,7 @@ public class ProductController {
         model.addAttribute("form", new OrderProductForm());
         model.addAttribute("addProduct", addProduct);
         model.addAttribute("editProduct", editProduct);
-        model.addAttribute("reviewForm", new CreateReviewForm());
+        model.addAttribute("reviewForm", new CreateReviewForm(id));
         return "page/product/productDetail";
     }
 

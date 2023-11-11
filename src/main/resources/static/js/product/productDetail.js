@@ -116,6 +116,38 @@ $(document).ready(function () {
 
     });
 
+    $("#review_form_btn").on('click', function () {
+        let data = {
+            productId : $("#reviewForm #productId").val()
+        };
+
+        console.log(data);
+        $.ajax({
+            type: 'get',
+            url: '/review/orderCheck',
+            data: data,
+            contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+            success :function(data){
+                console.log(data)
+
+                if (data.statusCode == 401) {
+                    location.href = '/login';
+                } else if (data.statusCode == 204) {
+                    Swal.fire({
+                        html: '<b>' + data.responseMessage + '</b>',
+                        icon: 'error'
+                    });
+                } else {
+                    $('#reviewModal').modal("show");
+                    $("#reviewForm #orderProductId").val(data.data);
+                }
+            },
+            error:function(request,status,error){
+                console.log("code" + request.status +"message" + request.responseText + " error " + error);
+            }
+        });
+    });
+
 
     let $rating = $("#rating");
     let $ratingSpan = $(".rating span");
@@ -145,7 +177,6 @@ $(document).ready(function () {
 
     $('#images').on('change', function() {
         $(".image").remove();
-        console.log(this.files);
         if (this.files && this.files[0]) {
             for(let file of this.files) {
                 var reader = new FileReader();
@@ -160,7 +191,10 @@ $(document).ready(function () {
     });
 
     $("#createReview").on('click', function () {
-        console.log($("#images").val());
+
+
+        $("#reviewForm").submit();
+
     });
 
     function regNumberAndSwal(val) {

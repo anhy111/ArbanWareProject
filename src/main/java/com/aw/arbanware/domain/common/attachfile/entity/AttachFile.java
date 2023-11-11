@@ -15,9 +15,7 @@ import java.util.Objects;
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
 public class AttachFile {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "attach_file_seq")
-    @SequenceGenerator(name = "attach_file_seq",sequenceName = "ATTACH_FILE_SEQUENCE",allocationSize = 1)
+    @Id
     @Column(name = "ATTACH_FILE_ID")
     private Long id;    // 첨부파일번호
 
