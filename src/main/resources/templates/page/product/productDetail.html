@@ -546,6 +546,12 @@
                 icon: 'success'
             });
         }
+        if ([[${addReview}]]) {
+            Swal.fire({
+                html: '<b>후기가 등록되었습니다.</b>',
+                icon: 'success'
+            });
+        }
 
         let content = [[${product.content}]];
     </script>

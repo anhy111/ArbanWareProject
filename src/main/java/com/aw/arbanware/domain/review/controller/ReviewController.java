@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +37,12 @@ public class ReviewController {
 
     @PostMapping("/new")
     public String newReview(@ModelAttribute CreateReviewForm form,
-                             SecurityUser user) {
+                            SecurityUser user,
+                            RedirectAttributes redirectAttributes) {
         log.info("form = {}", form);
-        reviewService.createReview(form, user.getId());
+        final boolean addReview = reviewService.createReview(form, user.getId());
+
+        redirectAttributes.addAttribute("addReview", addReview);
         return "redirect:/products/" + form.getProductId();
     }
 

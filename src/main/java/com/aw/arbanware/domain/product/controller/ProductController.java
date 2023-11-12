@@ -110,7 +110,8 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model,
                                 @RequestParam(required = false) boolean addProduct,
-                                @RequestParam(required = false) boolean editProduct) {
+                                @RequestParam(required = false) boolean editProduct,
+                                @RequestParam(required = false) boolean addReview) {
         final List<ProductInfo> findProductInfos = productInfoService.findByProductId(id);
         if (findProductInfos.isEmpty()) {
             return "page/product/notFoundProduct";
@@ -126,6 +127,7 @@ public class ProductController {
         model.addAttribute("form", new OrderProductForm());
         model.addAttribute("addProduct", addProduct);
         model.addAttribute("editProduct", editProduct);
+        model.addAttribute("addReview", addReview);
         model.addAttribute("reviewForm", new CreateReviewForm(id));
         return "page/product/productDetail";
     }

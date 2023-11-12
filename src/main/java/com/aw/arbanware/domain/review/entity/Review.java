@@ -32,5 +32,5 @@ public class Review extends BaseTimeEntity {
     private Member member;  //회원번호
 
     @Enumerated(EnumType.STRING)
-    private DeleteYn deleteYn;  //삭제 여부
+    private DeleteYn deleteYn = DeleteYn.N;  //삭제 여부
 }
