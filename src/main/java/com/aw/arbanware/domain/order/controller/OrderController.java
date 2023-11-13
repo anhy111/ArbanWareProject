@@ -92,7 +92,6 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public String orderDetails() {
 
-
         return "page/order/details";
     }
 
