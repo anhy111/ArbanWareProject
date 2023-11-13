@@ -5,10 +5,8 @@ import com.aw.arbanware.domain.cart.service.CartService;
 import com.aw.arbanware.domain.order.entity.Order;
 import com.aw.arbanware.domain.order.service.OrderService;
 import com.aw.arbanware.domain.product.controller.OrderProductForm;
-import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
-import com.aw.arbanware.domain.product.service.ProductService;
 import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.service.MemberService;
 import com.aw.arbanware.global.config.security.SecurityUser;
@@ -93,6 +91,7 @@ public class OrderController {
     @GetMapping("/details")
     @PreAuthorize("isAuthenticated()")
     public String orderDetails() {
+
 
         return "page/order/details";
     }
