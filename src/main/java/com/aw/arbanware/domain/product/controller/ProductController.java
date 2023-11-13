@@ -12,10 +12,13 @@ import com.aw.arbanware.domain.product.service.ProductImageService;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
 import com.aw.arbanware.domain.review.controller.CreateReviewForm;
+import com.aw.arbanware.domain.review.entity.Review;
+import com.aw.arbanware.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,9 +45,12 @@ public class ProductController {
     private final ProductService productService;
     private final ProductInfoService productInfoService;
     private final ProductImageService productImageService;
+    private final ReviewService reviewService;
 
     private final Color[] colorValues = Color.values();
     private final Size[] sizeValues = Size.values();
+    private static final int reviewShowPageNum = 5;
+    private static final int productShowPageNum = 5;
 
     @ModelAttribute("colorValues")
     public Color[] colorValues() {
@@ -79,19 +85,12 @@ public class ProductController {
         final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
         log.info("condition = {}", condition);
 
-        // 페이징번호 처리
-        int startPage = 0;
         int currentPage = pageProduct.getNumber();
         int totalPage = pageProduct.getTotalPages();
-        while (startPage + 5 <= currentPage) {
-            startPage += 5;
-        }
+        int startPage = getStartPage(currentPage, productShowPageNum);
 
         // 마지막페이지 처리
-        int endPage = startPage + 4;
-        if (endPage > totalPage) {
-            endPage = totalPage - 1;
-        }
+        int endPage = getEndPage(totalPage, startPage, productShowPageNum);
         final long endTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
         log.info("products목록 경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
 
@@ -107,8 +106,10 @@ public class ProductController {
         return "page/product/products";
     }
 
+
     @GetMapping("/products/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model,
+                                @PageableDefault(size = 5, page = 0, sort = "registrationTime") Pageable pageable,
                                 @RequestParam(required = false) boolean addProduct,
                                 @RequestParam(required = false) boolean editProduct,
                                 @RequestParam(required = false) boolean addReview) {
@@ -117,18 +118,29 @@ public class ProductController {
             return "page/product/notFoundProduct";
         }
 
+        final Page<Review> pageReviews = reviewService.findByProduct(id, pageable);
+        int totalPage = pageReviews.getTotalPages();
+        int currentPage = pageReviews.getNumber();
+        int startPage = getStartPage(currentPage, reviewShowPageNum);
+        int endPage = getEndPage(totalPage, startPage, reviewShowPageNum);
+
         List<Color> existsColors = existsColorsAndSorted(findProductInfos);
         List<Size> existsSizes = existsSizesAndSorted(findProductInfos);
 
+        model.addAttribute("addProduct", addProduct);
+        model.addAttribute("editProduct", editProduct);
+        model.addAttribute("addReview", addReview);
         model.addAttribute("product", findProductInfos.get(0).getProduct());
         model.addAttribute("colors", existsColors);
         model.addAttribute("sizes", existsSizes);
         model.addAttribute("productInfos", findProductInfos);
         model.addAttribute("form", new OrderProductForm());
-        model.addAttribute("addProduct", addProduct);
-        model.addAttribute("editProduct", editProduct);
-        model.addAttribute("addReview", addReview);
         model.addAttribute("reviewForm", new CreateReviewForm(id));
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("page", pageReviews);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "page/product/productDetail";
     }
 
@@ -244,5 +256,21 @@ public class ProductController {
         );
 
         return sizes;
+    }
+
+    private static int getEndPage(final int totalPage, final int startPage, final int showPageNum) {
+        int endPage = startPage + showPageNum - 1;
+        if (endPage > totalPage) {
+            endPage = totalPage - 1;
+        }
+        return endPage;
+    }
+
+    private static int getStartPage(final int currentPage, int showPageNum) {
+        int startPage = 0;
+        while (startPage + showPageNum <= currentPage) {
+            startPage += showPageNum;
+        }
+        return startPage;
     }
 }

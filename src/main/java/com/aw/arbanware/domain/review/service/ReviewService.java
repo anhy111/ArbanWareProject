@@ -2,10 +2,13 @@ package com.aw.arbanware.domain.review.service;
 
 import com.aw.arbanware.domain.common.attachfile.entity.AttachFile;
 import com.aw.arbanware.domain.common.attachfile.service.AttachFileService;
+import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.review.controller.CreateReviewForm;
 import com.aw.arbanware.domain.review.entity.Review;
 import com.aw.arbanware.domain.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +23,7 @@ public class ReviewService {
 
 
     @Transactional
-    public boolean createReview(final CreateReviewForm form, Long memberId) {
+    public boolean createReview(final CreateReviewForm form, final Long memberId) {
         // 폼 -> 엔티티 변환
         final Review formReview = CreateReviewForm.createReviewExcludingAttachFile(form, memberId);
         // 첨부파일 파일, DB 저장
@@ -33,5 +36,10 @@ public class ReviewService {
             return true;
         }
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Review> findByProduct(final Long productId, final Pageable pageable) {
+        return reviewRepository.findByProduct(productId, pageable);
     }
 }
