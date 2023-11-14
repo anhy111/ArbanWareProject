@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,9 +45,13 @@ public class OrderService {
         return order;
     }
 
-    public Order orderFind(String orderId){
+    public Order orderFind(String orderId) {
         Order order = orderRepostiory.findById(orderId).orElseThrow(() -> new IllegalArgumentException("해당 주문번호가 없습니다."));
         return order;
+    }
+
+    public List<Order> orderDetails(Long memberId) {
+        return orderRepostiory.findByMemberId(memberId);
     }
 
 }

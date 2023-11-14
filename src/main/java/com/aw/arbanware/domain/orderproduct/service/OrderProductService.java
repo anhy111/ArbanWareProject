@@ -22,7 +22,7 @@ public class OrderProductService {
         return orderProducts;
     }
 
-    public OrderProduct orderProductFind(String orderId){
+    public List<OrderProduct> orderProductFind(String orderId){
         return orderProductRepository.findByOrderId(orderId);
     }
 
