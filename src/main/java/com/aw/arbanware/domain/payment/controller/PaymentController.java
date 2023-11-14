@@ -18,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/payment")
 @Slf4j
@@ -34,9 +36,10 @@ public class PaymentController {
         JSONObject jsonObject = paymentService.callApiAuth(paymentKey, orderId, amount);
         orderService.orderSuccess(orderId);
         paymentService.paymentSuccess(jsonObject, paymentId);
-        OrderProduct orderProduct = orderProductService.orderProductFind(orderId);
+//        List<OrderProduct> orderProducts = orderProductService.orderProductFind(orderId);
         Order order = orderService.orderFind(orderId);
-        model.addAttribute("orderProduct", orderProduct);
+
+//        model.addAttribute("orderProduct", orderProducts);
         model.addAttribute("order", order);
 
         return "page/order/register_success";

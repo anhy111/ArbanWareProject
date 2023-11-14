@@ -4,6 +4,7 @@ import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.embedded.Address;
 import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.order.OrderStatus;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -24,6 +26,9 @@ public class Order extends BaseTimeEntity implements Persistable<String> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;  // 회원번호
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderProduct> orderProduct; //주문상품정보
 
     @CreatedDate
     @Column(updatable = false)

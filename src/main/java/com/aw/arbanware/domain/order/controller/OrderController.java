@@ -4,6 +4,8 @@ import com.aw.arbanware.domain.cart.entity.Cart;
 import com.aw.arbanware.domain.cart.service.CartService;
 import com.aw.arbanware.domain.order.entity.Order;
 import com.aw.arbanware.domain.order.service.OrderService;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
+import com.aw.arbanware.domain.orderproduct.service.OrderProductService;
 import com.aw.arbanware.domain.product.controller.OrderProductForm;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
@@ -31,6 +33,7 @@ public class OrderController {
     private final CartService cartService;
     private final MemberService memberService;
     private final OrderService orderService;
+    private final OrderProductService orderProductService;
     private final ProductInfoService productInfoService;
 
     @GetMapping("/new")
@@ -90,7 +93,13 @@ public class OrderController {
 
     @GetMapping("/details")
     @PreAuthorize("isAuthenticated()")
-    public String orderDetails() {
+    public String orderDetails(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
+        Long memberId = securityUser.getId();
+        List<Order> orderDetails = orderService.orderDetails(memberId);
+
+        log.info(" orderDetails = {}", orderDetails.size()) ;
+
+        model.addAttribute("orderDetails", orderDetails);
 
         return "page/order/details";
     }
