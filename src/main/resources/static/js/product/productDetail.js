@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    if ($("#isReviewTab").val() == 'true') {
+        $("#reviewTab").trigger("click");
+    }
+
     let $amount = $('#amount');
 
 
@@ -191,10 +195,31 @@ $(document).ready(function () {
     });
 
     $("#createReview").on('click', function () {
-
-
         $("#reviewForm").submit();
+    });
 
+    $(".page-link").on('click', function () {
+        $("#page").val($(this).val());
+        if ($("#reviewTab").hasClass("active")) {
+            $("#isReviewTab").val(true);
+        }
+        $("#reviewSearchForm").submit();
+    });
+
+    $(".sort-btn").on('click', function () {
+        $("#sort").val($(this).val());
+        if ($("#reviewTab").hasClass("active")) {
+            $("#isReviewTab").val(true);
+        }
+        $("#reviewSearchForm").submit();
+    });
+
+    $("#contentTab").on('click', function () {
+        $("#isReviewTab").val(false);
+    });
+
+    $("#infoTab").on('click', function () {
+        $("#isReviewTab").val(false);
     });
 
     function regNumberAndSwal(val) {

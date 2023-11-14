@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +37,7 @@ public class ReviewController {
     private final OrderProductService orderProductService;
 
     @PostMapping("/new")
-    public String newReview(@ModelAttribute CreateReviewForm form,
+    public String newReview(@Validated @ModelAttribute CreateReviewForm form,
                             SecurityUser user,
                             RedirectAttributes redirectAttributes) {
         log.info("form = {}", form);

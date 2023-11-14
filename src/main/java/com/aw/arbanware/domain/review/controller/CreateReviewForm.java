@@ -8,14 +8,23 @@ import com.aw.arbanware.domain.user.entity.Member;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Getter @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class CreateReviewForm {
     private Long orderProductId;
     private Long productId;
+
+    @Min(value = 1)
     private int rating;
+
     private MultipartFile[] images;
+
+    @NotBlank
     private String content;
     private Color color;
     private Size size;

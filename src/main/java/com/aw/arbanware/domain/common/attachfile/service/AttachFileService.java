@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +32,11 @@ public class AttachFileService {
         int sequence = 1;
 
         List<AttachFile> attachFiles = new ArrayList<>();
+
+        if (multipartFiles == null || multipartFiles.length == 0 || multipartFiles[0].getSize() <= 0) {
+            return attachFiles;
+        }
+
         String uploadPath = AttachFileInfo.todayToFolder();
 
         for (MultipartFile multipartFile : multipartFiles) {
@@ -52,5 +58,10 @@ public class AttachFileService {
             }
         }
         return attachFileRepository.saveAll(attachFiles);
+    }
+
+    public Map<Long, List<AttachFile>> findByIds(List<Long> ids) {
+        final List<AttachFile> findAttachFile = attachFileRepository.findByIds(ids);
+        return findAttachFile.stream().collect(Collectors.groupingBy(AttachFile::getId));
     }
 }
