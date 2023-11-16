@@ -23,6 +23,15 @@ $(document).ready(function () {
             editor.enableReadOnlyMode('#content');
         } );
 
+    $(".owl-carousel").owlCarousel({
+        items : 5,
+        margin: 5,
+        loop : true,
+        nav : true,
+        navText : ["<", ">"],
+        dots : false,
+    });
+
     let $collapseOne = $("#collapseOne");
     let $collapseOne_down = $("#collapseOne-down");
     let $collapseOne_up = $("#collapseOne-up");
@@ -119,6 +128,10 @@ $(document).ready(function () {
         console.log(">>>>> color", checkColor, " >>>>>>>size ", checkSize, " >>>>>amount", amount);
 
     });
+
+    if ($("#reviewImgs div").length == 0) {
+        $("#none_photo").css('display', 'block');
+    }
 
     $("#review_form_btn").on('click', function () {
         let data = {

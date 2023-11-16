@@ -6,6 +6,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Shop Detail</title>
+    <link rel="stylesheet" href="/owlCarousel2/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/owlCarousel2/dist/assets/owl.theme.default.min.css">
     <style>
         .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
             border: none;
@@ -107,6 +109,15 @@
             display: inline-block;
             width: 0.9em;
         }
+
+        .carousel-wrapper {
+            width: 100%;
+            margin: auto;
+            position: relative;
+            text-align: center;
+            font-family: sans-serif;
+        }
+
 
     </style>
 </head>
@@ -516,7 +527,14 @@
                                         </div>
                                     </div>
                                     <div class="col-9 border-left d-flex justify-content-center" style="height: 150px">
-                                        <span class="align-self-center">
+                                        <div id="reviewImgs" class="owl-carousel owl-theme" >
+                                            <th:block th:each="review : ${page.getContent()}" >
+                                                <div class="item" th:each="image : ${review.images}">
+                                                    <img style="border-radius: 5%;"  th:src="@{'/upload/' + ${image.storedPath + image.storedFileName}}" width="140px" height="150px">
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                        <span id="none_photo" style="display: none" class="align-self-center">
                                             작성된 포토리뷰가 없습니다.
                                         </span>
                                     </div>
@@ -639,6 +657,7 @@
     </script>
     <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
     <script th:src="@{/js/product/productDetail.js}"></script>
+    <script th:src="@{/owlCarousel2/dist/owl.carousel.js}"></script>
 </th:block>
 </body>
 
