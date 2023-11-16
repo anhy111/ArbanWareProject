@@ -19,61 +19,43 @@
                 <thead>
                 <tr class="text-center">
                     <th class="col-5">상품정보</th>
-                    <th class="col-2">주문일</th>
                     <th class="col-1">수량</th>
                     <th class="col-2">주문금액</th>
                     <th class="col-2">주문상태</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr th:if="${orderDetails.size()}==null">
-                    <td class="text-center font-weight-bold" colspan="6">
-                        <span>구매하신 내역이 없습니다.</span>
-                    </td>
-                </tr>
-                <tr th:each="list, i : ${orderDetails}">
-                    <td class="align-middle">
-                        <h6 class="font-weight-bold" th:text="${list.getOrderProduct().}"></h6>
-                        <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
-                    </td>
-                    <td class="align-middle text-center">
-                        <div class="input-group quantity mx-auto" style="width: 100px;">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'minus')">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" name="checkedQuantity" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'plus')">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="align-middle text-center">
-                        <span th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
-                        <span class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
-                    </td>
-                    <td class="align-middle text-center">
-                        <button type="button" class="btn btn-primary" th:onclick="optionUpdate([[${list.getProductInfo().getProduct().getId()}]])" data-toggle="modal" data-target="#optionModal">옵션변경</button>
-                        <button type="button" class="btn btn-primary" th:onclick="cartOneDelete([[${list.getProductInfo().getId()}]])">삭제</button>
-                    </td>
-                </tr>
+                <tbody th:if="${orderDetails.size()} <= 0">
+                    <tr>
+                        <td class="text-center font-weight-bold" colspan="4">
+                            <span>구매하신 내역이 없습니다.</span>
+                        </td>
+                    </tr>
                 </tbody>
-                <tfoot th:if="${cartList.size()}>0">
-                <tr>
-                    <td class="text-right font-weight-bold" colspan="6">
-                        <span> 합계 : </span>
-                        <span id="priceAll"></span>
-                    </td>
-                </tr>
-                </tfoot>
+                <tbody th:each="list, i : ${orderDetails}" th:if="${list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).AWAITING_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).CANCEL_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).EXPIRES_PAYMENT}">
+                    <tr>
+                        <td class="align-middle" colspan="4">
+                            <p class="bg-secondary" th:text="${'주문번호 : ' + list.getId() + '  주문일 : ' + list.getOrderDate()}"></p>
+                        </td>
+                    </tr>
+                    <tr th:each="product, i : ${list.getOrderProduct()}">
+                        <td class="align-middle">
+                            <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
+                            <p class="mb-2">[옵션 : <h7 th:text="${product.getProductInfo().getColor()}"></h7>/<h7 th:text="${product.getProductInfo().getSize()}"></h7> ]</p>
+                        </td>
+                        <td class="align-middle text-center">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <input type="text" th:value="${product.getAmount()}" class="form-control form-control-sm bg-secondary text-center" readonly="true" />
+                            </div>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></span>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span th:text="${list.getStatus}"></span>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-        </div>
-        <div class="row justify-content-center">
-            <button type="button" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
-            <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
         </div>
     </div>
 </div>
