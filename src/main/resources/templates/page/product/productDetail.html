@@ -110,14 +110,10 @@
             width: 0.9em;
         }
 
-        .carousel-wrapper {
-            width: 100%;
-            margin: auto;
-            position: relative;
-            text-align: center;
-            font-family: sans-serif;
+        .error {
+            color: red;
+            font-size: 12px;
         }
-
 
     </style>
 </head>
@@ -483,10 +479,11 @@
                                                                 <p class="d-inline-block ml-4">평점</p><h6 class="ml-2 d-inline-block" th:text="${#numbers.formatDecimal(#aggregates.avg(page.getContent().![rating]), 1, 1)}"></h6>
                                                             </div>
                                                         </div>
-                                                        <form class="col" id="reviewForm" action="/review/new" method="post" enctype="multipart/form-data">
-                                                            <div class="row">
-                                                                <div class=" col-12 d-flex my-3 justify-content-center">
+                                                        <form class="col" id="reviewForm" action="/review/new" method="post" enctype="multipart/form-data" th:object="${reviewForm}">
+                                                            <div class="row my-3">
+                                                                <div class="col-12 d-flex justify-content-center">
                                                                     <input type="hidden" th:field="${reviewForm.orderProductId}">
+                                                                    <input type="hidden" id="reviewId" name="reviewId">
                                                                     <input type="hidden" th:field="${reviewForm.productId}">
                                                                     <input type="hidden" th:field="${reviewForm.rating}">
                                                                     <div class="text-primary rating">
@@ -496,6 +493,9 @@
                                                                         <span id="rating4" data-rate="4">☆</span>
                                                                         <span id="rating5" data-rate="5">☆</span>
                                                                     </div>
+                                                                </div>
+                                                                <div class="col-12 text-center" th:if="${errors?.containsKey('rating')}" >
+                                                                    <span class="error" th:text="${errors['rating']}">평점 오류</span>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -514,6 +514,9 @@
                                                                 <div class="col-12 px-1">
                                                                     <textarea rows="8" class="form-control" th:field="${reviewForm.content}"
                                                                               style="border: 1px solid #e6e6e6 !important;"></textarea>
+                                                                    <div th:if="${errors?.containsKey('content')}" >
+                                                                        <span class="error" th:text="${errors['content']}">평점 오류</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -529,7 +532,7 @@
                                     <div class="col-9 border-left d-flex justify-content-center" style="height: 150px">
                                         <div id="reviewImgs" class="owl-carousel owl-theme" >
                                             <th:block th:each="review : ${page.getContent()}" >
-                                                <div class="item" th:each="image : ${review.images}">
+                                                <div class="item" th:each="image : ${review.images}" th:if="${!#strings.equals(image.storedFileName, 'X')}">
                                                     <img style="border-radius: 5%;"  th:src="@{'/upload/' + ${image.storedPath + image.storedFileName}}" width="140px" height="150px">
                                                 </div>
                                             </th:block>
@@ -546,7 +549,7 @@
                                 <div class="col-12 navbar navbar-expand-lg bg-light navbar-light px-0">
                                     <div class=" navbar-collapse justify-content-between" >
                                         <div class="navbar-nav mr-auto py-0 pl-2">
-                                            <input type="hidden" id="isReviewTab" name="isReviewTab" th:value="${isReviewTab}">
+                                            <input type="hidden" id="reviewTabs" name="reviewTabs" th:value="${redirectStatus.reviewTabs}">
                                             <input type="hidden" id="sort" name="sort" th:value="${#strings.replace(page.sort, ': ', ',')}">
                                             <button type="button" value="registrationTime,desc" class="btn nav-item nav-link py-3 sort-btn"
                                                th:classappend="${page.sort.toString().contains('registrationTime') ? 'font-weight-bold' : ''}">최신순</button>
@@ -573,6 +576,12 @@
                                     <div class="pb-4">
                                         <img class="mr-2" style="border-radius: 10%;" th:each="image : ${review.images}" th:src="@{'/upload/' + ${image.storedPath + image.storedFileName}}" width="140px" height="150px">
                                     </div>
+                                    <th:block sec:authorize="isAuthenticated()">
+                                        <div class="w-100 text-right" style="font-size: 13px" th:if="${user != null and user.id eq review.memberId}">
+                                            <button class="btn btn-sm review-edit" type="button" style="font-size: 13px" th:data-edit="${review.reviewId}">수정</button
+                                            >|<button class="btn btn-sm mr-5 review-delete" type="button" style="font-size: 13px" th:data-delete="${review.reviewId}">삭제</button>
+                                        </div>
+                                    </th:block>
                                 </div>
                                 <div class="col-3 align-self-center py-3 px-5">
                                     <p class="mb-2" style="color: #1C1C1C; font-size: 14px;"><b>[[${#strings.substring(review.name, 0, 1)}]]****</b>님의 리뷰입니다.</p>
@@ -634,26 +643,40 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        if ([[${addProduct}]]) {
+        if ([[${redirectStatus.addProduct}]]) {
             Swal.fire({
                 html: '<b>상품이 추가되었습니다.</b>',
                 icon: 'success'
             });
-        }
-        if ([[${editProduct}]]) {
+        } else if ([[${redirectStatus.editProduct}]]) {
             Swal.fire({
                 html: '<b>상품이 수정되었습니다.</b>',
                 icon: 'success'
             });
-        }
-        if ([[${addReview}]]) {
+        } else if ([[${redirectStatus.addReview}]]) {
             Swal.fire({
                 html: '<b>후기가 등록되었습니다.</b>',
                 icon: 'success'
             });
+        }  else if ([[${redirectStatus.editReview}]]) {
+            Swal.fire({
+                html: '<b>후기가 수정되었습니다.</b>',
+                icon: 'success'
+            });
+        } else if ([[${redirectStatus.failReviewCreate}]]) {
+            Swal.fire({
+                html: '<b>후기가 등록을 실패했습니다.</b>',
+                icon: 'error'
+            });
+        } else if ([[${redirectStatus.failReviewEdit}]]) {
+            Swal.fire({
+                html: '<b>후기가 수정을 실패했습니다.</b>',
+                icon: 'error'
+            });
         }
 
         let content = [[${product.content}]];
+        let reviews = [[${page.getContent()}]];
     </script>
     <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
     <script th:src="@{/js/product/productDetail.js}"></script>

@@ -12,28 +12,34 @@ import com.aw.arbanware.domain.product.service.ProductImageService;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
 import com.aw.arbanware.domain.product.service.ProductService;
 import com.aw.arbanware.domain.review.controller.CreateReviewForm;
-import com.aw.arbanware.domain.review.entity.Review;
 import com.aw.arbanware.domain.review.repository.ReviewDto;
 import com.aw.arbanware.domain.review.service.ReviewService;
+import com.aw.arbanware.global.config.security.SecurityUser;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -50,8 +56,8 @@ public class ProductController {
 
     private final Color[] colorValues = Color.values();
     private final Size[] sizeValues = Size.values();
-    private static final int reviewShowPageNum = 5;
-    private static final int productShowPageNum = 5;
+    public static final int reviewShowPageNum = 5;
+    public static final int productShowPageNum = 5;
 
     @ModelAttribute("colorValues")
     public Color[] colorValues() {
@@ -86,65 +92,50 @@ public class ProductController {
         final Page<ProductProductInfoDto> pageProduct = productService.searchProducts(condition, pageRequest);
         log.info("condition = {}", condition);
 
-        int currentPage = pageProduct.getNumber();
-        int totalPage = pageProduct.getTotalPages();
-        int startPage = getStartPage(currentPage, productShowPageNum);
-        int endPage = getEndPage(totalPage, startPage, productShowPageNum);
-
-        final long endTime = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli();
-        log.info("products목록 경과시간 = {}ms -> {}초", endTime - startTime, (endTime - startTime)/(double)1000);
-
-
+        pagination(model, pageProduct, productShowPageNum);
         model.addAttribute("products", pageProduct.getContent());
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("page", pageProduct);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
         model.addAttribute("deleteProduct", deleteProduct);
 
         return "page/product/products";
     }
 
-
     @GetMapping("/products/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model,
                                 @PageableDefault(size = 5, page = 0, sort = "registrationTime", direction = Sort.Direction.DESC) Pageable pageable,
-                                @RequestParam(required = false) boolean addProduct,
-                                @RequestParam(required = false) boolean editProduct,
-                                @RequestParam(required = false) boolean addReview,
-                                @RequestParam(required = false) boolean isReviewTab) {
+                                @ModelAttribute RedirectStatus redirectStatus,
+                                @AuthenticationPrincipal SecurityUser user,
+                                HttpServletRequest request) {
         final List<ProductInfo> findProductInfos = productInfoService.findByProductId(id);
         if (findProductInfos.isEmpty()) {
             return "page/product/notFoundProduct";
         }
 
+        log.info("redirectStatus = {}", redirectStatus);
+
+        // 검증 수동처리
+        final Map<String, ?> redirectMap = RequestContextUtils.getInputFlashMap(request);
+        log.info("redirectMap = {}", redirectMap);
+        if (redirectMap != null) {
+            final BindingResult reviewBindingResult = (BindingResult) redirectMap.get("bindingResult");
+            final HashMap<String, String> errors = new HashMap<>();
+            for (FieldError error : reviewBindingResult.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            model.addAttribute("errors", errors);
+        }
+
         final Page<ReviewDto> pageReviews = reviewService.findByProduct(id, pageable);
 
-        int currentPage = pageReviews.getNumber();
-        int totalPage = pageReviews.getTotalPages();
-        int startPage = getStartPage(currentPage, reviewShowPageNum);
-        int endPage = getEndPage(totalPage, startPage, reviewShowPageNum);
+        pagination(model, pageReviews, reviewShowPageNum);
 
-        List<Color> existsColors = existsColorsAndSorted(findProductInfos);
-        List<Size> existsSizes = existsSizesAndSorted(findProductInfos);
-
-        model.addAttribute("addProduct", addProduct);
-        model.addAttribute("editProduct", editProduct);
-        model.addAttribute("isReviewTab", isReviewTab);
-        model.addAttribute("addReview", addReview);
         model.addAttribute("product", findProductInfos.get(0).getProduct());
-        model.addAttribute("colors", existsColors);
-        model.addAttribute("sizes", existsSizes);
+        model.addAttribute("colors", existsColorsAndSorted(findProductInfos));
+        model.addAttribute("sizes", existsSizesAndSorted(findProductInfos));
         model.addAttribute("productInfos", findProductInfos);
         model.addAttribute("form", new OrderProductForm());
         model.addAttribute("reviewForm", new CreateReviewForm(id));
-        model.addAttribute("totalPage", totalPage);
         model.addAttribute("totalReview", pageReviews.getTotalElements());
-        model.addAttribute("page", pageReviews);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+        model.addAttribute("user", user);
         return "page/product/productDetail";
     }
 
@@ -234,7 +225,20 @@ public class ProductController {
         return new ResponseEntity<>(forms, HttpStatus.OK);
     }
 
-    private List<Color> existsColorsAndSorted(final List<ProductInfo> productInfos) {
+    private static void pagination(final Model model, final Page<?> page, final int showPageNum) {
+        int currentPage = page.getNumber();
+        int totalPage = page.getTotalPages();
+        int startPage = getStartPage(currentPage, showPageNum);
+        int endPage = getEndPage(totalPage, startPage, showPageNum);
+
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("page", page);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+    }
+
+    private static List<Color> existsColorsAndSorted(final List<ProductInfo> productInfos) {
         Set<Color> set = new HashSet<>();
         for (ProductInfo productInfo : productInfos) {
             set.add(productInfo.getColor());
@@ -248,7 +252,7 @@ public class ProductController {
         return colors;
     }
 
-    private List<Size> existsSizesAndSorted(final List<ProductInfo> productInfos) {
+    private static List<Size> existsSizesAndSorted(final List<ProductInfo> productInfos) {
         Set<Size> set = new HashSet<>();
         for (ProductInfo productInfo : productInfos) {
             set.add(productInfo.getSize());
@@ -276,5 +280,17 @@ public class ProductController {
             startPage += showPageNum;
         }
         return startPage;
+    }
+
+    @Getter @Setter
+    @ToString
+    static class RedirectStatus {
+        private boolean addProduct;
+        private boolean editProduct;
+        private boolean addReview;
+        private boolean editReview;
+        private boolean reviewTabs;
+        private boolean failReviewCreate;
+        private boolean failReviewEdit;
     }
 }

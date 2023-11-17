@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    if ($("#isReviewTab").val() == 'true') {
+    if ($("#reviewTabs").val() == 'true') {
         $("#reviewTab").trigger("click");
     }
 
@@ -27,8 +27,6 @@ $(document).ready(function () {
         items : 5,
         margin: 5,
         loop : true,
-        nav : true,
-        navText : ["<", ">"],
         dots : false,
     });
 
@@ -129,7 +127,8 @@ $(document).ready(function () {
 
     });
 
-    if ($("#reviewImgs div").length == 0) {
+    if ($("#reviewImgs img").length == 0) {
+        $("#reviewImgs").css('display', 'none');
         $("#none_photo").css('display', 'block');
     }
 
@@ -165,10 +164,9 @@ $(document).ready(function () {
         });
     });
 
-
     let $rating = $("#rating");
     let $ratingSpan = $(".rating span");
-    $ratingSpan.hover(function () {
+    $ratingSpan.hover(function () { // 마우스 들어올 때
         let rate = $(this).data('rate')
         $ratingSpan.html(function (inx, val) {
             if (inx + 1 <= rate) {
@@ -177,7 +175,7 @@ $(document).ready(function () {
                 return "☆";
             }
         });
-    }, function () {
+    }, function () {                // 마우스 벗어날떄
         $ratingSpan.html('☆');
     }).on('click', function () {
         $ratingSpan.unbind('mouseenter mouseleave');
@@ -211,10 +209,46 @@ $(document).ready(function () {
         $("#reviewForm").submit();
     });
 
+    $(".review-edit").on('click', function () {
+        let reviewId = $(this).data('edit');
+        let findReview = reviews.find(review => {
+            return review.reviewId == reviewId;
+        });
+
+        if (findReview == null) {
+            return;
+        }
+
+        $("#reviewForm #reviewId").val(reviewId);
+
+        $ratingSpan.unbind('mouseenter mouseleave');
+
+        $("#reviewModal").modal('show');
+        $("#reviewForm").attr('action', "/review/edit");
+
+        $("#reviewForm #rating").val(findReview.rating)
+        $(".rating span").html(function (inx, html) {
+            if (inx + 1 <= findReview.rating) {
+                return '★';
+            }
+            return '☆';
+        });
+
+        $(".image").remove();
+        findReview.images.forEach(function (image, inx) {
+            $('#beforePreview').before('<div class="col-3 px-1 mb-3 image">' +
+                '<img src="' + '/upload/' + image.storedPath + image.storedFileName + '"style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">' +
+                '</div>');
+        });
+
+        $("#reviewForm #content").text(findReview.content);
+
+    });
+
     $(".page-link").on('click', function () {
         $("#page").val($(this).val());
         if ($("#reviewTab").hasClass("active")) {
-            $("#isReviewTab").val(true);
+            $("#reviewTabs").val(true);
         }
         $("#reviewSearchForm").submit();
     });
@@ -222,17 +256,17 @@ $(document).ready(function () {
     $(".sort-btn").on('click', function () {
         $("#sort").val($(this).val());
         if ($("#reviewTab").hasClass("active")) {
-            $("#isReviewTab").val(true);
+            $("#reviewTabs").val(true);
         }
         $("#reviewSearchForm").submit();
     });
 
     $("#contentTab").on('click', function () {
-        $("#isReviewTab").val(false);
+        $("#reviewTabs").val(false);
     });
 
     $("#infoTab").on('click', function () {
-        $("#isReviewTab").val(false);
+        $("#reviewTabs").val(false);
     });
 
     function regNumberAndSwal(val) {

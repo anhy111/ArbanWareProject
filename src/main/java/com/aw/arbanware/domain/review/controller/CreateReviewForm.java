@@ -19,12 +19,12 @@ public class CreateReviewForm {
     private Long orderProductId;
     private Long productId;
 
-    @Min(value = 1)
+    @Min(value = 1, message = "평점을 입력해주세요")
     private int rating;
 
     private MultipartFile[] images;
 
-    @NotBlank
+    @NotBlank(message = "리뷰내용을 입력해주세요")
     private String content;
     private Color color;
     private Size size;

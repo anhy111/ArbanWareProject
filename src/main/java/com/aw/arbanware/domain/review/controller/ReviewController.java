@@ -5,27 +5,26 @@ import com.aw.arbanware.domain.common.apiobj.ResponseMessage;
 import com.aw.arbanware.domain.common.apiobj.StatusCode;
 import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.orderproduct.service.OrderProductService;
-import com.aw.arbanware.domain.product.entity.Product;
+import com.aw.arbanware.domain.product.controller.ProductController;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
-import com.aw.arbanware.domain.review.entity.Review;
 import com.aw.arbanware.domain.review.service.ReviewService;
 import com.aw.arbanware.global.config.security.SecurityUser;
-import lombok.Getter;
+import kotlinx.serialization.json.JsonObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,15 +34,40 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ProductInfoService productInfoService;
     private final OrderProductService orderProductService;
+    private final ProductController productController;
 
     @PostMapping("/new")
     public String newReview(@Validated @ModelAttribute CreateReviewForm form,
+                            BindingResult bindingResult,
                             SecurityUser user,
+                            Model model,
                             RedirectAttributes redirectAttributes) {
         log.info("form = {}", form);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            redirectAttributes.addAttribute("reviewTabs", true);
+            redirectAttributes.addAttribute("failReviewCreate", true);
+            return "redirect:/products/" + form.getProductId();
+        }
         final boolean addReview = reviewService.createReview(form, user.getId());
 
         redirectAttributes.addAttribute("addReview", addReview);
+        return "redirect:/products/" + form.getProductId();
+    }
+
+    @PostMapping("/edit")
+    public String editReview(@Validated @ModelAttribute EditReviewForm form,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        log.info("form = {}", form);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            redirectAttributes.addAttribute("reviewTabs", true);
+            redirectAttributes.addAttribute("failReviewEdit", true);
+            return "redirect:/products/" + form.getProductId();
+        }
+
+
         return "redirect:/products/" + form.getProductId();
     }
 
@@ -69,4 +93,5 @@ public class ReviewController {
                 );
 
     }
+
 }

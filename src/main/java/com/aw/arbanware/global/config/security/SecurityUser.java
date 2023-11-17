@@ -4,12 +4,14 @@ import com.aw.arbanware.domain.user.entity.Admin;
 import com.aw.arbanware.domain.user.entity.Member;
 import com.aw.arbanware.domain.user.entity.User;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
 
 @Getter
+@ToString
 public class SecurityUser extends org.springframework.security.core.userdetails.User {
     private final Long id;
     private final String name; // name은 이름, username은 loginId
