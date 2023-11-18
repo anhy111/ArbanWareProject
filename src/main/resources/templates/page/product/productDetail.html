@@ -6,6 +6,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Shop Detail</title>
+    <link rel="stylesheet" href="/owlCarousel2/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/owlCarousel2/dist/assets/owl.theme.default.min.css">
     <style>
         .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
             border: none;
@@ -96,6 +98,23 @@
             width: 70px;
             height: 70px;
         }
+
+        .rating > span {
+            font-size: 2.5em;
+            display: inline-block;
+        }
+
+        .read-rating > span {
+            font-size: 1.5em;
+            display: inline-block;
+            width: 0.9em;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
     </style>
 </head>
 
@@ -128,7 +147,7 @@
                             <small class="fas fa-star-half-alt"></small>
                             <small class="far fa-star"></small>
                         </div>
-                        <small class="pt-1" th:text="'(50 ' + '후기)'"></small>
+                        <small class="pt-1" th:text="'(' + ${totalReview} + '후기)'"></small>
                     </div>
                     <h3 class="font-weight-semi-bold mb-4"
                         data-th-text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></h3>
@@ -177,9 +196,9 @@
         <div class="row">
             <div class="col">
                 <div class="nav nav-tabs nav-fill justify-content-center border-secondary mb-4">
-                    <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">상세정보</a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">안내문</a>
-                    <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">후기(0)</a>
+                    <a id="contentTab" class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">상세정보</a>
+                    <a id="infoTab" class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">안내문</a>
+                    <a id="reviewTab" class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">후기([[${totalReview}]])</a>
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-pane-1">
@@ -435,56 +454,179 @@
                     </div>
                     <div class="tab-pane fade" id="tab-pane-3">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="mb-4">후기</h4>
-                                <div class="media mb-4">
-                                    <!--                                    <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">-->
-                                    <div class="media-body">
-                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                        <div class="text-primary mb-2">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                            <i class="far fa-star"></i>
+                            <div class="col-12 pb-4 container-fluid border-bottom">
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <div class="text-center">
+                                            <i class="fas fa-2x fa-star text-primary"></i>
+                                            <h2 class="d-inline-block" th:text="${#numbers.formatDecimal(#aggregates.avg(page.getContent().![rating]), 1, 1)}"></h2>
+                                            <p>([[${totalReview}]]개의 리뷰평점)</p>
+                                            <button type="button" class="btn btn-primary font-weight-bold mt-4" id="review_form_btn"
+                                                    >상품 후기 작성</button>
                                         </div>
-                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                            et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                        <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body container-fluid">
+                                                        <div class="row pb-2 border-bottom">
+                                                            <div class="col-4" style="overflow: hidden">
+                                                                <img th:src="@{'/upload/'+${product.thumbnail}}" style="width: 100%; max-height: 200px; margin-top: -20%;margin-bottom: -20%">
+                                                            </div>
+                                                            <div class="col-8 align-self-center">
+                                                                <h6 class="pt-3" th:text="${product.name}"></h6>
+                                                                <span class="font-weight-semi-bold" style="font-size: 14px" th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}"></span><br>
+                                                                <p class="d-inline-block mt-2">리뷰</p><h6 class="ml-2 d-inline-block" th:text="${totalReview}">?</h6>
+                                                                <p class="d-inline-block ml-4">평점</p><h6 class="ml-2 d-inline-block" th:text="${#numbers.formatDecimal(#aggregates.avg(page.getContent().![rating]), 1, 1)}"></h6>
+                                                            </div>
+                                                        </div>
+                                                        <form class="col" id="reviewForm" action="/review/new" method="post" enctype="multipart/form-data" th:object="${reviewForm}">
+                                                            <div class="row my-3">
+                                                                <div class="col-12 d-flex justify-content-center">
+                                                                    <input type="hidden" th:field="${reviewForm.orderProductId}">
+                                                                    <input type="hidden" id="reviewId" name="reviewId">
+                                                                    <input type="hidden" th:field="${reviewForm.productId}">
+                                                                    <input type="hidden" th:field="${reviewForm.rating}">
+                                                                    <div class="text-primary rating">
+                                                                        <span id="rating1" data-rate="1">☆</span>
+                                                                        <span id="rating2" data-rate="2">☆</span>
+                                                                        <span id="rating3" data-rate="3">☆</span>
+                                                                        <span id="rating4" data-rate="4">☆</span>
+                                                                        <span id="rating5" data-rate="5">☆</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 text-center" th:if="${errors?.containsKey('rating')}" >
+                                                                    <span class="error" th:text="${errors['rating']}">평점 오류</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div id="beforePreview" class="col-3 px-1 mb-3">
+                                                                    <div class="text-center d-flex justify-content-center px-0"
+                                                                         style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">
+                                                                        <label for="images" class="align-self-center m-0 w-100">
+                                                                            <i class="fa fa-camera-retro fa-2x"></i>
+                                                                            <p style="font-size: 12px"><b>사진추가+</b></p>
+                                                                        </label>
+                                                                    </div>
+                                                                    <input th:field="${reviewForm.images}" type="file" style="display: none" multiple accept="image/*"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 px-1">
+                                                                    <textarea rows="8" class="form-control" th:field="${reviewForm.content}"
+                                                                              style="border: 1px solid #e6e6e6 !important;"></textarea>
+                                                                    <div th:if="${errors?.containsKey('content')}" >
+                                                                        <span class="error" th:text="${errors['content']}">평점 오류</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary font-weight-bold" style="font-size: 14px" data-dismiss="modal">닫기</button>
+                                                        <button type="button" id="createReview" class="btn btn-primary font-weight-bold" style="font-size: 14px" >후기 등록</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 border-left d-flex justify-content-center" style="height: 150px">
+                                        <div id="reviewImgs" class="owl-carousel owl-theme" >
+                                            <th:block th:each="review : ${page.getContent()}" >
+                                                <div class="item" th:each="image : ${review.images}" th:if="${!#strings.equals(image.storedFileName, 'X')}">
+                                                    <img style="border-radius: 5%;"  th:src="@{'/upload/' + ${image.storedPath + image.storedFileName}}" width="140px" height="150px">
+                                                </div>
+                                            </th:block>
+                                        </div>
+                                        <span id="none_photo" style="display: none" class="align-self-center">
+                                            작성된 포토리뷰가 없습니다.
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="mb-4">Leave a review</h4>
-                                <small>Your email address will not be published. Required fields are marked *</small>
-                                <div class="d-flex my-3">
-                                    <p class="mb-0 mr-2">Your Rating * :</p>
-                                    <div class="text-primary">
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                                <form>
-                                    <div class="form-group">
-                                        <label for="message">Your Review *</label>
-                                        <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Your Name *</label>
-                                        <input type="text" class="form-control" id="name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Your Email *</label>
-                                        <input type="email" class="form-control" id="email">
-                                    </div>
-                                    <div class="form-group mb-0">
-                                        <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                    </div>
-                                </form>
                             </div>
                         </div>
+                        <form id="reviewSearchForm" th:action="@{'/products/' + ${product.id}}" method="get" >
+                            <div class="row border-bottom">
+                                <div class="col-12 navbar navbar-expand-lg bg-light navbar-light px-0">
+                                    <div class=" navbar-collapse justify-content-between" >
+                                        <div class="navbar-nav mr-auto py-0 pl-2">
+                                            <input type="hidden" id="reviewTabs" name="reviewTabs" th:value="${redirectStatus.reviewTabs}">
+                                            <input type="hidden" id="sort" name="sort" th:value="${#strings.replace(page.sort, ': ', ',')}">
+                                            <button type="button" value="registrationTime,desc" class="btn nav-item nav-link py-3 sort-btn"
+                                               th:classappend="${page.sort.toString().contains('registrationTime') ? 'font-weight-bold' : ''}">최신순</button>
+                                            <button type="button" value="rating,desc" class="btn nav-item nav-link py-3 sort-btn"
+                                               th:classappend="${page.sort.toString().contains('rating') ? 'font-weight-bold' : ''}">별점순</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row py-3 border-bottom" th:each="review : ${page.getContent()}">
+                                <div class="col-9 align-self-start border-right px-0">
+                                    <div class="text-primary read-rating d-inline-block ">
+                                        <span id="read-rating" th:each="rate :${#numbers.sequence(1,5)}" th:text="${rate <= review.rating ? '★' : '☆'}">☆</span>
+                                    </div>
+                                    <span class="" th:switch="${review.rating}" style="color: #1C1C1C; font-size: 15px">
+                                        <b th:case="1">별로에요</b>
+                                        <b th:case="2">그냥 그래요</b>
+                                        <b th:case="3">보통이에요</b>
+                                        <b th:case="4">맘에 들어요</b>
+                                        <b th:case="5">아주 좋아요</b>
+                                    </span>
+                                    <span class="pt-2 pr-5" style="float:right; font-size: 13px" th:text="${#temporals.format(review.modificationTime, 'yyyy-MM-dd')}"></span><br>
+                                    <p class="py-4" th:text="${review.content}" style="color: #1C1C1C; font-size: 14px"></p>
+                                    <div class="pb-4">
+                                        <img class="mr-2" style="border-radius: 10%;" th:each="image : ${review.images}" th:src="@{'/upload/' + ${image.storedPath + image.storedFileName}}" width="140px" height="150px">
+                                    </div>
+                                    <th:block sec:authorize="isAuthenticated()">
+                                        <div class="w-100 text-right" style="font-size: 13px" th:if="${user != null and user.id eq review.memberId}">
+                                            <button class="btn btn-sm review-edit" type="button" style="font-size: 13px" th:data-edit="${review.reviewId}">수정</button
+                                            >|<button class="btn btn-sm mr-5 review-delete" type="button" style="font-size: 13px" th:data-delete="${review.reviewId}">삭제</button>
+                                        </div>
+                                    </th:block>
+                                </div>
+                                <div class="col-3 align-self-center py-3 px-5">
+                                    <p class="mb-2" style="color: #1C1C1C; font-size: 14px;"><b>[[${#strings.substring(review.name, 0, 1)}]]****</b>님의 리뷰입니다.</p>
+                                    <p style="color: #1C1C1C; font-size: 14px"><b>Color</b> : [[${review.color}]]</p>
+                                    <p style="color: #1C1C1C; font-size: 14px"><b>Size</b> : [[${review.size}]]</p>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-12 pb-1">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center mb-3" th:classappend="${totalPage < 1 ? 'd-none' : ''}">
+                                            <input type="hidden" id="page" name="page" th:value="${page.number}">
+                                            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                                                <button type="button" class="page-link" aria-label="Previous" th:value="0">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">First</span>
+                                                </button>
+                                            </li>
+                                            <li class="page-item" th:classappend="${!page.hasPrevious() ? 'disabled' : ''}">
+                                                <button type="button" class="page-link" aria-label="Previous" th:value="${currentPage - 1}">
+                                                    <span aria-hidden="true">&lsaquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </button>
+                                            </li>
+                                            <li class="page-item" th:each="eachPage : ${#numbers.sequence(startPage, endPage)}"
+                                                th:classappend="${currentPage == eachPage ? 'active' : ''}"
+                                                ><button type="button" class="page-link" th:text="${eachPage+1}" th:value="${eachPage}"></button>
+                                            </li>
+                                            <li class="page-item" th:classappend="${!page.hasNext()} ? 'disabled' : ''">
+                                                <button type="button" class="page-link" aria-label="Next" th:value="${currentPage + 1}">
+                                                    <span aria-hidden="true">&rsaquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </button>
+                                            </li>
+                                            <li class="page-item" th:classappend="${page.isLast()} ? 'disabled' : ''">
+                                                <button type="button" class="page-link" aria-label="Next" th:value="${currentPage + 1}">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Last</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -501,23 +643,44 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        if ([[${addProduct}]]) {
+        if ([[${redirectStatus.addProduct}]]) {
             Swal.fire({
                 html: '<b>상품이 추가되었습니다.</b>',
                 icon: 'success'
             });
-        }
-        if ([[${editProduct}]]) {
+        } else if ([[${redirectStatus.editProduct}]]) {
             Swal.fire({
                 html: '<b>상품이 수정되었습니다.</b>',
                 icon: 'success'
             });
+        } else if ([[${redirectStatus.addReview}]]) {
+            Swal.fire({
+                html: '<b>후기가 등록되었습니다.</b>',
+                icon: 'success'
+            });
+        }  else if ([[${redirectStatus.editReview}]]) {
+            Swal.fire({
+                html: '<b>후기가 수정되었습니다.</b>',
+                icon: 'success'
+            });
+        } else if ([[${redirectStatus.failReviewCreate}]]) {
+            Swal.fire({
+                html: '<b>후기 등록을 실패했습니다.</b>',
+                icon: 'error'
+            });
+        } else if ([[${redirectStatus.failReviewEdit}]]) {
+            Swal.fire({
+                html: '<b>후기 수정을 실패했습니다.</b>',
+                icon: 'error'
+            });
         }
 
         let content = [[${product.content}]];
+        let reviews = [[${page.getContent()}]];
     </script>
     <script th:src="@{/ckEditor5/build/ckeditor.js}"></script>
     <script th:src="@{/js/product/productDetail.js}"></script>
+    <script th:src="@{/owlCarousel2/dist/owl.carousel.js}"></script>
 </th:block>
 </body>
 

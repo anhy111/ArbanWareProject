@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    if ($("#reviewTabs").val() == 'true') {
+        $("#reviewTab").trigger("click");
+    }
+
     let $amount = $('#amount');
 
     ClassicEditor
@@ -17,6 +21,13 @@ $(document).ready(function () {
             } );
             editor.enableReadOnlyMode('#content');
         } );
+
+    $(".owl-carousel").owlCarousel({
+        items : 5,
+        margin: 5,
+        loop : true,
+        dots : false,
+    });
 
     let $collapseOne = $("#collapseOne");
     let $collapseOne_down = $("#collapseOne-down");
@@ -101,6 +112,192 @@ $(document).ready(function () {
         $('#newForm').attr('action', '/order/new');
         $('#newForm').submit();
 
+    });
+
+    if ($("#reviewImgs img").length == 0) {
+        $("#reviewImgs").css('display', 'none');
+        $("#none_photo").css('display', 'block');
+    }
+
+    $("#review_form_btn").on('click', function () {
+        let data = {
+            productId : $("#reviewForm #productId").val()
+        };
+
+        console.log(data);
+        $.ajax({
+            type: 'get',
+            url: '/review/orderCheck',
+            data: data,
+            contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+            success :function(data){
+                console.log(data)
+
+                if (data.statusCode == 401) {
+                    location.href = '/login';
+                } else if (data.statusCode == 204) {
+                    Swal.fire({
+                        html: '<b>' + data.responseMessage + '</b>',
+                        icon: 'error'
+                    });
+                } else {
+                    $('#reviewModal').modal("show");
+                    $("#reviewForm #orderProductId").val(data.data);
+                }
+            },
+            error:function(request,status,error){
+                console.log("code" + request.status +"message" + request.responseText + " error " + error);
+            }
+        });
+    });
+
+    let $rating = $("#rating");
+    let $ratingSpan = $(".rating span");
+    $ratingSpan.hover(function () { // 마우스 들어올 때
+        let rate = $(this).data('rate')
+        $ratingSpan.html(function (inx, val) {
+            if (inx + 1 <= rate) {
+                return "★";
+            } else {
+                return "☆";
+            }
+        });
+    }, function () {                // 마우스 벗어날떄
+        $ratingSpan.html('☆');
+    }).on('click', function () {
+        $ratingSpan.unbind('mouseenter mouseleave');
+        let rate = $(this).data('rate')
+        $ratingSpan.html(function (inx, val) {
+            if (inx + 1 <= rate) {
+                return "★";
+            } else {
+                return "☆";
+            }
+        });
+        $rating.val($(this).data("rate"));
+    });
+
+    $('#images').on('change', function() {
+        $(".image").remove();
+        if (this.files && this.files[0]) {
+            for(let file of this.files) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#beforePreview').before('<div class="col-3 px-1 mb-3 image">' +
+                        '<img src="' + e.target.result + '"style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">' +
+                        '</div>');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    $("#createReview").on('click', function () {
+        $("#reviewForm").submit();
+    });
+
+    $(".review-edit").on('click', function () {
+        let reviewId = $(this).data('edit');
+        let findReview = reviews.find(review => {
+            return review.reviewId == reviewId;
+        });
+
+        if (findReview == null) {
+            return;
+        }
+
+        $("#reviewForm #reviewId").val(reviewId);
+
+        $ratingSpan.unbind('mouseenter mouseleave');
+
+        $("#reviewModal").modal('show');
+        $("#reviewForm").attr('action', "/review/edit");
+
+        $("#reviewForm #rating").val(findReview.rating)
+        $(".rating span").html(function (inx, html) {
+            if (inx + 1 <= findReview.rating) {
+                return '★';
+            }
+            return '☆';
+        });
+
+        $(".image").remove();
+
+        $("#reviewForm #content").text(findReview.content);
+        if (findReview.images == null){
+           return;
+        }
+
+        findReview.images.forEach(function (image, inx) {
+            $('#beforePreview').before('<div class="col-3 px-1 mb-3 image">' +
+                '<img src="' + '/upload/' + image.storedPath + image.storedFileName + '"style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">' +
+                '</div>');
+        });
+    });
+
+    $(".review-delete").on('click', function () {
+        let data = {
+            reviewId : $(this).data('delete')
+        };
+
+        Swal.fire({
+            html: '<b>리뷰를 삭제하시겠습니까?</b>',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor : "#d33",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'post',
+                    url: '/review/delete',
+                    data: data,
+                    contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+                    success :function(data){
+                        console.log(data);
+                        if (data.statusCode != 200) {
+                            Swal.fire({
+                                html:'<b>' + data.responseMessage + '</b>',
+                                icon : 'error'
+                            })
+                            return;
+                        }
+                        Swal.fire({
+                            html: '<b>' + data.responseMessage + '</b>',
+                            icon: 'success'
+                        }).then(function () {
+                            window.location = window.location.pathname + '?reviewTabs=true';
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    $(".page-link").on('click', function () {
+        $("#page").val($(this).val());
+        if ($("#reviewTab").hasClass("active")) {
+            $("#reviewTabs").val(true);
+        }
+        $("#reviewSearchForm").submit();
+    });
+
+    $(".sort-btn").on('click', function () {
+        $("#sort").val($(this).val());
+        if ($("#reviewTab").hasClass("active")) {
+            $("#reviewTabs").val(true);
+        }
+        $("#reviewSearchForm").submit();
+    });
+
+    $("#contentTab").on('click', function () {
+        $("#reviewTabs").val(false);
+    });
+
+    $("#infoTab").on('click', function () {
+        $("#reviewTabs").val(false);
     });
 
     function regNumberAndSwal(val) {

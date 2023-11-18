@@ -1,7 +1,10 @@
 package com.aw.arbanware.domain.product.service;
 
+import com.aw.arbanware.domain.product.Color;
+import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.controller.OrderProductForm;
 import com.aw.arbanware.domain.product.controller.UpdateProductForm;
+import com.aw.arbanware.domain.product.entity.Product;
 import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.product.repository.ProductInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +47,10 @@ public class ProductInfoService {
 
     public ProductInfo findByProductAndColorAndSize(OrderProductForm productInfo) {
         return productInfoRepository.findByProductAndColorAndSize(productInfo.getProduct(), productInfo.getColor(), productInfo.getSize());
+    }
+
+    public ProductInfo findByProductAndColorAndSize(Product product, Color color, Size size) {
+        return productInfoRepository.findByProductAndColorAndSize(product, color, size);
     }
 
 }

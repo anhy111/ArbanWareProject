@@ -1,9 +1,12 @@
 package com.aw.arbanware.domain.common.attachfile.entity;
 
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -14,10 +17,9 @@ import java.util.Objects;
 @IdClass(AttachFileKey.class)
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class AttachFile {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "attach_file_seq")
-    @SequenceGenerator(name = "attach_file_seq",sequenceName = "ATTACH_FILE_SEQUENCE",allocationSize = 1)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class AttachFile implements Persistable<Long> {
+    @Id
     @Column(name = "ATTACH_FILE_ID")
     private Long id;    // 첨부파일번호
 
@@ -31,6 +33,12 @@ public class AttachFile {
     @Column(updatable = false)
     private LocalDateTime createdTime;
 
+    public AttachFile(final Long id, final int sequence, final AttachFileInfo attachFileInfo) {
+        this.id = id;
+        this.sequence = sequence;
+        this.attachFileInfo = attachFileInfo;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -42,5 +50,10 @@ public class AttachFile {
     @Override
     public int hashCode() {
         return Objects.hash(id, sequence);
+    }
+
+    @Override
+    public boolean isNew() {
+        return createdTime == null;
     }
 }
