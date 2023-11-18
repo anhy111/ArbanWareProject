@@ -170,20 +170,3 @@ function optionUpdate(productId) { //보류
     });
 
 }
-
-function checkOrderProduct() {
-    $.each($('.cartCheck'), function (idx, item){
-        if($(this).is(':checked')){
-            orderCheck += 1
-        }
-    });
-    if (orderCheck <= 0){
-        Swal.fire({
-            title:'선택된 상품이 없습니다.',         // Alert 제목
-            icon:'warning',                         // Alert 타입
-        });
-        return
-    }else {
-        $('#orderBtn').submit();
-    }
-}

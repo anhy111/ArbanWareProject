@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
 
     @Query("select op from OrderProduct op join fetch op.order o where op.order.id = :orderId")
-    OrderProduct findByOrderId(@Param("orderId")String orderId);
+    List<OrderProduct> findByOrderId(@Param("orderId")String orderId);
 
     @Query("select op.id from OrderProduct op join op.order o where o.member.id = :memberId")
     List<Long> findByMemberId(@Param("memberId") Long memberId);

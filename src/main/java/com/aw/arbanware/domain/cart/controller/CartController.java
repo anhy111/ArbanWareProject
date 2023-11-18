@@ -41,13 +41,11 @@ public class CartController {
     }
 
     @PostMapping("/new")
-    public String cartRegister(Model model, @AuthenticationPrincipal SecurityUser securityUser, @ModelAttribute OrderProductForm orderProductForm, @RequestParam int amount) {
+    public String cartRegister(Model model, @AuthenticationPrincipal SecurityUser securityUser, @ModelAttribute OrderProductForm orderProductForm) {
         Long memberId = securityUser.getId();
-        log.info("orderProductForm = {}", orderProductForm);
         ProductInfo productId = productInfoService.findByProductAndColorAndSize(orderProductForm);
-        log.info("productInfo = {}", productId);
+        cartService.cartSave(productId, memberId, orderProductForm.getAmount());
 
-        cartService.cartSave(productId, memberId, amount);
         List<Cart> carts = cartService.cartList(memberId);
         model.addAttribute("cartList", carts);
         return "page/cart/list";

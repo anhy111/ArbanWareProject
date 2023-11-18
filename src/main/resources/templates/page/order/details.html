@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/default_layout}">
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문내역</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <table class="table">
+                <thead>
+                <tr class="text-center">
+                    <th class="col-5">상품정보</th>
+                    <th class="col-1">수량</th>
+                    <th class="col-2">주문금액</th>
+                    <th class="col-2">주문상태</th>
+                </tr>
+                </thead>
+                <tbody th:if="${orderDetails.size()} <= 0">
+                    <tr>
+                        <td class="text-center font-weight-bold" colspan="4">
+                            <span>구매하신 내역이 없습니다.</span>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody th:each="list, i : ${orderDetails}" th:if="${list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).AWAITING_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).CANCEL_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).EXPIRES_PAYMENT}">
+                    <tr>
+                        <td class="align-middle" colspan="4">
+                            <p class="bg-secondary" th:text="${'주문번호 : ' + list.getId() + '  주문일 : ' + list.getOrderDate()}"></p>
+                        </td>
+                    </tr>
+                    <tr th:each="product, i : ${list.getOrderProduct()}">
+                        <td class="align-middle">
+                            <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
+                            <p class="mb-2">[옵션 : <h7 th:text="${product.getProductInfo().getColor()}"></h7>/<h7 th:text="${product.getProductInfo().getSize()}"></h7> ]</p>
+                        </td>
+                        <td class="align-middle text-center">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <input type="text" th:value="${product.getAmount()}" class="form-control form-control-sm bg-secondary text-center" readonly="true" />
+                            </div>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></span>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span th:text="${list.getStatus}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/order/details.js}"></script>
+</th:block>
+</body>
+</html>
