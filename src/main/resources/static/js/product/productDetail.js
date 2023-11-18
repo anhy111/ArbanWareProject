@@ -235,14 +235,58 @@ $(document).ready(function () {
         });
 
         $(".image").remove();
+
+        $("#reviewForm #content").text(findReview.content);
+        if (findReview.images == null){
+           return;
+        }
+
         findReview.images.forEach(function (image, inx) {
             $('#beforePreview').before('<div class="col-3 px-1 mb-3 image">' +
                 '<img src="' + '/upload/' + image.storedPath + image.storedFileName + '"style="width: 100%; height: 100px; border: 1px solid #e6e6e6 !important;">' +
                 '</div>');
         });
+    });
 
-        $("#reviewForm #content").text(findReview.content);
+    $(".review-delete").on('click', function () {
+        let data = {
+            reviewId : $(this).data('delete')
+        };
 
+        Swal.fire({
+            html: '<b>리뷰를 삭제하시겠습니까?</b>',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor : "#d33",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'post',
+                    url: '/review/delete',
+                    data: data,
+                    contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+                    success :function(data){
+                        console.log(data);
+                        if (data.statusCode != 200) {
+                            Swal.fire({
+                                html:'<b>' + data.responseMessage + '</b>',
+                                icon : 'error'
+                            })
+                            return;
+                        }
+                        Swal.fire({
+                            html: '<b>' + data.responseMessage + '</b>',
+                            icon: 'success'
+                        }).then(function () {
+                            window.location = window.location.pathname + '?reviewTabs=true';
+                        });
+                    }
+                });
+            }
+        });
     });
 
     $(".page-link").on('click', function () {

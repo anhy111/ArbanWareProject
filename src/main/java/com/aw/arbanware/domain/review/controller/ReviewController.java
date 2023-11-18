@@ -7,6 +7,7 @@ import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.orderproduct.service.OrderProductService;
 import com.aw.arbanware.domain.product.controller.ProductController;
 import com.aw.arbanware.domain.product.service.ProductInfoService;
+import com.aw.arbanware.domain.review.entity.Review;
 import com.aw.arbanware.domain.review.service.ReviewService;
 import com.aw.arbanware.global.config.security.SecurityUser;
 import kotlinx.serialization.json.JsonObject;
@@ -67,8 +68,40 @@ public class ReviewController {
             return "redirect:/products/" + form.getProductId();
         }
 
+        if (!reviewService.updateReview(form)) {
+            redirectAttributes.addAttribute("failReviewEdit", true);
+            return "redirect:/products/" + form.getProductId();
+        }
 
+        redirectAttributes.addAttribute("editReview", true);
         return "redirect:/products/" + form.getProductId();
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<DefaultResponse<Long>> deleteReview(@RequestParam Long reviewId) {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return new ResponseEntity<>(new DefaultResponse<>(StatusCode.UNAUTHORIZED, ResponseMessage.IS_ANONYMOUS)
+                    , HttpStatus.OK);
+        }
+        final SecurityUser user = (SecurityUser) authentication.getPrincipal();
+
+        final Optional<Review> findReview = reviewService.findById(reviewId);
+        if (findReview.isEmpty()) {
+            return new ResponseEntity<>(new DefaultResponse<>(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_REVIEW)
+                    , HttpStatus.OK);
+        }
+
+        final Review review = findReview.get();
+        if (!review.getMember().getId().equals(user.getId())) {
+            return new ResponseEntity<>(new DefaultResponse<>(StatusCode.FORBIDDEN, ResponseMessage.FORBIDDEN_REVIEW_DELETE)
+                    , HttpStatus.OK);
+        }
+
+        reviewService.deleteReview(review);
+        return new ResponseEntity<>(new DefaultResponse<>(StatusCode.OK, ResponseMessage.DELETE_REVIEW_SUCCESS)
+                , HttpStatus.OK);
     }
 
     @GetMapping("/orderCheck")
@@ -93,5 +126,6 @@ public class ReviewController {
                 );
 
     }
+
 
 }

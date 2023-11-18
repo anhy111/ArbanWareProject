@@ -292,5 +292,6 @@ public class ProductController {
         private boolean reviewTabs;
         private boolean failReviewCreate;
         private boolean failReviewEdit;
+        private boolean notFoundReview;
     }
 }

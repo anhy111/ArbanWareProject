@@ -1,6 +1,7 @@
 package com.aw.arbanware.domain.common.attachfile.service;
 
 import com.aw.arbanware.domain.common.attachfile.entity.AttachFile;
+import com.aw.arbanware.domain.common.attachfile.entity.AttachFileKey;
 import com.aw.arbanware.domain.common.attachfile.repository.AttachFileRepository;
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.entity.ProductImage;
@@ -63,5 +64,52 @@ public class AttachFileService {
     public Map<Long, List<AttachFile>> findByIds(List<Long> ids) {
         final List<AttachFile> findAttachFile = attachFileRepository.findByIds(ids);
         return findAttachFile.stream().collect(Collectors.groupingBy(AttachFile::getId));
+    }
+
+
+    @Transactional
+    public List<AttachFile> updateAttachFiles(final Long id, MultipartFile[] files, int sequence) {
+        List<AttachFile> attachFiles = new ArrayList<>();
+
+        String uploadPath = AttachFileInfo.todayToFolder();
+        for (MultipartFile file : files) {
+
+            final AttachFile attachFile = new AttachFile(id, sequence++, new AttachFileInfo(file, uploadPath));
+            log.info("{} 파일 업로드 시작", attachFile.getAttachFileInfo().getOriginalFileName());
+
+            final File saveFile = new File(UPLOAD_FOLDER + uploadPath + attachFile.getAttachFileInfo().getStoredFileName());
+            if (saveFile.mkdirs()) {
+                try {
+                    file.transferTo(saveFile);
+                    attachFiles.add(attachFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new RuntimeException("첨부파일 폴더 생성 실패");
+            }
+        }
+        return attachFileRepository.saveAll(attachFiles);
+    }
+
+    public int findFileSequenceById(final Long id) {
+        return attachFileRepository.findFileSequenceById(id);
+    }
+
+    public void deleteAttachFiles(final Long id) {
+        final List<AttachFile> findAttachFiles = attachFileRepository.findById(id);
+        List<AttachFileKey> attachFileKeys = new ArrayList<>();
+        for (AttachFile attachFile : findAttachFiles) {
+            final File file = new File(UPLOAD_FOLDER + attachFile.getAttachFileInfo().getStoredPath() + attachFile.getAttachFileInfo().getStoredFileName());
+            if (file.exists()) {
+                if(file.delete()){
+                    log.info("첨부파일 삭제 성공");
+                }else{
+                    log.info("첨부파일 삭제 실패");
+                }
+            }
+            attachFileKeys.add(new AttachFileKey(attachFile.getId(), attachFile.getSequence()));
+        }
+        attachFileRepository.deleteAllByIdInBatch(attachFileKeys);
     }
 }
