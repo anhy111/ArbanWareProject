@@ -24,7 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepostiory;
 
     public Order orderRegister(Order order) {
-        order.setId("arban_order_" + todayToFolder() + "_" + orderRepostiory.findSequence());
+        order.setId("arbanOrder" + todayToFolder() + orderRepostiory.findSequence());
         return orderRepostiory.save(order);
     }
 
