@@ -51,7 +51,7 @@
                             <span th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></span>
                         </td>
                         <td class="align-middle text-center">
-                            <span th:text="${list.getStatus}"></span>
+                            <span th:text="${list.getStatus().getKrName()}"></span>
                         </td>
                     </tr>
                 </tbody>
