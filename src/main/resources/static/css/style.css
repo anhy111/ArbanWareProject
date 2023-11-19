@@ -346,6 +346,10 @@ output {
   display: inline-block;
 }
 
+input::placeholder {
+  font-size: 14px;
+}
+
 summary {
   display: list-item;
   cursor: pointer;
