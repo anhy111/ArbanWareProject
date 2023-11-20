@@ -47,6 +47,7 @@
                                 </div>
                             </td>
                             <td class="align-middle">
+                                <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 200px;" alt="Image">
                                 <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                                 <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
                             </td>

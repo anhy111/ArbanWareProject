@@ -30,6 +30,7 @@
                     <tr th:each="list, i : ${cartList}">
                         <td class="align-middle text-center" th:text="${i.index+1}"></td>
                         <td class="align-middle">
+                            <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 200px;" alt="Image">
                             <h6 class="font-weight-bold productName" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                             <span class="prodInfoId" hidden th:text="${list.getProductInfo().getId()}"></span>
                         </td>

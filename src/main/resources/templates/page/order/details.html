@@ -34,13 +34,18 @@
                 <tbody th:each="list, i : ${orderDetails}" th:if="${list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).AWAITING_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).CANCEL_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).EXPIRES_PAYMENT}">
                     <tr>
                         <td class="align-middle" colspan="4">
-                            <p class="bg-secondary" th:text="${'주문번호 : ' + list.getId() + '  주문일 : ' + list.getOrderDate()}"></p>
+                            <span th:text="${'주문번호 : ' + list.getId() + '  주문일 : ' + list.getOrderDate()}"></span>
                         </td>
                     </tr>
                     <tr th:each="product, i : ${list.getOrderProduct()}">
                         <td class="align-middle">
-                            <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
-                            <p class="mb-2">[옵션 : <h7 th:text="${product.getProductInfo().getColor()}"></h7>/<h7 th:text="${product.getProductInfo().getSize()}"></h7> ]</p>
+                            <div style="float:left">
+                                <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 200px;" alt="Image">
+                            </div>
+                            <div class="ml-3 mt-4" style="float:left">
+                                <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
+                                <p class="mb-2">[옵션 : <h7 th:text="${product.getProductInfo().getColor()}"></h7>/<h7 th:text="${product.getProductInfo().getSize()}"></h7> ]</p>
+                            </div>
                         </td>
                         <td class="align-middle text-center">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
