@@ -96,12 +96,7 @@ public class OrderController {
     public String orderDetails(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long memberId = securityUser.getId();
         List<Order> orderDetails = orderService.orderDetails(memberId);
-
-        log.info(" orderDetails = {}", orderDetails.size()) ;
-
         model.addAttribute("orderDetails", orderDetails);
-
-
         return "page/order/details";
     }
 
