@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <table class="table">
                 <thead>
@@ -40,7 +40,7 @@
                     <tr th:each="product, i : ${list.getOrderProduct()}">
                         <td class="align-middle">
                             <div style="float:left">
-                                <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 200px;" alt="Image">
+                                <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
                             </div>
                             <div class="ml-3 mt-4" style="float:left">
                                 <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>

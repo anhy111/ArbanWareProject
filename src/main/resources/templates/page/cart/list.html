@@ -12,9 +12,10 @@
             <h1 class="font-weight-semi-bold text-uppercase mb-3">장바구니</h1>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <form action="/order/check/new" id="newFrom" method="get">
             <div class="row justify-content-center">
+                <h3 class="justify-content-left" th:text="${'일반상품(' + cartList.size()} +')'"></h3>
                 <table class="table">
                     <thead>
                         <tr class="text-center">
@@ -47,9 +48,13 @@
                                 </div>
                             </td>
                             <td class="align-middle">
-                                <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 200px;" alt="Image">
-                                <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
-                                <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
+                                <div style="float:left">
+                                    <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
+                                </div>
+                                <div class="ml-3 mt-4" style="float:left">
+                                    <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                                    <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
+                                </div>
                             </td>
                             <td class="align-middle text-center">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -86,6 +91,8 @@
                     </tfoot>
                 </table>
             </div>
+<!--            <div class="row justify-content-center">-->
+<!--            </div>-->
             <div class="row justify-content-center">
                 <button type="button" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
                 <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
