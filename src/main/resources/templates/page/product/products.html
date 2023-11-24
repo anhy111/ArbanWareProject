@@ -88,7 +88,7 @@
                 <div class="col-lg-2 col-md-12">
                     <!-- Color Start -->
                     <div class="border-bottom mb-4 pb-5 pt-4">
-                        <h5 class="font-weight-semi-bold mb-4">색상</h5>
+                        <span style="color: #1C1C1C" class="font-weight-semi-bold">색상</span><br>
                         <div class="mr-2 mt-2 mb-1 btn-group-toggle d-inline-block" data-toggle="buttons" th:each="color : ${colorValues}">
                             <label class="btn btn-sm text-center color" th:for="${#ids.next('colors')}" th:attr="data-color=${color}" th:title="${color}">
                                 <input type="checkbox" th:field="${condition.colors}" class="size" th:value="${color}" autocomplete="off">&nbsp;
@@ -98,7 +98,7 @@
                     <!-- Color End -->
                     <!-- Price Start -->
                     <div class="border-bottom mb-4 pb-5">
-                        <h5 class="font-weight-semi-bold mb-4">가격</h5>
+                        <span style="color: #1C1C1C" class="mb-5 font-weight-semi-bold">가격</span><br>
                         <div class="w-100 text-center bdr">
                             <button type="button" class="btn conditionPrice" data-min-price="0" data-max-price="59900">~ 59,900</button>
                         </div>
@@ -124,7 +124,7 @@
                     <!-- Price End -->
                     <!-- Size Start -->
                     <div class="mb-5"><div></div>
-                        <h5 class="font-weight-semi-bold mb-4">사이즈</h5>
+                        <span style="color: #1C1C1C" class="mb-5 font-weight-semi-bold">사이즈</span><br>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-1"
                                 th:each="size : ${sizeValues}">
                                 <input type="checkbox" class="custom-control-input" th:field="${condition.sizes}" th:value="${size}">
