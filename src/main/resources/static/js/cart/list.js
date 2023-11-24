@@ -10,6 +10,7 @@ $(function(){
         priceAll += price;
 
         $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
+//        $('.priceAll2').text(priceAll.toLocaleString('ko-KR'));
     });
 
 
