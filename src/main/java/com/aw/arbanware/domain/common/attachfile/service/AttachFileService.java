@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class AttachFileService {
 
     private final AttachFileRepository attachFileRepository;
-    private static final String UPLOAD_FOLDER = "C:\\arbanWare\\upload\\";
+    private static final String UPLOAD_FOLDER = "C:" + File.separator + "arbanWare" + File.separator + "upload" + File.separator;
 
     @Transactional
     public List<AttachFile> saveAttachFiles(final MultipartFile[] multipartFiles) {

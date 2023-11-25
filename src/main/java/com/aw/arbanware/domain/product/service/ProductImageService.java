@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductImageService {
     private final ProductImageRepository productImageRepository;
-    private static final String UPLOAD_FOLDER = "C:\\arbanWare\\upload\\";
+    private static final String UPLOAD_FOLDER = "C:" + File.separator + "arbanWare" + File.separator + "upload" + File.separator;
 
 
     public List<ProductImage> saveAll(MultipartFile[] multipartFiles) {
