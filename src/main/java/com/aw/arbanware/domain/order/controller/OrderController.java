@@ -40,7 +40,6 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public String orderWrite(Model model, @AuthenticationPrincipal SecurityUser securityUser) {
         Long id = securityUser.getId();
-        log.info("id={}", id);
         Optional<Member> member = memberService.findById(id);
         List<Cart> carts = cartService.cartList(id);
         model.addAttribute("cartList", carts);
