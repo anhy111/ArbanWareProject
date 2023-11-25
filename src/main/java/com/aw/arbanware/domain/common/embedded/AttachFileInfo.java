@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Embeddable;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class AttachFileInfo {
 
     public static String todayToFolder() {
         final LocalDate now = LocalDate.now();
-        return String.format("%s\\%s\\%s\\",
+        return String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator,
                 now.getYear(), now.getMonthValue(), now.getDayOfMonth());
     }
 }
