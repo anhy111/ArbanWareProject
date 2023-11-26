@@ -128,7 +128,7 @@ $(function(){
                 }
             });
 
-           location.replace('http://'+ location.host + '/payment/success?paymentKey=' + data.paymentKey
+           location.replace( location.origin + '/payment/success?paymentKey=' + data.paymentKey
                                 + '&orderId=' + data.orderId
                                 + '&amount=' + data.amount
                                 + '&paymentId=' + paymentId);

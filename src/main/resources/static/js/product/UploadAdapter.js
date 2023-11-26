@@ -13,7 +13,7 @@ class UploadAdapter {
 
     _initRequest() {
         const xhr = this.xhr = new XMLHttpRequest();
-        xhr.open('POST', location.host + '/products/imageUpload', true);
+        xhr.open('POST', location.origin + '/products/imageUpload', true);
         xhr.responseType = 'json';
     }
 

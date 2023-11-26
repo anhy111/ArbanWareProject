@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain.product.service;
 
+import com.aw.arbanware.domain.common.attachfile.service.AttachFileService;
 import com.aw.arbanware.domain.common.embedded.AttachFileInfo;
 import com.aw.arbanware.domain.product.entity.ProductImage;
 import com.aw.arbanware.domain.product.repository.ProductImageRepository;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductImageService {
     private final ProductImageRepository productImageRepository;
-    private static final String UPLOAD_FOLDER = "C:" + File.separator + "arbanWare" + File.separator + "upload" + File.separator;
+    private static final String UPLOAD_FOLDER = AttachFileService.getUploadFolder();
 
 
     public List<ProductImage> saveAll(MultipartFile[] multipartFiles) {

@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
 public class AttachFileService {
 
     private final AttachFileRepository attachFileRepository;
-    private static final String UPLOAD_FOLDER = "C:" + File.separator + "arbanWare" + File.separator + "upload" + File.separator;
+    private static final String UPLOAD_FOLDER = getUploadFolder();
+
 
     @Transactional
     public List<AttachFile> saveAttachFiles(final MultipartFile[] multipartFiles) {
@@ -111,5 +112,14 @@ public class AttachFileService {
             attachFileKeys.add(new AttachFileKey(attachFile.getId(), attachFile.getSequence()));
         }
         attachFileRepository.deleteAllByIdInBatch(attachFileKeys);
+    }
+
+    public static String getUploadFolder() {
+        final String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            return "C:" + File.separator + "arbanWare" + File.separator + "upload" + File.separator;
+        } else {
+            return File.separator + "home" + File.separator + "ec2-user" + File.separator + "arbanWareFile" + File.separator;
+        }
     }
 }
