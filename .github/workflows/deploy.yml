@@ -1,0 +1,25 @@
+name: Build and Deploy Spring Boot to AWS EC2
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: setup java JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: grant execute permission for gradles
+        run : chmod +x ./gradlew
+        shell : bash
+
+      - name: build with Gradle
+        run: ./gradlew clean build -x test
+        shell : bash
