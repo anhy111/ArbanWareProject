@@ -206,7 +206,6 @@ public class ProductController {
     @PostMapping("/products/imageUpload")
     @ResponseBody
     public ResponseEntity<List<CkEditor5RespForm>> imageUpload(MultipartFile[] images, HttpServletRequest request) {
-        log.info("images = {}", images);
         final List<ProductImage> productImages = productImageService.saveAll(images);
         List<CkEditor5RespForm> forms = new ArrayList<>();
 
