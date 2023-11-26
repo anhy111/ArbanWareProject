@@ -33,10 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
 		String UPLOAD_FOLDER = AttachFileService.getUploadFolder();
 		final String os = System.getProperty("os.name").toLowerCase();
 		if (os.contains("win")) {
-			UPLOAD_FOLDER = "//" + UPLOAD_FOLDER;
+			UPLOAD_FOLDER = "///" + UPLOAD_FOLDER;
 		}
 		registry.addResourceHandler("/upload/**")
-				.addResourceLocations("file:/" + UPLOAD_FOLDER)
+				.addResourceLocations("file:" + UPLOAD_FOLDER)
 				.setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
 	}
 }
