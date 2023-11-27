@@ -48,7 +48,8 @@
                         <h6 class="m-0">카테고리</h6>
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
-                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
+                         id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                         <div class="navbar-nav w-100 overflow-hidden">
                             <a class="nav-item nav-link" th:each="category : ${categories}"
                                 th:text="${category.name}" th:href="@{/products(category = ${category.id})}">상의</a>
@@ -66,7 +67,7 @@
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
                                 <a th:href="@{/products(sortProperty = registrationTime)}" class="nav-item nav-link font-weight-bold"></b>신상품</a>
-                                <a th:href="@{/products(sortProperty = registrationTime)}" class="nav-item nav-link font-weight-bold">베스트</a>
+                                <a th:href="@{/products(sortProperty = buyCount)}" class="nav-item nav-link font-weight-bold">베스트</a>
                                 <a class="nav-item nav-link" th:each="category : ${categories}"
                                    th:text="${category.name}" th:href="@{/products(category = ${category.id})}">상의</a>
                                 <a href="/notice" class="nav-item nav-link">공지사항</a>
@@ -80,43 +81,44 @@
                             </div>
                         </div>
                     </nav>
-                    <th:block th:if="${#httpServletRequest.requestURI == '/'}">
-                        <div id="header-carousel" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active" style="height: 410px;">
-                                    <img class="img-fluid" src="/img/carousel-1.jpg" alt="Image">
-                                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                        <div class="p-3" style="max-width: 700px;">
-                                            <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                                            <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                                            <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item" style="height: 410px;">
-                                    <img class="img-fluid" src="/img/carousel-2.jpg" alt="Image">
-                                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                        <div class="p-3" style="max-width: 700px;">
-                                            <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                                            <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                                            <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                                        </div>
+
+                </div>
+                <th:block th:if="${#httpServletRequest.requestURI == '/'}">
+                    <div id="header-carousel" class="carousel slide col-12 mt-5" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" style="height: 410px;">
+                                <img class="img-fluid" src="/img/carousel-1.jpg" alt="Image">
+                                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                    <div class="p-3" style="max-width: 700px;">
+                                        <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
+                                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
+                                        <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
-                            <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-                                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                                    <span class="carousel-control-prev-icon mb-n2"></span>
+                            <div class="carousel-item" style="height: 410px;">
+                                <img class="img-fluid" src="/img/carousel-2.jpg" alt="Image">
+                                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                    <div class="p-3" style="max-width: 700px;">
+                                        <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
+                                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
+                                        <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                    </div>
                                 </div>
-                            </a>
-                            <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-                                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                                    <span class="carousel-control-next-icon mb-n2"></span>
-                                </div>
-                            </a>
+                            </div>
                         </div>
-                    </th:block>
-                </div>
+                        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                                <span class="carousel-control-prev-icon mb-n2"></span>
+                            </div>
+                        </a>
+                        <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                            <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                                <span class="carousel-control-next-icon mb-n2"></span>
+                            </div>
+                        </a>
+                    </div>
+                </th:block>
             </div>
         </div>
         <!-- Navbar End -->

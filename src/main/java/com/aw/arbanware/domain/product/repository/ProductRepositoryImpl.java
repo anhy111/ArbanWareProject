@@ -1,5 +1,8 @@
 package com.aw.arbanware.domain.product.repository;
 
+import com.aw.arbanware.domain.orderproduct.OrderProductStatus;
+import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
+import com.aw.arbanware.domain.orderproduct.entity.QOrderProduct;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.controller.ProductSearchCondition;
@@ -7,11 +10,14 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.aw.arbanware.domain.orderproduct.entity.QOrderProduct.*;
 import static com.aw.arbanware.domain.product.entity.QProduct.product;
 import static com.aw.arbanware.domain.product.entity.QProductInfo.productInfo;
 import static com.querydsl.core.group.GroupBy.*;
@@ -44,7 +51,17 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
     @Override
     public Page<ProductProductInfoDto> search(ProductSearchCondition condition, Pageable pageable){
         final List<ProductProductInfoDto> ids = queryFactory
-                .selectDistinct(new QProductProductInfoDto(product.id, product.registrationTime))
+                .selectDistinct(new QProductProductInfoDto(product.id,
+                        ExpressionUtils.as(product.registrationTime, "registrationTime"),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(
+                                        orderProduct.count())
+                                        .from(orderProduct)
+                                        .where(orderProduct.productInfo.product.id.eq(product.id)
+                                                ,orderedProduct())
+                                ,"buyCount"
+                        )
+                ))
                 .from(product)
                 .leftJoin(productInfo).on(productInfo.product.id.eq(product.id))
                 .where(
@@ -74,8 +91,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         product.name,
                         product.price,
                         product.thumbnail,
-                        product.registrationTime,
-                        set(new QProductProductInfoDto_Colors(productInfo.color))
+                        ExpressionUtils.as(product.registrationTime,"registrationTime"),
+                        set(new QProductProductInfoDto_Colors(productInfo.color)),
+                        ExpressionUtils.as(
+                                JPAExpressions.select(
+                                                orderProduct.count())
+                                        .from(orderProduct)
+                                        .where(orderProduct.productInfo.product.id.eq(product.id)
+                                                ,orderedProduct())
+                                ,"buyCount"
+                        )
                 )));
 
         final List<ProductProductInfoDto> result = resultMap.keySet().stream()
@@ -134,12 +159,15 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         return hasText(name) ? product.name.eq(name) : null;
     }
 
+    private BooleanExpression orderedProduct() {
+        return orderProduct.status.eq(OrderProductStatus.ORDER);
+    }
+
     private OrderSpecifier<?>[] getOrderSpecifier(Sort sort) {
         List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
         sort.forEach(order -> {
             final Order direction = order.isAscending() ? Order.ASC : Order.DESC;
-            final String property = order.getProperty();
-            final Path<Object> path = Expressions.path(Object.class, product, property);
+            final PathBuilder<Object> path = new PathBuilder<>(Object.class, order.getProperty());
             orderSpecifiers.add(new OrderSpecifier(direction, path));
         });
         return orderSpecifiers.toArray(value -> new OrderSpecifier<?>[value]);

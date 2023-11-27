@@ -10,24 +10,35 @@ import java.util.*;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class ProductProductInfoDto {
     private Long productId;
     private String name;
     private Integer price;
     private String thumbnail;
     private LocalDateTime registrationTime;
+    private Long buyCount;
 
     @Builder.Default
     private Set<Colors> colors = new LinkedHashSet<>();
 
     @QueryProjection
-    public ProductProductInfoDto(final Long productId, final String name, final Integer price, final String thumbnail, LocalDateTime registrationTime, Set<Colors> colors) {
+    public ProductProductInfoDto(final Long productId, final String name, final Integer price, final String thumbnail,
+                                 LocalDateTime registrationTime, Set<Colors> colors, Long buyCount) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.thumbnail = thumbnail;
         this.registrationTime = registrationTime;
         this.colors = colors;
+        this.buyCount = buyCount;
+    }
+
+    @QueryProjection
+    public ProductProductInfoDto(final Long productId, final LocalDateTime registrationTime, Long buyCount) {
+        this.productId = productId;
+        this.registrationTime = registrationTime;
+        this.buyCount = buyCount;
     }
 
     @QueryProjection
