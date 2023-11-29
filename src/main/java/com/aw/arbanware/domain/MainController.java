@@ -1,5 +1,6 @@
 package com.aw.arbanware.domain;
 
+import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.controller.ProductSearchCondition;
 import com.aw.arbanware.domain.product.repository.ProductProductInfoDto;
 import com.aw.arbanware.domain.product.service.ProductService;
@@ -10,12 +11,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
     private final ProductService productService;
+
+    private final Color[] colorValues = Color.values();
+
+    @ModelAttribute("colorValues")
+    public Color[] colorValues() {
+        return colorValues;
+    }
 
     @GetMapping("/")
     public String main(Model model){
