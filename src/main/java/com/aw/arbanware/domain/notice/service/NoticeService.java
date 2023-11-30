@@ -3,7 +3,6 @@ package com.aw.arbanware.domain.notice.service;
 import com.aw.arbanware.domain.notice.entity.Notice;
 import com.aw.arbanware.domain.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
