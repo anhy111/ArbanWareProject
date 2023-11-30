@@ -69,7 +69,10 @@ public class CartService {
             carts.add(cart);
         }
         cartRepository.deleteAll(carts);
+    }
 
+    public int memberCartCount(Long memberId) {
+        return cartRepository.findCountByMember(memberId);
     }
 
 }

@@ -3507,7 +3507,7 @@ input[type="button"].btn-block {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
-  border-color: #D19C97;
+  border-color: rgba(0, 0, 0, 0.125);
   background-color: #D19C97;
 }
 
@@ -3568,7 +3568,7 @@ input[type="button"].btn-block {
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
-  border-color: #D19C97;
+  border-color: rgba(0, 0, 0, 0.125);
   background-color: #D19C97;
 }
 
@@ -4588,7 +4588,7 @@ input[type="button"].btn-block {
   line-height: 1.25;
   color: #D19C97;
   background-color: #fff;
-  border: 1px solid #dee2e6;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .page-link:hover {
@@ -6186,23 +6186,23 @@ button.bg-dark:focus {
 }
 
 .border {
-  border: 1px solid #EDF1FF !important;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-top {
-  border-top: 1px solid #EDF1FF !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-right {
-  border-right: 1px solid #EDF1FF !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-bottom {
-  border-bottom: 1px solid #EDF1FF !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-left {
-  border-left: 1px solid #EDF1FF !important;
+  border-left: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-0 {
@@ -6230,7 +6230,7 @@ button.bg-dark:focus {
 }
 
 .border-secondary {
-  border-color: #EDF1FF !important;
+  border-color: rgba(0, 0, 0, 0.125) !important;
 }
 
 .border-success {
