@@ -559,6 +559,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row justify-content-center border-bottom" th:if="${page.getContent().size() == 0}" style="height: 300px">
+                                <div class="align-self-center text-center">
+                                    <p >후기가 없습니다.</p>
+                                    <p class="font-weight-semi-bold" style="font-size: 17px">후기를 작성해보세요!</p>
+                                </div>
+                            </div>
                             <div class="row py-3 border-bottom" th:each="review : ${page.getContent()}">
                                 <div class="col-9 align-self-start border-right px-0">
                                     <div class="text-primary read-rating d-inline-block ">
