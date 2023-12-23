@@ -162,13 +162,13 @@ window.onload = function (){
         $("#phoneNumber").val(phoneNumber);
         $phoneNumberErrorDisp.css('display', 'none');
 
-        // $.ajax({
-        //     type : 'post',
-        //     url : '/members/sendSms',
-        //     data : {
-        //         phoneNumber: phoneNumber
-        //     },
-        //     success : function(result) { // 결과 성공 콜백함수
+        $.ajax({
+            type : 'post',
+            url : '/members/sendSms',
+            data : {
+                phoneNumber: phoneNumber
+            },
+            success : function(result) { // 결과 성공 콜백함수
         $("#sendSMS").html('재전송');
         Swal.fire({
             html: '<b>인증번호가 전송되었습니다.</b>',
@@ -178,8 +178,8 @@ window.onload = function (){
         $phone_disp.css("display", "block");
         $("#phoneCheck").css("display", "block");
         $("#smsAuthSuccess").css("display", 'none');
-        //     },
-        // });
+            },
+        });
     }
 
 
@@ -239,28 +239,28 @@ window.onload = function (){
             "type":"R"
         };
 
-        // $.ajax({
-        //     type : 'post',
-        //     url : '/members/email',
-        //     headers : {              // Http header
-        //         "Content-Type": "application/json"
-        //     },
-        //     data : JSON.stringify(recipient),
-        //     success : function(result) { // 결과 성공 콜백함수
-        //         if (result.statusCode != 200) {
-        //             Swal.fire({
-        //                 html: '<b>잠시 후 다시 시도해주세요.</b>',
-        //                 icon: 'success'
-        //             });
-        //             formReg.regEmail.msg = '이메일 인증이 완료되지 않았습니다.';
-        //             return;
-        //         }
+        $.ajax({
+            type : 'post',
+            url : '/members/email',
+            headers : {              // Http header
+                "Content-Type": "application/json"
+            },
+            data : JSON.stringify(recipient),
+            success : function(result) { // 결과 성공 콜백함수
+                if (result.statusCode != 200) {
+                    Swal.fire({
+                        html: '<b>잠시 후 다시 시도해주세요.</b>',
+                        icon: 'success'
+                    });
+                    formReg.regEmail.msg = '이메일 인증이 완료되지 않았습니다.';
+                    return;
+                }
         Swal.fire({
             html: '<b>인증번호가 전송되었습니다.</b>',
             icon: 'success'
         });
-        //     },
-        // })
+            },
+        })
     }
 
     function emailAuthCheck(){
