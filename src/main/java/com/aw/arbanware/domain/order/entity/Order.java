@@ -2,7 +2,6 @@ package com.aw.arbanware.domain.order.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.embedded.Address;
-import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.order.OrderStatus;
 import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
 import com.aw.arbanware.domain.user.entity.Member;
