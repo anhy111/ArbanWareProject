@@ -53,6 +53,9 @@ public class OrderController {
         Optional<Member> member = memberService.findById(memberId);
         ProductInfo productInfo = productInfoService.findByProductAndColorAndSize(orderProductForm);
         Cart cart = cartService.cartOrder(memberId, productInfo.getId());
+        if (cart == null) {
+            cart = cartService.cartSave(productInfo, memberId, orderProductForm.getAmount());
+        }
         List<Cart> carts = new ArrayList<Cart>();
         carts.add(cart);
 

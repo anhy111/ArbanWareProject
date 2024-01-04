@@ -2,26 +2,58 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>Order History</title>
+    <style>
+        table {
+            font-size: 14px;
+        }
 
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        table th{
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+        }
+
+        input:enabled {
+            cursor: text;
+        }
+
+        input:hover:enabled {
+            border: 1px #1C1C1C solid;
+        }
+
+        input:focus {
+            border: 1px solid #1C1C1C !important;
+        }
+
+        .form-control:disabled {
+            background: #F9F9F9;
+        }
+
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
     <div class="container-fluid">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문내역</h1>
+            <h4 class="mb-3">주문내역</h4>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid offset-3 col-6">
         <div class="row justify-content-center">
-            <table class="table">
+            <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
                 <thead>
                 <tr class="text-center">
-                    <th class="col-5">상품정보</th>
-                    <th class="col-1">수량</th>
-                    <th class="col-2">주문금액</th>
-                    <th class="col-2">주문상태</th>
+                    <th >상품정보</th>
+                    <th style="width: 8%">수량</th>
+                    <th style="width: 15%">주문금액</th>
+                    <th style="width: 15%">주문상태</th>
                 </tr>
                 </thead>
                 <tbody th:if="${orderDetails.size()} <= 0">
@@ -31,29 +63,29 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody th:each="list, i : ${orderDetails}" th:if="${list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).AWAITING_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).CANCEL_PAYMENT && list.getStatus() != T(com.aw.arbanware.domain.order.OrderStatus).EXPIRES_PAYMENT}">
+                <tbody th:each="list, i : ${orderDetails}">
                     <tr>
-                        <td class="align-middle" colspan="4">
-                            <span th:text="${'주문번호 : ' + list.getId() + '  주문일 : ' + list.getOrderDate()}"></span>
+                        <td class="align-middle" colspan="4" >
+                            <span><b>주문번호</b> : </span><span th:text="${list.getId()}"></span>
+                            <span class="ml-4" th:text="${'주문일 : ' + list.getOrderDate()}"></span>
                         </td>
                     </tr>
                     <tr th:each="product, i : ${list.getOrderProduct()}">
-                        <td class="align-middle">
-                            <div style="float:left">
+                        <td class="align-middle d-flex">
+                            <div class="align-self-center" style="">
                                 <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
                             </div>
-                            <div class="ml-3 mt-4" style="float:left">
+                            <div class="ml-3 align-self-center">
                                 <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
-                                <p class="mb-2">[옵션 : <h7 th:text="${product.getProductInfo().getColor()}"></h7>/<h7 th:text="${product.getProductInfo().getSize()}"></h7> ]</p>
+                                <p class="mb-2" th:text="${product.getProductInfo().getColor()} + '/' + ${product.getProductInfo().getSize()}"></p>
+                                <p class="mb-0" th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></p>
                             </div>
                         </td>
-                        <td class="align-middle text-center">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <input type="text" th:value="${product.getAmount()}" class="form-control form-control-sm bg-secondary text-center" readonly="true" />
-                            </div>
+                        <td class="align-middle text-center" style="width:5%">
+                            <div class="quantity mx-auto text-center" style="width: 100%;" th:text="${product.getAmount()}"></div>
                         </td>
                         <td class="align-middle text-center">
-                            <span th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></span>
+                            <span th:text="${#numbers.formatInteger(product.order.totalPrice, 3, 'COMMA') + '원'}"></span>
                         </td>
                         <td class="align-middle text-center">
                             <span th:text="${list.getStatus().getKrName()}"></span>

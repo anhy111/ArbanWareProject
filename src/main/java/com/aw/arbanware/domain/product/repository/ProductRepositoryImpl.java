@@ -1,21 +1,15 @@
 package com.aw.arbanware.domain.product.repository;
 
+import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.orderproduct.OrderProductStatus;
-import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
-import com.aw.arbanware.domain.orderproduct.entity.QOrderProduct;
 import com.aw.arbanware.domain.product.Color;
 import com.aw.arbanware.domain.product.Size;
 import com.aw.arbanware.domain.product.controller.ProductSearchCondition;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -69,7 +63,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         priceBetween(condition.getMinPrice(), condition.getMaxPrice()),
                         colorEq(condition.getColors()),
                         sizeEq(condition.getSizes()),
-                        categoryEq(condition.getCategory())
+                        categoryEq(condition.getCategory()),
+                        isDelete()
                 )
                 .orderBy(getOrderSpecifier(pageable.getSort()))
                 .offset(pageable.getOffset())
@@ -118,7 +113,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                         priceBetween(condition.getMinPrice(), condition.getMaxPrice()),
                         colorEq(condition.getColors()),
                         sizeEq(condition.getSizes()),
-                        categoryEq(condition.getCategory())
+                        categoryEq(condition.getCategory()),
+                        isDelete()
                 )
                 .fetch()
                 .size();
@@ -157,6 +153,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 
     private BooleanExpression nameEq(String name) {
         return hasText(name) ? product.name.eq(name) : null;
+    }
+
+    private BooleanExpression isDelete(){
+        return product.deleteYn.eq(DeleteYn.N);
     }
 
     private BooleanExpression orderedProduct() {

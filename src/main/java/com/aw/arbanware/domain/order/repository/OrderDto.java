@@ -1,6 +1,5 @@
 package com.aw.arbanware.domain.order.repository;
 
-import com.aw.arbanware.domain.coupon.MemberCoupon;
 import com.aw.arbanware.domain.order.OrderStatus;
 import com.aw.arbanware.domain.delivery.entity.Delivery;
 import com.aw.arbanware.domain.user.entity.Member;
@@ -19,7 +18,6 @@ public class OrderDto {
     private OrderStatus status;  // 주문상태
     private int shippingAmount; // 배송비
     private int totalPrice;     // 총 주문 금액
-    private MemberCoupon memberCoupon;  // 회원 쿠폰 번호
 
     private int usage_mileage;  // 사용 마일리지
     private int totalPaymentPrice;  // 총 결제 금액

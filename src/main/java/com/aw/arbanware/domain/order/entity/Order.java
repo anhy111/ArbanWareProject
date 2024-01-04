@@ -39,10 +39,6 @@ public class Order extends BaseTimeEntity implements Persistable<String> {
     private int shippingAmount; // 배송비
     private int totalPrice;     // 총 주문 금액
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_COUPON_ID")
-    private MemberCoupon memberCoupon;  // 회원 쿠폰 번호
-
     private int usage_mileage;  // 사용 마일리지
     private int totalPaymentPrice;  // 총 결제 금액
 
