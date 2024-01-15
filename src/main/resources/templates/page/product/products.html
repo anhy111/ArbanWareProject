@@ -151,9 +151,9 @@
                         </div>
                         <div class="col-lg-3 col-md-4 col-sm-12 pb-5" th:each="product : ${products}" th:unless="${products.isEmpty()}">
                             <div class="card product-item border-0 mb-4">
-                                <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0">
+                                <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0 d-flex align-items-center" style="height: 500px;">
                                     <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0">
-                                        <img class="img-fluid w-100" style="min-height: 500px; max-height: 500px" th:src="@{|/upload/${product.thumbnail}|}">
+                                        <img class="img-fluid w-100" style="max-height: 500px;" th:src="@{|/upload/${product.thumbnail}|}">
                                     </a>
                                 </div>
                                 <div class="card-body text-left pt-3 pl-0 pb-3">

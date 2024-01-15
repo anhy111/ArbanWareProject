@@ -29,7 +29,7 @@
             <div class="owl-carousel owl-theme col-12" >
                 <div class="pb-5 item" th:each="product : ${newProducts}">
                     <div class="card product-item border-0 mb-4">
-                        <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0">
+                        <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0 d-flex align-items-center">
                             <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0 w-100">
                                 <img class="img-fluid w-100" style="min-height: 600px; max-height: 600px" th:src="@{|/upload/${product.thumbnail}|}">
                             </a>
@@ -59,7 +59,7 @@
             <div class="owl-carousel owl-theme col-12">
                 <div class="pb-5 item" th:each="product : ${bestProducts}">
                     <div class="card product-item border-0 mb-4">
-                        <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0">
+                        <div class="card-header position-relative overflow-hidden bg-transparent border-bottom-0 p-0 d-flex align-items-center">
                             <a th:href="@{/products/{id}(id = ${product.productId})}" class="btn btn-sm text-dark p-0 w-100">
                                 <img class="img-fluid w-100" style="min-height: 600px; max-height: 600px" th:src="@{|/upload/${product.thumbnail}|}">
                             </a>
