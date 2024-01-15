@@ -22,11 +22,11 @@ fi
 
 if [ -z $CURRENT_PID ]
 then
-  echo "> 종료할 프로그램 없음."
-else
   echo "> kill -9 $CURRENT_PID"
-  kill -15 $CURRENT_PID
-  sleep 5
+    kill -15 $CURRENT_PID
+    sleep 5
+else
+  echo "> 종료할 프로그램 없음."
 fi
 
 echo "> $JAR_PATH 배포"
