@@ -300,6 +300,16 @@ $(document).ready(function () {
         $("#reviewTabs").val(false);
     });
 
+    $(".img-modal").on('click', function () {
+        if ($(this).hasClass("image-box")) {
+            $(this).removeClass("image-box")
+                .children("img").css("object-fit", "contain")
+        } else {
+            $(this).addClass("image-box")
+                .children("img").css("object-fit", "");
+        }
+    });
+
     function regNumberAndSwal(val) {
         let regExp = /^[0-9]*$/g;
         if (regExp.test(val)) {
