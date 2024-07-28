@@ -4,120 +4,139 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>Cart</title>
+    <style>
+        table {
+            font-size: 14px;
+            color: #1C1C1C;
+        }
 
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        .table th{
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+            padding-bottom: 18px;
+            padding-top: 18px;
+        }
+
+        .table td {
+            padding-bottom: 18px;
+            padding-top: 18px;
+        }
+        .form-control:disabled {
+            background: #F9F9F9;
+        }
+
+        .input-group-btn button:hover {
+            border: 1px #1C1C1C solid;
+        }
+
+        .btnCustom {
+            font-size: 12px;
+            border: #BCBCBC solid 1px;
+            height: 33px;
+            width: 90px;
+            color: #1C1C1C;
+            background-color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
-    <div class="container-fluid">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">장바구니</h1>
+    <div class="container offset-2 col-8">
+        <div class="row justify-content-center pb-5">
+            <h4>장바구니</h4>
         </div>
-    </div>
-    <div class="container-fluid">
-        <form action="/order/check/new" id="newFrom" method="get">
-            <div class="row justify-content-center">
-                <h3 class="justify-content-left" th:text="${'일반상품(' + cartList.size()} +')'"></h3>
-                <table class="table">
-                    <thead>
-                        <tr class="text-center">
-                            <th class="col-1">번호</th>
-                            <th th:if="${cartList.size()}>0" class="col-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="cartList">
-                                    <label class="custom-control-label" for="cartList"></label>
-                                </div>
-                            </th>
-                            <th class="col-5">상품정보</th>
-                            <th class="col-1">수량</th>
-                            <th class="col-2">주문금액</th>
-                            <th class="col-2">선택</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:if="${cartList.size()}<=0">
-                            <td class="text-center font-weight-bold" colspan="6">
-                                <span> 장바구니가 비어있습니다. </span>
-                            </td>
-                        </tr>
-                        <tr th:if="${cartList.size()}>0" th:each="list, i : ${cartList}">
-                            <td class="align-middle text-center" th:text="${i.index+1}"></td>
-    <!--                        <td th:text="${list.getProductInfo().getId()}" class="prodId" style="overflow:hidden"></td>-->
-                            <td class="align-middle text-center">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" name="checkedValue" class="custom-control-input cartCheck" th:id="${'cartCheck' + (i.index+1)}" th:value="${list.getProductInfo().getId()}">
-                                    <label class="custom-control-label" th:for="${'cartCheck' + (i.index+1)}"></label>
-                                </div>
-                            </td>
-                            <td class="align-middle">
-                                <div style="float:left">
-                                    <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
-                                </div>
-                                <div class="ml-3 mt-4" style="float:left">
-                                    <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
-                                    <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
-                                </div>
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-minus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'minus')">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" name="checkedQuantity" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-plus" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'plus')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle text-center">
-                                <span th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
-                                <span class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
-                            </td>
-                            <td class="align-middle text-center">
-                                <button type="button" class="btn btn-primary" th:onclick="optionUpdate([[${list.getProductInfo().getProduct().getId()}]])" data-toggle="modal" data-target="#optionModal">옵션변경</button>
-                                <button type="button" class="btn btn-primary" th:onclick="cartOneDelete([[${list.getProductInfo().getId()}]])">삭제</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot th:if="${cartList.size()}>0">
+        <div class="row justify-content-end">
+            <span class="pr-3 pb-3" style="font-size: 16px;color: #1C1C1C">
+                전체 <b>[[${cartList.size()}]]</b>개
+            </span>
+        </div>
+        <form action="/order/check/new" id="newFrom" method="get" >
+            <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
+                <tr class="text-center">
+                    <th th:if="${cartList.size()}>0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="cartList" checked>
+                            <label class="custom-control-label" for="cartList"></label>
+                        </div>
+                    </th>
+                    <th class="font-weight-semi-bold">상품정보</th>
+                    <th class="font-weight-semi-bold">수량</th>
+                    <th class="font-weight-semi-bold">주문금액</th>
+                    <th class="font-weight-semi-bold">선택</th>
+                </tr>
+                <tr th:if="${cartList.size()}<=0">
+                    <td class="text-center font-weight-bold align-middle" colspan="5" height="300px">
+                        <span style="font-size: 17px"> 장바구니가 비어있습니다. </span>
+                    </td>
+                </tr>
+                <tr th:if="${cartList.size()}>0" th:each="list, i : ${cartList}">
+                    <td class="align-middle text-center">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="checkedValue" class="custom-control-input cartCheck" th:id="${'cartCheck' + (i.index+1)}" th:value="${list.getProductInfo().getId()}" checked>
+                            <label class="custom-control-label" th:for="${'cartCheck' + (i.index+1)}"></label>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <div style="float:left">
+                            <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
+                        </div>
+                        <div class="ml-3 mt-4" style="float:left">
+                            <h6 class="font-weight-bold" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <p class="mb-2">
+                                [ 옵션 : <span th:text="${list.getProductInfo().getColor()}"></span>/<span th:text="${list.getProductInfo().getSize()}"></span> ]
+                            </p>
+                        </div>
+                    </td>
+                    <td class="align-middle ">
+                        <div class="input-group quantity mx-auto justify-content-center">
+                            <div class="input-group-btn">
+                                <button type="button" class="btnCustom" style="width: 23px;height: 23px" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'minus')">
+                                    <i class="fas fa-minus" style="color: #1C1C1C"></i>
+                                </button>
+                            </div>
+                            <span type="text" class="text-center align-self-center" th:text="${list.getQuantity()}" style="width: 30px" readonly></span>
+                            <input type="hidden" name="checkedQuantity" th:value="${list.getQuantity()}">
+                            <div class="input-group-btn">
+                                <button type="button" class="btnCustom" style="width: 23px;height: 23px" th:onclick="quantityUpdate([[${list.getProductInfo().getId()}]], [[${list.getQuantity()}]], [[${list.getProductInfo().getInventory}]], 'plus')">
+                                    <i class="fas fa-plus" style="color: #1C1C1C"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-center">
+                        <span style="color: #1C1C1C" th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA')}"></span>
+                        <span class="price" name="checkedPrice" hidden th:value="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}" />
+                    </td>
+                    <td class="align-middle text-center">
+                        <button type="button" style="font-size: 14px;" class="btnCustom mb-2"
+                                th:onclick="optionUpdate([[${list.getProductInfo().getProduct().getId()}]])" data-toggle="modal" data-target="#optionModal">옵션변경</button>
+                        <br>
+                        <button type="button" style="font-size: 14px;" class="btnCustom"
+                                th:onclick="cartOneDelete([[${list.getProductInfo().getId()}]])">삭제</button>
+                    </td>
+                </tr>
+            </table>
+            <div th:if="${cartList.size()} > 0">
+                <table class="table table-borderless mt-5" style="border-top: 0.2em #1C1C1C solid;"  >
                     <tr>
-                        <td class="text-right font-weight-bold" colspan="6">
-                            <span> 합계 : </span>
-                            <span id="priceAll"></span>
+                        <th class="text-center" style="width: 20%">결제예정금액</th>
+                        <td class="text-center" colspan="4">
+                            <span id="priceAll" style="font-size: 17px; color: #1C1C1C" class="font-weight-bold"></span>
+                            <span style="font-size: 17px; color: #1C1C1C">원</span>
                         </td>
                     </tr>
-                    </tfoot>
                 </table>
-            </div>
-<!--            <div class="row justify-content-center mt-5">-->
-<!--                <table class="table">-->
-<!--                    <thead>-->
-<!--                    <tr class="text-center">-->
-<!--                        <th class="col-4">총 상품금액</th>-->
-<!--                        <th class="col-4">총 배송비</th>-->
-<!--                        <th class="col-4">결제예정금액</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody>-->
-<!--                    <tr>-->
-<!--                        <td class="text-center font-weight-bold">-->
-<!--                            <span class="priceAll2"> </span>-->
-<!--                        </td>-->
-<!--                        <td class="text-center font-weight-bold">-->
-<!--                            <span> 0 </span>-->
-<!--                        </td>-->
-<!--                        <td class="text-center font-weight-bold">-->
-<!--                            <span class="priceAll2"> </span>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
-<!--            </div>-->
-            <div class="row justify-content-center">
-                <button type="button" class="btn btn-block btn-outline-primary my-3 py-3 col-2" id="orderBtn">선택 상품 주문</button>
-                <button type="button" class="btn btn-block btn-primary my-3 py-3 ml-2 col-2" id="orderAllBtn">전체 상품 주문</button>
+                <div class="row justify-content-center my-5">
+                    <button type="button" style="font-size: 14px" class="btn btn-outline-primary py-2 px-4 font-weight-bold" id="orderBtn">선택 상품 주문</button>
+                    <button type="button" style="font-size: 14px" class="btn btn-primary ml-2 py-2 px-4 font-weight-bold" id="orderAllBtn">전체 상품 주문</button>
+                </div>
             </div>
         </form>
     </div>

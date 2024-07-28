@@ -9,7 +9,7 @@ $(function(){
         price = Number(element);
         priceAll += price;
 
-        $('#priceAll').text(priceAll.toLocaleString('ko-KR') + '원');
+        $('#priceAll').text(priceAll.toLocaleString('ko-KR'));
 //        $('.priceAll2').text(priceAll.toLocaleString('ko-KR'));
     });
 
@@ -18,7 +18,7 @@ $(function(){
 
         if (cartLenth <= 0){
             Swal.fire({
-                title:'장바구니에 담긴 상품이 없습니다.',         // Alert 제목
+                html: '<b>장바구니에 담긴 상품이 없습니다.</b>',
                 icon:'warning',                         // Alert 타입
             });
             return
@@ -37,7 +37,7 @@ $(function(){
 
         if(orderCheck <= 0){
             Swal.fire({
-                title:'상품을 선택해주세요.',         // Alert 제목
+                html: '<b>상품을 선택해주세요.</b>',
                 icon:'warning',                         // Alert 타입
             });
             return
@@ -77,7 +77,7 @@ function quantityUpdate(id, quantity, inventory, plusMinus){
         let quan = quantity-1;
         if(quan <= 0){
             Swal.fire({
-                title:'상품을 1개 이상 선택해주세요',         // Alert 제목
+                html: '<b>상품을 1개 이상 선택해주세요</b>',
                 icon:'warning',                         // Alert 타입
             });
             return
@@ -110,7 +110,7 @@ function quantityUpdate(id, quantity, inventory, plusMinus){
 function cartOneDelete(id) {
 
     Swal.fire({
-        title: '선택하신 상품을 삭제하시겠습니까?',
+        html:'<b>선택하신 상품을 삭제하시겠습니까?</b>',         // Alert 제목
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -161,11 +161,10 @@ function optionUpdate(productId) { //보류
         },
         error:function(request, status, error){
             console.log("code : "+request.status+"\n"+"message : "+request.responseText+"\n"+"error : "+error);
-            Swal.fire(
-                "옵션변경 실패",
-                "에러 났어요!", // had a missing comma
-                "error"
-            )
+            Swal.fire({
+                html: '<b>옵션변경 실패</b>',         // Alert 제목
+                icon: "error"
+            })
         }
 
     });
