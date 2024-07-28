@@ -10,15 +10,15 @@ $(document).ready(function(){
     });
 
     function changeDisp(value) {
+        console.log("value = ", value);
         if (value == 'email') {
             $phoneDisp.css('display', 'none');
             $emailDisp.css('display', 'block');
-            $searchPasswordType.val('EMAIL');
-
+            $searchPasswordType.val('email');
         } else if (value == 'phone') {
             $emailDisp.css('display', 'none');
             $phoneDisp.css('display', 'block');
-            $searchPasswordType.val('PHONE');
+            $searchPasswordType.val('phone');
         }
     }
 
