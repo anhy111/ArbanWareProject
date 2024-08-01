@@ -26,6 +26,16 @@
             cursor: pointer;
         }
 
+        .btnCnt {
+            font-size: 12px;
+            border: #BCBCBC solid 1px;
+            height: 35px;
+            width: 35px;
+            color: #1C1C1C;
+            background-color: white;
+            cursor: pointer;
+        }
+
         .card-header {
             background-color: inherit;
             border-left: none;
@@ -121,6 +131,11 @@
             overflow:hidden;
         }
 
+
+        .input-group-btn button:hover {
+            border: 1px #1C1C1C solid;
+        }
+
         .image-thumbnail {
             width:100%;
             height:100%;
@@ -181,18 +196,18 @@
                             <label class="custom-control-label" th:for="${#ids.prev('size')}" th:text="${size}"></label>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center mb-4 pt-2">
-                        <div class="input-group quantity mr-3" style="width: 130px;">
+                    <div class="mb-4 pt-2">
+                        <div class="input-group quantity" style="width: 130px;">
                             <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-minus" id="subAmount">
-                                    <i class="fa fa-minus"></i>
+                                <button type="button" class="btnCnt btn-minus" id="subAmount">
+                                    <i class="fa fa-minus" style="color: #1C1C1C"></i>
                                 </button>
                             </div>
-                            <input type="text" th:field="${form.amount}" th:value="1"
-                                   class="form-control bg-secondary text-center">
+                            <span class="text-center align-self-center" id="amountPrint" th:text="${form.amount}" style="width: 40px"></span>
+                            <input type="hidden" th:field="${form.amount}" th:value="1"/>
                             <div class="input-group-btn">
-                                <button type="button" class="btn btn-primary btn-plus" id="addAmount">
-                                    <i class="fa fa-plus"></i>
+                                <button type="button" class="btnCnt btn-plus" id="addAmount">
+                                    <i class="fa fa-plus" style="color: #1C1C1C"></i>
                                 </button>
                             </div>
                         </div>

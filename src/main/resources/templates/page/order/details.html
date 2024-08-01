@@ -83,7 +83,7 @@
                             <div class="align-self-center" style="">
                                 <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
                             </div>
-                            <div class="ml-3 align-self-center">
+                            <div class="ml-3 text-left align-self-center">
                                 <h6 th:text="${product.getProductInfo().getProduct().getName()}"></h6>
                                 <p class="mb-2" th:text="${product.getProductInfo().getColor()} + '/' + ${product.getProductInfo().getSize()}"></p>
                                 <p class="mb-0" th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></p>

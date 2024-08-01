@@ -5,6 +5,7 @@ $(document).ready(function () {
     }
 
     let $amount = $('#amount');
+    let $amountPrint = $('#amountPrint');
 
     ClassicEditor
         .create( document.querySelector( '#content' ) )
@@ -83,6 +84,7 @@ $(document).ready(function () {
         }
 
         $amount.val($amount.val() - 1);
+        $amountPrint.text($amount.val());
     });
 
     $("#addAmount").on('click', function () {
@@ -92,6 +94,7 @@ $(document).ready(function () {
         }
 
         $amount.val(val - 0 + 1);
+        $amountPrint.text($amount.val());
     });
 
     $("#cartBtn").on('click', function () {
