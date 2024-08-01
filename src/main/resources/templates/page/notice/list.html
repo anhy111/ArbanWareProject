@@ -5,49 +5,73 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
-<th:block layout:fragment="script">
-        <script th:src="@{/js/notice/list.js}"></script>
-</th:block>
+<head>
+    <title>Notice</title>
+    <style>
+        table {
+            font-size: 14px;
+        }
+
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        table th{
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+        }
+
+        td a {
+            color: #6F6F6F;
+        }
+        td a:link {
+            color: #6F6F6F;
+        }
+        td a:hover {
+            color: #1C1C1C;
+            text-decoration: none;
+        }
+        td a:active {
+            color: #1C1C1C;
+        }
+
+        .inputGroup{
+            width: 40%;
+        }
+
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">공지사항</h1>
-            <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
-                <p class="m-0 px-2">-</p>
-                <p class="m-0">Shop</p>
-            </div>
+    <div class="container offset-2 col-8">
+        <div class="row justify-content-center pb-5">
+            <h4>공지사항</h4>
         </div>
-    </div>
-    <div class="container">
         <div class="row justify-content-center">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="col-1">번호</th>
-                        <th class="col-7">제목</th>
-                        <th class="col-2">작성자</th>
-                        <th class="col">작성일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="list, i : ${noticeList}">
-                        <td th:text="${i.index}"></td>
-                        <td><a th:text="${list.getTitle()}" th:href="@{/notice/{id} (id=${list.getId()})}"></a></p></td>
-                        <td th:if="${list.getModifier() != null}" th:text="${list.getModifier()}"></td>
-                        <td th:unless="${list.getModifier() != null}" th:text="${list.getRegistrant()}"></td>
-                        <td th:if="${list.getModificationTime() != null}" th:text="${list.getModificationTime()}"></td>
-                        <td th:unless="${list.getModificationTime() != null}" th:text="${list.getRegistrationTime()}"></td>
-                    </tr>
-                </tbody>
+            <table class="table table-borderless text-center" style="border-top: 0.2em #1C1C1C solid;">
+                <tr>
+                    <th>번호</th>
+                    <th style="width: 60%">제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                </tr>
+                <tr th:each="list, i : ${noticeList}">
+                    <td th:text="${i.index + 1}"></td>
+                    <td class="text-left"><a th:text="${list.getTitle()}" th:href="@{/notice/{id} (id=${list.getId()})}"></a></td>
+                    <td th:if="${list.getModifier() != null}" th:text="${list.getModifier()}"></td>
+                    <td th:unless="${list.getModifier() != null}" th:text="${list.getRegistrant()}"></td>
+                    <td th:if="${list.getModificationTime() != null}" th:text="${#temporals.format(list.getModificationTime(), 'yyyy-MM-dd')}"></td>
+                    <td th:unless="${list.getModificationTime() != null}" th:text="${#temporals.format(list.getRegistrationTime(), 'yyyy-MM-dd')}"></td>
+                </tr>
             </table>
-<!--            <p sec:authorize="hasRole('ADMIN')">왜 안떠 짱나게</p>-->
             <div sec:authorize="hasRole('ADMIN')">
                 <button  class="btn btn-primary py-3 px-5" id="registrationBtn">등록</button>
             </div>
         </div>
     </div>
 </div>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/notice/list.js}"></script>
+</th:block>
 </body>
 </html>

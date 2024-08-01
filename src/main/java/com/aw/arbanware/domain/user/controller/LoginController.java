@@ -43,7 +43,8 @@ public class LoginController {
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage.getMessage());
         }
-        if (referer != null && (!referer.contains("members/new") && !referer.contains("/login"))) {
+        if (referer != null
+                && (!referer.contains("members/new") && !referer.contains("/login") && !referer.contains("/searchPassword"))) {
             request.getSession().setAttribute("Referer", referer);
         }
         return "page/login/login";

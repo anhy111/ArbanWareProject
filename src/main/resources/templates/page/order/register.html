@@ -5,46 +5,84 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/default_layout}">
 
+<head>
+    <title>Cart</title>
+    <style>
+        table {
+            font-size: 14px;
+            color: #1C1C1C;
+        }
+
+        table tr {
+            border-bottom: 0.1em #e6e6e6 solid;
+        }
+
+        .table th{
+            background-color: #F6F6F6;
+            color: #1C1C1C;
+            padding-bottom: 18px;
+            padding-top: 18px;
+        }
+
+        .table td {
+            padding-bottom: 18px;
+            padding-top: 18px;
+        }
+        .form-control:disabled {
+            background: #F9F9F9;
+        }
+
+        .input-group-btn button:hover {
+            border: 1px #1C1C1C solid;
+        }
+
+        input:hover:enabled {
+            border: 1px #1C1C1C solid;
+        }
+
+        input:focus {
+            border: 1px solid #1C1C1C !important;
+        }
+
+    </style>
+</head>
 <body>
 <div layout:fragment="content">
-    <div class="container-fluid">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">주문서 작성</h1>
+    <div class="container offset-2 col-8">
+        <div class="row justify-content-center pb-5">
+            <h4>주문서 작성</h4>
         </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <h5 class="font-weight-bold mb-2">주문상품</h5>
-            <table class="table">
+        <div class="row justify-content-start">
+            <h5 class="pl-3 mb-2 font-weight-bold">주문상품</h5>
+        </div>
+        <div>
+            <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
                 <thead>
                     <tr class="text-center">
-                        <th class="col-1">번호</th>
-                        <th class="col-5">상품정보</th>
-                        <th class="col-2">옵션</th>
-                        <th class="col-2">수량</th>
-                        <th class="col-2">주문금액</th>
+                        <th>상품정보</th>
+                        <th>옵션</th>
+                        <th>수량</th>
+                        <th>주문금액</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="list, i : ${cartList}">
-                        <td class="align-middle text-center" th:text="${i.index+1}"></td>
                         <td class="align-middle">
                             <img th:src="@{'/upload/'+${list.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
-                            <h6 class="font-weight-bold productName" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
+                            <h6 class="font-weight-bold productName d-inline pl-3" th:text="${list.getProductInfo().getProduct().getName()}"></h6>
                             <span class="prodInfoId" hidden th:text="${list.getProductInfo().getId()}"></span>
                         </td>
                         <td class="align-middle text-center">
                             <p class="mb-2">[옵션 : <h7 th:text="${list.getProductInfo().getColor()}"></h7>/<h7 th:text="${list.getProductInfo().getSize()}"></h7> ]</p>
                         </td>
                         <td class="align-middle text-center">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <input type="text" th:value="${list.getQuantity()}" class="form-control form-control-sm bg-secondary text-center" readonly="true">
-                                <span class="amount" hidden th:text="${list.getQuantity()}"></span>
+                            <div class="input-group quantity mx-auto justify-content-center" style="width: 100px;">
+                                <span class="amount" th:text="${list.getQuantity()}"></span>
+                                <input type="hidden" th:value="${list.getQuantity()}" >
                             </div>
                         </td>
                         <td class="align-middle text-center">
-                            <span th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
+                            <span style="font-size: 16px;color: #1C1C1C" th:text="${#numbers.formatInteger(list.getProductInfo().getProduct().getPrice()*list.getQuantity(), 3, 'COMMA') + '원'}"></span>
                             <span class="price" hidden th:text="${list.getProductInfo().getProduct().getPrice()*list.getQuantity}"></span>
                         </td>
                     </tr>
@@ -60,7 +98,7 @@
             </table>
         </div>
         <div class="justify-content-center">
-            <h5 class="font-weight-bold mb-3 mt-5">주문자 정보</h5>
+            <h5 class="font-weight-bold mb-3 mt-5 pt-4">주문 정보</h5>
             <div>
                 <div class="form-group row">
                     <label for="inputOrderer" class="col-sm-2 col-form-label">이름</label>
@@ -83,7 +121,7 @@
             </div>
         </div>
         <div class="justify-content-center" style="margin-top: 100px;">
-            <h5 class="font-weight-bold mb-3">배송지 정보</h5>
+            <h5 class="font-weight-bold mb-3">배송지</h5>
             <div>
                 <div class="form-group row">
                     <label for="inputRecipient" class="col-sm-2 col-form-label">이름</label>

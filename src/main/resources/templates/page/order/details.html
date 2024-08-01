@@ -39,21 +39,23 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container-fluid">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
-            <h4 class="mb-3">주문내역</h4>
+    <div class="container offset-2 col-8">
+        <div class="row justify-content-center pb-5">
+            <h4>주문내역</h4>
         </div>
-    </div>
-
-    <div class="container-fluid offset-3 col-6">
+        <div class="row justify-content-end">
+                <span class="pr-3 pb-3" style="font-size: 16px;color: #1C1C1C">
+                    전체 <b>[[${orderDetails.size()}]]</b>건
+                </span>
+        </div>
         <div class="row justify-content-center">
             <table class="table table-borderless" style="border-top: 0.2em #1C1C1C solid;">
                 <thead>
                 <tr class="text-center">
-                    <th >상품정보</th>
-                    <th style="width: 8%">수량</th>
-                    <th style="width: 15%">주문금액</th>
-                    <th style="width: 15%">주문상태</th>
+                    <th style="width: 60%">상품정보</th>
+                    <th style="width: 10%">수량</th>
+                    <th>주문금액</th>
+                    <th>주문상태</th>
                 </tr>
                 </thead>
                 <tbody th:if="${orderDetails.size()} <= 0">
@@ -63,15 +65,21 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody th:each="list, i : ${orderDetails}">
-                    <tr>
-                        <td class="align-middle" colspan="4" >
-                            <span><b>주문번호</b> : </span><span th:text="${list.getId()}"></span>
-                            <span class="ml-4" th:text="${'주문일 : ' + list.getOrderDate()}"></span>
+                <tbody class="align-middle text-center" th:each="list, i : ${orderDetails}">
+                    <tr class="text-center">
+                        <td class="text-left" colspan="2" >
+                            <span style="font-size: 14px;color: #1C1C1C"><b>주문번호</b> : </span><span th:text="${list.getId()}"></span>
+                            <span style="font-size: 14px;color: #1C1C1C" class="ml-4" th:text="${'주문일 : ' + #temporals.format(list.getOrderDate(), 'yy-MM-dd')}"></span>
+                        </td>
+                        <td>
+                            <span style="font-size: 14px;color: #1C1C1C" th:text="${#numbers.formatInteger(list.totalPrice, 3, 'COMMA') + '원'}"></span>
+                        </td>
+                        <td>
+                            <span style="font-size: 14px;color: #1C1C1C" th:text="${list.status.getKrName()}"></span>
                         </td>
                     </tr>
-                    <tr th:each="product, i : ${list.getOrderProduct()}">
-                        <td class="align-middle d-flex">
+                    <tr class="align-middle" th:each="product, i : ${list.getOrderProduct()}">
+                        <td class="d-flex">
                             <div class="align-self-center" style="">
                                 <img th:src="@{'/upload/'+${product.getProductInfo().getProduct().thumbnail}}" style="width: 100px;" alt="Image">
                             </div>
@@ -81,15 +89,13 @@
                                 <p class="mb-0" th:text="${#numbers.formatInteger(product.getPrice(), 3, 'COMMA') + '원'}"></p>
                             </div>
                         </td>
-                        <td class="align-middle text-center" style="width:5%">
-                            <div class="quantity mx-auto text-center" style="width: 100%;" th:text="${product.getAmount()}"></div>
+                        <td class="align-middle">
+                            <span style="font-size: 14px;color: #1C1C1C" class="quantity mx-auto text-center" th:text="${product.getAmount() + ' 개'}"></span>
                         </td>
-                        <td class="align-middle text-center">
-                            <span th:text="${#numbers.formatInteger(product.order.totalPrice, 3, 'COMMA') + '원'}"></span>
+                        <td class="align-middle">
+                            <span style="font-size: 14px;color: #1C1C1C" th:text="${#numbers.formatInteger(product.order.totalPrice, 3, 'COMMA') + '원'}"></span>
                         </td>
-                        <td class="align-middle text-center">
-                            <span th:text="${list.getStatus().getKrName()}"></span>
-                        </td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
