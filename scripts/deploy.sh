@@ -12,7 +12,7 @@ CURRENT_PID_H2=$(pgrep -f h2)
 if [ -z $CURRENT_PID_H2 ]
 then
   echo "> 시작된 h2서버 없음."
-  nohup java -cp /home/ec2-user/h2/bin/h2*.jar org.h2.tools.Server -tcp -tcpAllowOthers &
+  nohup java -cp /home/ec2-user/h2/bin/h2*.jar org.h2.tools.Server -tcp -tcpAllowOthers -webAllowOthers &
   echo "> h2서버 시작"
   sleep 10
 else
