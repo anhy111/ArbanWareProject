@@ -6,9 +6,9 @@ on:
 
 env:
   PROJECT_NAME: arbanWare
-  BUCKET_NAME: arbanware-s3
-  CODE_DEPLOY_APP_NAME: arbanWare
-  DEPLOYMENT_GROUP_NAME: arbanWare-first-cicd
+  BUCKET_NAME: arbanware-cicd-bucket
+  CODE_DEPLOY_APP_NAME: cicde-app
+  DEPLOYMENT_GROUP_NAME: arbanware-cicd
 
 jobs:
   build:
