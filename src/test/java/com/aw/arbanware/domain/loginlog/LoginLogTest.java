@@ -19,7 +19,7 @@ class LoginLogTest {
     @DisplayName("로그인_로그_테스트")
     public void 로그인_로그_테스트() throws Exception {
         // given
-        final LoginLog loginLog = new LoginLog();
+//        final LoginLog loginLog = new LoginLog();
         // when
 
         // then

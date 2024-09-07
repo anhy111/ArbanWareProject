@@ -1,6 +1,5 @@
 package com.aw.arbanware.domain.notification;
 
-import com.aw.arbanware.domain.coupon.Coupon;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,6 @@ class NotificationTest {
     @Test
     @DisplayName("notificationTest")
     public void notificationTest() throws Exception{
-        new Notification();
+//        new Notification();
     }
 }

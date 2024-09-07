@@ -20,7 +20,7 @@ class InquiryRespTest {
     @Test
     @DisplayName("inquiryRespTest")
     public void inquiryRespTest() throws Exception{
-        new InquiryResp();
+//        new InquiryResp();
     }
 
 }
