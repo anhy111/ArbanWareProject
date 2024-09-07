@@ -30,6 +30,11 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
+
 touch $REPOSITORY/arbanware.log
+cat /dev/null> $REPOSITORY/arbanware.log
+
 touch $REPOSITORY/arbanware_error.log
+cat /dev/null> $REPOSITORY/arbanware_error.log
+
 nohup java -jar $JAR_PATH 1> $REPOSITORY/arbanware.log 2>$REPOSITORY/arbanware_error.log &
