@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://arbanware-mysql.c38ikiqmg2nh.ap-northeast-2.rds.amazonaws.com:3306/arbanware
+    url: jdbc:mysql://rds-mysql.c38ikiqmg2nh.ap-northeast-2.rds.amazonaws.com:3306/arbanware
     username: arbanware
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
