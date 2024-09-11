@@ -2,8 +2,6 @@ package com.aw.arbanware.domain.notice.entity;
 
 import com.aw.arbanware.domain.common.baseentity.BaseEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
-import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
-import com.aw.arbanware.domain.user.entity.Admin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +11,8 @@ import javax.persistence.*;
 @Getter @Setter
 public class Notice extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "notice_seq")
-    @SequenceGenerator(name = "notice_seq", sequenceName = "NOTICE_SEQUENCE", allocationSize = 1)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "notice_seq", sequenceName = "NOTICE_SEQUENCE", allocationSize = 1)
     @Column(name = "NOTICE_ID")
     private Long id; //공지사항 번호
 

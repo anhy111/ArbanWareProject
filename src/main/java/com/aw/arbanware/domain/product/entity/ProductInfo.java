@@ -16,9 +16,8 @@ import java.util.Objects;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductInfo extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "product_info_seq")
-    @SequenceGenerator(name = "product_info_seq",sequenceName = "PRODUCT_INFO_SEQUENCE",allocationSize = 1)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "product_info_seq",sequenceName = "PRODUCT_INFO_SEQUENCE",allocationSize = 1)
     @Column(name = "PRODUCT_INFO_ID")
     private Long id;
 

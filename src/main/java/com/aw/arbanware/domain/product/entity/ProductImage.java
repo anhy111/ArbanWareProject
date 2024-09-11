@@ -17,9 +17,7 @@ import java.time.LocalDateTime;
 @ToString
 public class ProductImage implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "product_image_seq")
-    @SequenceGenerator(name = "product_image_seq",sequenceName = "PRODUCT_IMAGE_SEQUENCE",allocationSize = 1)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PRODUCT_IMAGE_ID")
     private Long id;
 

@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 public class MileageHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "mileage_seq")
-    @SequenceGenerator(name = "mileage_seq",sequenceName = "MILEAGE_HISTORY_SEQUENCE",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "mileage_seq",sequenceName = "MILEAGE_HISTORY_SEQUENCE",allocationSize = 1)
     @Column(name = "MILEAGE_HISTORY_ID")
     private Long id; //마일리지 내역
 

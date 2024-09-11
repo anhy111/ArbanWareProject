@@ -3,7 +3,6 @@ package com.aw.arbanware.domain.review.entity;
 import com.aw.arbanware.domain.common.baseentity.BaseTimeEntity;
 import com.aw.arbanware.domain.common.DeleteYn;
 import com.aw.arbanware.domain.orderproduct.entity.OrderProduct;
-import com.aw.arbanware.domain.product.entity.ProductInfo;
 import com.aw.arbanware.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import javax.persistence.*;
 public class Review extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "review_seq")
-    @SequenceGenerator(name = "review_seq",sequenceName = "REVIEW_SEQUENCE",allocationSize = 1)
+//    @SequenceGenerator(name = "review_seq",sequenceName = "REVIEW_SEQUENCE",allocationSize = 1)
     @Column(name = "REVIEW_ID")
     private Long id; // 후기번호
 

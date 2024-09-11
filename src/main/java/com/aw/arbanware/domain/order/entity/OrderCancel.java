@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
 @Setter
 public class OrderCancel {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                        generator = "order_cancel_seq")
-    @SequenceGenerator(name = "order_cancel_seq",sequenceName = "ORDER_CANCEL_SEQUENCE",allocationSize = 1)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "order_cancel_seq",sequenceName = "ORDER_CANCEL_SEQUENCE",allocationSize = 1)
     @Column(name = "ORDER_CANCEL_ID")
     private Long id;
 

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "comment_seq")
-    @SequenceGenerator(name = "comment_seq",sequenceName = "COMMENT_SEQUENCE",allocationSize = 1)
+//    @SequenceGenerator(name = "comment_seq",sequenceName = "COMMENT_SEQUENCE",allocationSize = 1)
     @Column(name = "COMMENT_ID")
     private Long id;    //댓글번호
 
