@@ -31,7 +31,7 @@ public class Product extends BaseEntity {
 
     private String name;    //상품명
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;    //내용
     private int cost;           //원가
     private int price;          //판매가
