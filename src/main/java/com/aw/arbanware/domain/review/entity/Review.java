@@ -23,6 +23,7 @@ public class Review extends BaseTimeEntity {
     private OrderProduct orderProduct;    //상품 정보 번호
 
     private int rating; //별점
+    @Lob
     private String content; //내용
     private Long attachFileId;  //첨부파일번호
 

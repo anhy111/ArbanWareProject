@@ -17,6 +17,8 @@ public class Notice extends BaseEntity {
     private Long id; //공지사항 번호
 
     private String title; //제목
+
+    @Lob
     private String content; //내용
 
     private Long attachFileId; // 첨부파일 번호

@@ -24,5 +24,6 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;  // 회원번호
 
+    @Lob
     private String content; //내용
 }
